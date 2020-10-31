@@ -1,0 +1,79 @@
+{
+    "lang": "EN - English/English",
+    "jokes": "translations/jokes/jokes-en.txt",
+    "strings": {
+        "general.yes": "Yes",
+        "general.no": "No",
+        "general.deactivated": "The command was deactivated on this server.",
+
+        "command.user.user": "User",
+        "command.user.not_found": "User not found.",
+        "command.user.syntax_error": "Error: You didn't use the right syntax. See \"{1}help user\" for help.",
+        "command.user.avatar_not_found": "Not found.",
+        "command.user.creation_date": "Creation Date",
+        "command.user.name": "Name",
+        "command.user.message_count": "Message Count (Estimation)",
+        "command.user.no_entries": "This user has no entries.",
+        "command.user.entry_not_found": "Entry not found.",
+        "command.user.report.content": "Content",
+        "command.user.report.date": "Creation date",
+        "command.user.report.author": "Author",
+        "command.user.report.url": "Message URL",
+
+        "command.reload.start": "Reload starting now.",
+        "command.reload.finished": "Reload finished.",
+        "command.save.start": "Settings saved.",
+
+        "command.report.reported": "User {1} was reported.",
+        "command.report.unreported": "Entry `{1}` was deleted.",
+        "command.report.user_not_found": "User {1} couldn't be found on this server.",
+
+        "command.ban.banned": "The user {1} was banned.",
+        "command.ban.user_msg": "You were banned from {1} for the following reason: {2}",
+        "command.ban.user_not_found": "The user {1} couldn't be found.",
+        "command.unban.unbanned": "The user {1} was unbanned.",
+        "command.unban.user_msg": "You were unbanned on {1}.",
+
+        "command.kick.kicked": "The user {1} was kicked.",
+        "command.kick.user_msg": "You were kicked from {1} for the following reason: {2}",
+        "command.kick.user_not_found": "The user {1} couldn't be found.",
+
+        "command.refresh.refreshed_sg": "User list was refreshed. There is {1} new user.",
+        "command.refresh.refreshed_pl": "User list was refreshed. There are {1} new users.",
+
+        "command.perm.show_role_permissions": "Role",
+        "command.perm.show_user_permissions": "User",
+        "command.perm.show_enabled": "Enabled Permissions",
+        "command.perm.show_disabled": "Disabled Permissions",
+        "command.perm.role_not_found": "Role not found.",
+        "command.perm.no_registered_permissions": "No permissions registered.",
+        "command.perm.enabled": "Permission `{1}` enabled.",
+        "command.perm.disabled": "Permission `{1}` disabled.",
+        "command.perm.removed": "Permission `{1}` removed.",
+
+        "command.deactivate.command_not_found": "Command \"{1}\" not found.",
+        "commands.deactivate.deactivated": "The command was deactivated.",
+
+        "command.activate.command_not_found": "Command \"{1}\" not found.",
+        "commands.activate.activated": "The command was activated.",
+
+        "command.alias.not_found": "Alias \"{1}\" not found!",
+        "command.alias.success": "Command \"{1}\" now has alias \"{2}\"!",
+        "command.alias.list": "The command \"{1}\" has the following aliases: {2}",
+        "command.alias.which": "The alias \"{1}\" stands for the command \"{2}\".",
+        "command.alias.no_aliases": "The command \"{1}\" has no aliases.",
+        "command.alias.not_allowed": "Can't create alias for command \"{1}\". Operation not allowed.",
+        "command.alias.name_not_allowed": "Can't create alias with name \"{1}\". Operation not allowed.",
+
+        "command.unalias.no_alias": "Alias \"{1}\" doesn't exist.",
+        "command.unalias.cleared": "Alias \"{1}\" was removed.",
+        "command.unalias.all_cleared": "All aliases for \"{1}\" removed.",
+
+        "command.joke.frequency": "To prevent spamming, the joke command can only be executed once every five minutes.",
+        "command.joke.not_found": "I haven't found any jokes for the language of this server. Sorry :(",
+
+        "command.not_found": "Command \"{1}\" not found!",
+        "command.no_permission": "You don't have the permissions to run this command.",
+        "command.invalid_syntax": "Error: You didn't use the right syntax. See \"{1}help {2}\" for help."
+    }
+}

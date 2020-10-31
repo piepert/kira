@@ -1,0 +1,79 @@
+{
+    "lang": "DE - Deutsch/German",
+    "jokes": "translations/jokes/jokes-de.txt",
+    "strings": {
+        "general.yes": "Ja",
+        "general.no": "Nein",
+        "general.deactivated": "Der Befehl wurde auf diesem Server deaktiviert.",
+
+        "command.user.user": "Benutzer",
+        "command.user.not_found": "Benutzer nicht gefunden.",
+        "command.user.syntax_error": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe \"{1}hilfe user\" für Hilfe.",
+        "command.user.avatar_not_found": "Nicht gefunden.",
+        "command.user.creation_date": "Erstellungsdatum",
+        "command.user.name": "Name",
+        "command.user.message_count": "Nachrichtenanzahl (Schätzung)",
+        "command.user.no_entries": "Dieser Benutzer hat keine Einträge.",
+        "command.user.entry_not_found": "Eintrag nicht gefunden.",
+        "command.user.report.content": "Inhalt",
+        "command.user.report.date": "Erstellungsdatum",
+        "command.user.report.author": "Autor",
+        "command.user.report.url": "Nachrichten-URL",
+
+        "command.reload.start": "Reload startet jetzt.",
+        "command.reload.finished": "Reload beendet.",
+        "command.save.start": "Einstellungen gespeichert.",
+
+        "command.report.reported": "Der Benutzer {1} wurde gemeldet.",
+        "command.report.unreported": "Der Eintrag `{1}` wurde entfernt.",
+        "command.report.user_not_found": "Der Benutzer {1} wurde nicht gefunden.",
+
+        "command.ban.banned": "Der Benutzer {1} wurde gebannt. Ein Eintrag wurde der Akte hinzugefügt.",
+        "command.ban.user_msg": "Du wurdest aus folgendem Grund von {1} gebannt: {2}",
+        "command.ban.user_not_found": "Der Benutzer {1} wurde nicht gefunden.",
+        "command.unban.unbanned": "Der Benutzer {1} wurde entbannt.",
+        "command.unban.user_msg": "Du wurdest auf {1} entbannt.",
+
+        "command.kick.kicked": "Der Benutzer {1} wurde gekickt. Ein Eintrag wurde der Akte hinzugefügt.",
+        "command.kick.user_msg": "Du wurdest aus folgendem Grund von {1} gekickt: {2}",
+        "command.kick.user_not_found": "Der Benutzer {1} wurde nicht gefunden.",
+
+        "command.refresh.refreshed_sg": "Die Benutzer wurden neu eingelesen. Es wurde {1} neuer Nutzer gefunden.",
+        "command.refresh.refreshed_pl": "Die Benutzer wurden neu eingelesen. Es wurden {1} neue Nutzer gefunden.",
+
+        "command.perm.show_role_permissions": "Rolle",
+        "command.perm.show_user_permissions": "Benutzer",
+        "command.perm.show_enabled": "Aktivierte Berechtigungen",
+        "command.perm.show_disabled": "Deaktivierte Berechtigungen",
+        "command.perm.role_not_found": "Rolle nicht gefunden.",
+        "command.perm.no_registered_permissions": "Keine Berechtigungen eingetragen.",
+        "command.perm.enabled": "Berechtigung `{1}` aktiviert.",
+        "command.perm.disabled": "Berechtigung `{1}` deaktiviert.",
+        "command.perm.removed": "Berechtigung `{1}` entfernt.",
+
+        "command.deactivate.command_not_found": "Befehl \"{1}\" nicht gefunden.",
+        "commands.deactivate.deactivated": "Der Befehl wurde deaktiviert.",
+
+        "command.activate.command_not_found": "Befehl \"{1}\" nicht gefunden.",
+        "commands.activate.activated": "Der Befehl wurde aktiviert.",
+
+        "command.alias.not_found": "Alias \"{1}\" nicht gefunden!",
+        "command.alias.success": "Befehl \"{1}\" hat nun den Alias \"{2}\"!",
+        "command.alias.list": "Der Befehl \"{1}\" hat die Aliasse: {2}",
+        "command.alias.which": "Der Alias \"{1}\" steht für den Befehl \"{2}\".",
+        "command.alias.no_aliases": "Der Befehl \"{1}\" hat keine Aliasse.",
+        "command.alias.not_allowed": "Kann keinen Alias für \"{1}\" erstellen. Operation wird nicht erlaubt.",
+        "command.alias.name_not_allowed": "Kann keinen Alias mit dem Namen \"{1}\" erstellen. Operation wird nicht erlaubt.",
+
+        "command.unalias.no_alias": "Der Alias \"{1}\" existiert nicht.",
+        "command.unalias.cleared": "Alias \"{1}\" wurde entfernt.",
+        "command.unalias.all_cleared": "Alle Aliasse für \"{1}\" entfernt.",
+
+        "command.joke.frequency": "Um Spam zu vermeiden kann der Witze-Befehl nur ein mal alle 5 Minuten ausgeführt werden.",
+        "command.joke.not_found": "Leider habe ich für die Sprache des Servers keine Witze gefunden. Tut mir leid :(.",
+
+        "command.not_found": "Befehl \"{1}\" nicht gefunden!",
+        "command.no_permission": "Du hast nicht die Berechtigung, diesen Befehl auszuführen.",
+        "command.invalid_syntax": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe \"{1}hilfe {2}\" für Hilfe."
+    }
+}

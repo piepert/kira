@@ -1,0 +1,7 @@
+{
+    "lang": "<SHORT> - <LANG_NAME>/<LANG_NAME_EN>",
+    "jokes": "path to joke file from root of static directory",
+    "strings": {
+        "key": "translation"
+    }
+}
