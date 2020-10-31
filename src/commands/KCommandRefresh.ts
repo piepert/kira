@@ -11,6 +11,7 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
+import { Client } from "@typeit/discord/Client";
 
 export class KCommandRefresh extends KCommand {
     constructor() {
@@ -26,7 +27,8 @@ export class KCommandRefresh extends KCommand {
         msg: Message,
         server: KServer,
         command: KParsedCommand,
-        sender: KUser) {
+        sender: KUser,
+        client: Client) {
 
         let count_b = server.users.users.length;
 

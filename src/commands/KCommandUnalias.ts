@@ -14,6 +14,7 @@ import { KServer } from "../KServer";
 import { KRole } from "../KRole";
 import { KUser } from "../KUser";
 import { KCommandManager } from "../KCommandManager";
+import { Client } from "@typeit/discord/Client";
 
 export class KCommandUnalias extends KCommand {
     constructor() {
@@ -46,7 +47,8 @@ export class KCommandUnalias extends KCommand {
         msg: Message,
         server: KServer,
         command: KParsedCommand,
-        sender: KUser) {
+        sender: KUser,
+        client: Client) {
 
         if (command.getArguments().length == 2) {
             if (KCommandManager.getCommand(command.getArguments()[0]) == undefined) {

@@ -10,6 +10,7 @@ import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
+import { Client } from "@typeit/discord/Client";
 
 export class KCommandPing extends KCommand {
     constructor() {
@@ -29,7 +30,8 @@ export class KCommandPing extends KCommand {
         msg: Message,
         server: KServer,
         command: KParsedCommand,
-        sender: KUser) {
+        sender: KUser,
+        client: Client) {
 
         msg.channel.send("Pong!");
     }

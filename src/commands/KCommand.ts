@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Client, Message } from "discord.js";
 import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
@@ -15,7 +15,8 @@ export abstract class KCommand {
         msg: Message,
         server: KServer,
         command: KParsedCommand,
-        sender: KUser) {}
+        sender: KUser,
+        client: Client) {}
 
     public validateSyntax(cmd: KParsedCommand): boolean { return true; }
     public getName(): string { return this.command_name; }

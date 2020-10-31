@@ -10,6 +10,7 @@ import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
+import { Client } from "@typeit/discord/Client";
 
 export class KCommandSay extends KCommand {
     constructor() {
@@ -29,18 +30,25 @@ export class KCommandSay extends KCommand {
         msg: Message,
         server: KServer,
         command: KParsedCommand,
-        sender: KUser) {
+        sender: KUser,
+        client: Client) {
 
         let args = command.getArguments();
-        let channel = msg.guild.channels.cache.find(channel => channel.name === args[0]);
+        let channel = msg.guild.channels.cache.find(channel =>
+            channel.name === args[0]);
 
-        args.shift();
+        if (channel == undefined) {
+            channel = msg.guild.channels.cache.find(ch =>
+                ch.id.toString() == args[0].substr(2, args[0].length-3));
+        }
+
+        let channel_name = args.shift();
         let message = args.join(" ");
 
         if (channel == undefined) {
             msg.channel.send(conf
-                .getTranslationStr(msg, "command.report.user_not_found")
-                    .replace("{1}", command.getArguments()[0]));
+                .getTranslationStr(msg, "command.say.channel_not_found")
+                    .replace("{1}", channel_name));
             return;
         }
 

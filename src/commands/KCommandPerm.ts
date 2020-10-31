@@ -13,6 +13,7 @@ import { config } from "process";
 import { KServer } from "../KServer";
 import { KRole } from "../KRole";
 import { KUser } from "../KUser";
+import { Client } from "@typeit/discord/Client";
 
 export class KCommandPerm extends KCommand {
     constructor() {
@@ -72,7 +73,8 @@ export class KCommandPerm extends KCommand {
         msg: Message,
         server: KServer,
         command: KParsedCommand,
-        sender: KUser) {
+        sender: KUser,
+        client: Client) {
 
         let use_id = command.getArguments()[1];
         let show: boolean = command.getArguments()[2] == "show";

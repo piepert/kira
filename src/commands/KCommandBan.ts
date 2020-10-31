@@ -11,6 +11,7 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
+import { Client } from "@typeit/discord/Client";
 
 export class KCommandBan extends KCommand {
     constructor() {
@@ -30,7 +31,8 @@ export class KCommandBan extends KCommand {
         msg: Message,
         server: KServer,
         command: KParsedCommand,
-        sender: KUser) {
+        sender: KUser,
+        client: Client) {
 
         let user: string = await KConf.userToID(
             msg.guild,
