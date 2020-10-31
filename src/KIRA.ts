@@ -30,6 +30,8 @@ console.log = function(... a) {
     fs.appendFileSync("logs/"+file_name, "\n");
 }
 
+console.error = console.log;
+
 import { KConf } from "./KConfig";
 import { RSSParser } from "./rss/RSSParser";
 let conf = new KConf();
