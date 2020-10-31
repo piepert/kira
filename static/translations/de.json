@@ -69,6 +69,10 @@
         "command.unalias.cleared": "Alias \"{1}\" wurde entfernt.",
         "command.unalias.all_cleared": "Alle Aliasse für \"{1}\" entfernt.",
 
+        "command.say.channel_not_found": "Der Channel `{1}` wurde nicht gefunden.",
+
+        "command.exit": "KIRA stoppt jetzt. Ich wünsche einen guten Tag.",
+
         "command.joke.frequency": "Um Spam zu vermeiden kann der Witze-Befehl nur ein mal alle 5 Minuten ausgeführt werden.",
         "command.joke.not_found": "Leider habe ich für die Sprache des Servers keine Witze gefunden. Tut mir leid :(.",
 

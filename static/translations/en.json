@@ -69,6 +69,9 @@
         "command.unalias.cleared": "Alias \"{1}\" was removed.",
         "command.unalias.all_cleared": "All aliases for \"{1}\" removed.",
 
+        "command.say.channel_not_found": "Channel `{1}` not found.",
+        "command.exit": "KIRA exiting now. Have a nice day.",
+
         "command.joke.frequency": "To prevent spamming, the joke command can only be executed once every five minutes.",
         "command.joke.not_found": "I haven't found any jokes for the language of this server. Sorry :(",
 
