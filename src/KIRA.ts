@@ -62,6 +62,8 @@ class KIRA {
             this.client.user.setActivity("v3.0.0 | !help", {
                 type: "PLAYING"
             });
+
+            conf.client = this.client;
         });
 
         setInterval(this.minuteScheduler, 1000*60, this.client);
@@ -108,7 +110,8 @@ class KIRA {
                 .handleMessage(
                     conf,
                     message[0],
-                    conf.getConfig().command_prefix
+                    conf.getConfig().command_prefix,
+                    conf.client
                 );
         }
     }
@@ -129,7 +132,7 @@ class KIRA {
 
             conf.getServerManager()
                 .getServerByID(user[0].guild.id)
-                .handleJoin(conf, user[0], this.client);
+                .handleJoin(conf, user[0], conf.client);
         }
     }
 

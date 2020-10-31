@@ -365,7 +365,16 @@ export class KServer {
         }
     }
 
-    public async handleCommand(conf: KConf, msg: Message, pref: string) {
+    public async handleCommand(conf: KConf,
+        msg: Message,
+        pref: string,
+        client: Client) {
+
+        console.log("[ COMMAND : "+msg.guild.name+" ] [ #"+(msg.channel as TextChannel).name+" ] "+
+            msg.author.username+
+            ": "+
+            msg.content);
+
         let command: KParsedCommand = KParsedCommand.parse(msg.content, pref);
 
         if (this.getAlias(command.getName()) != undefined) {
@@ -457,13 +466,18 @@ export class KServer {
                 msg,                                                                                // discord message
                 this,                                                                               // server
                 command,                                                                            // parsed command
-                u);                                                                                 // user, which executed the command
+                u,                                                                                  // user, which executed the command
+                client);
         }
     }
 
-    public async handleMessage(conf: KConf, msg: Message, command_prefix: string) {
+    public async handleMessage(conf: KConf,
+        msg: Message,
+        command_prefix: string,
+        client: Client) {
+
         if (msg.content.startsWith(command_prefix)) {
-            this.handleCommand(conf, msg, command_prefix);
+            this.handleCommand(conf, msg, command_prefix, client);
         } else {
             // msg.channel.send("Message received.");
             console.log("[ MESSAGE : "+msg.guild.name+" ] [ #"+(msg.channel as TextChannel).name+" ] "+
