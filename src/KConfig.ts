@@ -28,6 +28,7 @@ export class KConf {
     translations: KTranslationManager;
     config: any;
     servers: KServerManager;
+    client: Client;
 
     path_config_file: string;
     path_translation_dir: string;
