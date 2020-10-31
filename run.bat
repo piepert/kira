@@ -1,2 +1,3 @@
 @echo off
-npm test
+cd static
+node ..\dist\KIRA.js
