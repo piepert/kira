@@ -111,9 +111,11 @@ export class KChannelConfig {
                 if (!entry.isNewPage())
                     return;
 
-                const channel = client.channels.cache.find(channel => channel.id === this.channel_id);
-                if (channel == undefined)
+                const channel = client.channels.cache.find(channel => channel.id == this.channel_id);
+                if (channel == undefined) {
+                    console.log("[ RSS : ERROR ] [ "+client.guilds.cache.get(server.getID()).name+" ] Channel not found for message: "+channel.id)
                     return;
+                }
 
                 let embed = new MessageEmbed()
                     .setTitle(this.getTitle())
@@ -127,18 +129,33 @@ export class KChannelConfig {
                     embed.setColor(this.color)
                 }
 
+                if (embed.length == 0
+                    || embed == undefined
+                    || embed == null
+                    || JSON.stringify(embed.toJSON()) == JSON.stringify({})) {
+
+                    console.log("[ RSS : ERROR ] [ "+client.guilds.cache.get(server.getID()).name+" ] Message empty:", embed)
+                    return;
+                }
+
                 (channel as TextChannel).send(embed);
                 this.rss_channel.addHash(entry.getHash());
             } else {
-                const channel = client.channels.cache.find(channel => channel.id === this.channel_id);
-                if (channel == undefined)
+                const channel = client.channels.cache.find(channel => channel.id == this.channel_id);
+                if (channel == undefined) {
+                    console.log("[ RSS : ERROR ] [ "+client.guilds.cache.get(server.getID()).name+" ] Channel not found for message: "+channel.id)
                     return;
+                }
 
                 let embed = new MessageEmbed()
                     .setTitle(this.getTitle())
-                    .setDescription("["+entry.title+"]("+entry.url+")"+(entry.subtext != "unknown" ? "  –  "+entry.subtext : ""))
+                    .setDescription("["+entry.title+"]("+entry.url+")"+
+                        (entry.subtext != "unknown" ? "  –  "+entry.subtext : ""))
+
                     .setFooter(entry.author_displayname,
                         "http://www.wikidot.com/avatar.php?userid="+entry.author_userid);
+
+                console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", embed);
 
                 if (this.color == undefined) {
                     embed.setColor('#e6d9ad')
@@ -146,11 +163,25 @@ export class KChannelConfig {
                     embed.setColor(this.color)
                 }
 
+                if (embed.length == 0
+                    || embed == undefined
+                    || embed == null
+                    || JSON.stringify(embed.toJSON()) == JSON.stringify({})) {
+
+                    console.log("[ RSS : ERROR ] [ "+client.guilds.cache.get(server.getID()).name+" ] Message empty:", embed)
+                    return;
+                }
+
                 (channel as any).send(embed);
                 this.rss_channel.addHash(entry.getHash());
             }
 
             console.log("[ RSS : FIRE_CHANNEL ] In channel "+this.channel_id+" new entry with hash "+entry.getHash()+" from "+this.feed_url);
+            console.log("                       -> user    : "+entry.author_displayname)
+            console.log("                       -> date    : "+entry.date)
+            console.log("                       -> title   : "+entry.title)
+            console.log("                       -> subtext : "+entry.subtext)
+            console.log("                       -> url     : "+entry.url)
         }
     }
 }
