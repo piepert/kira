@@ -34,6 +34,8 @@ export class KConf {
     path_translation_dir: string;
     path_servers_dir: string;
 
+    no_rss_server_warnings: string[];
+
     public load(config_f: string,
         translation_dir: string,
         servers_dir: string) {                                                                      // load config files
@@ -44,6 +46,8 @@ export class KConf {
         this.path_config_file = config_f;                                                           // save all paths
         this.path_servers_dir = servers_dir;
         this.path_translation_dir = translation_dir;
+
+        this.no_rss_server_warnings = [];
 
         this.servers = new KServerManager();
         this.translations = new KTranslationManager();
@@ -171,7 +175,10 @@ export class KConf {
         return user.trim();
     }
 
-    public static compareUser(guild: Guild, user1: string, user2: string, server: KServer): boolean {                // user1 and user2 both can be either ID or <@!ID>
+    public static compareUser(guild: Guild,
+        user1: string,
+        user2: string,
+        server: KServer): boolean {                                                                 // user1 and user2 both can be either ID or <@!ID>
         return this.userToID(guild, user1, server) == this.userToID(guild, user2, server);
     }
 
@@ -182,6 +189,10 @@ export class KConf {
         let channels = bot.channels.cache.keys();                                                   // get all channels, the bot has read-permissions
 
         for (let index of channels) {                                                               // iterate through all channels
+            if ((bot.channels.cache.get(index) as any).guild == undefined) {
+                continue;                                                                           // ignore dm channels
+            }
+
             let server = (bot.channels.cache.get(index) as any).guild;                              // get server
             let server_id = server.id;                                                              // get server id
 
