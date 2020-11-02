@@ -288,29 +288,34 @@ export class KServer {
     }
 
     public async refreshUsers(guild: Guild) {
-        let users = await guild.members.fetch();
-        let bans = await guild.fetchBans();
+        guild.members.fetch().then((users) => {
+            for (let i of users) {
+                if (this.getUser(i[1].id) == undefined) {
+                    this.users.addUser(new KUser(i[1].id, i[1].user.username));
+                } else if (this.getUser(i[1].id).getDisplayName() != i[1].user.username) {
+                    console.log("[ USER_UPDATE : "+guild.name+" ] username was changed from "+
+                        this.getUser(i[1].id).getDisplayName()+
+                        " to "+
+                        i[1].user.username);
 
-        for (let i of users) {
-            if (this.getUser(i[1].id) == undefined) {
-                this.users.addUser(new KUser(i[1].id, i[1].user.username));
-            } else if (this.getUser(i[1].id).getDisplayName() != i[1].user.username) {
-                console.log("[ USER_UPDATE : "+guild.name+" ] username was changed from "+
-                    this.getUser(i[1].id).getDisplayName()+
-                    " to "+
-                    i[1].user.username);
-
-                this.users.getUser(i[1].id).username = i[1].user.username;
+                    this.users.getUser(i[1].id).username = i[1].user.username;
+                }
             }
-        }
+        }).catch((reason) => {
+            console.log("[ ERROR : KServer|305 ]", reason);
+        });
 
-        for (let i of bans) {
-            if (this.getUser(i[1].user.id) == undefined) {
-                this.users.addUser(new KUser(i[1].user.id, i[1].user.username));
-            } else if (this.getUser(i[1].user.id).getDisplayName() != i[1].user.username) {
-                this.users.getUser(i[1].user.id).username = i[1].user.username;
+        guild.fetchBans().then((bans) => {
+            for (let i of bans) {
+                if (this.getUser(i[1].user.id) == undefined) {
+                    this.users.addUser(new KUser(i[1].user.id, i[1].user.username));
+                } else if (this.getUser(i[1].user.id).getDisplayName() != i[1].user.username) {
+                    this.users.getUser(i[1].user.id).username = i[1].user.username;
+                }
             }
-        }
+        }).catch((reason) => {
+            console.log("[ ERROR : KServer|317 ]", reason);
+        });
     }
 
     public getUser(id: string): KUser {
@@ -348,8 +353,6 @@ export class KServer {
             this.users.getUser(user.id).updateDisplayName(user.username);
         }
 
-        this.refreshUsers(guild);
-
         if (guild.roles.cache.size != this.roles.roles.length) {
             for (let role of guild.roles.cache.keys()) {
                 console.log("[ USER : NEW_ROLE ] On server ", this.id, ", new role:", role);
@@ -376,6 +379,11 @@ export class KServer {
             msg.content);
 
         let command: KParsedCommand = KParsedCommand.parse(msg.content, pref);
+
+        if (command.getName().length > 1000) {
+            msg.channel.send(conf.getTranslationStr(msg, "command.too_long"));
+            return;
+        }
 
         if (this.getAlias(command.getName()) != undefined) {
             command.setName(this.getAlias(command.getName()));
@@ -479,11 +487,12 @@ export class KServer {
         if (msg.content.startsWith(command_prefix)) {
             this.handleCommand(conf, msg, command_prefix, client);
         } else {
-            // msg.channel.send("Message received.");
+            /*
             console.log("[ MESSAGE : "+msg.guild.name+" ] [ #"+(msg.channel as TextChannel).name+" ] "+
                 msg.author.username+
                 ": "+
                 msg.content);
+            */
         }
     }
 

@@ -76,6 +76,7 @@
         "command.joke.not_found": "I haven't found any jokes for the language of this server. Sorry :(",
 
         "command.not_found": "Command \"{1}\" not found!",
+        "command.too_long": "Command was too long!",
         "command.no_permission": "You don't have the permissions to run this command.",
         "command.invalid_syntax": "Error: You didn't use the right syntax. See \"{1}help {2}\" for help."
     }
