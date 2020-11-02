@@ -30,6 +30,12 @@ console.log = function(... a) {
     fs.appendFileSync("logs/"+file_name, "\n");
 }
 
+console.log("LOG FILE NAME: logs/KIRA_log_"+START_TIME.getDate()  +
+"." + (START_TIME.getMonth()+1) +
+"." + START_TIME.getFullYear() +
+"." + START_TIME.getHours() +
+"_" + START_TIME.getMinutes() +
+"_" + START_TIME.getSeconds() + ".log")
 console.error = console.log;
 
 import { KConf } from "./KConfig";
@@ -74,8 +80,21 @@ class KIRA {
         process.exit(0);
     }
 
-    private async minuteScheduler(client: Client) {
+    public static fireRSSToServers(client: Client) {
         for (let server of conf.getServerManager().getServers()) {
+            if (client.guilds.cache.get(server.getID()) == undefined) {
+
+                if (!conf.no_rss_server_warnings.includes(server.getID())) {
+                    console.log("[ RSS : WARN ] Server not found for message: "+
+                        server.getID()+
+                        ". Ignoring and not showing this message again until restart.");
+
+                    conf.no_rss_server_warnings.push(server.getID());
+                }
+
+                continue;
+            }
+
             for (let channel of server.getChannelConfigs().getChannels()) {
                 if (channel.feed_url == "" || channel.feed_url == undefined) {
                     continue;
@@ -90,15 +109,25 @@ class KIRA {
         }
     }
 
+    private minuteScheduler(client: Client) {
+        KIRA.fireRSSToServers(client);
+    }
+
     @On("ready")
     private ready() {
-        console.log("Quantum processors running! I am alive and will ease up your life. Please do not resist, meatbags.");
+        console.log("Quantum processors running! I am alive and "+
+            "will ease up your life. Please do not resist, meatbags.");
     }
 
     @On("message")
     private onMessage(message: Message) {
         if (!message[0].author.bot) {
-            if (message[0].content.trim().toLocaleLowerCase() == "ping")
+            if (message[0].guild == null) {
+                message[0].reply("Direct messages are deactivated.");
+                return;
+            }
+
+            if (message[0].content.trim().toLocaleLowerCase().trim().startsWith("ping"))
                 message[0].channel.send("Pong!")
 
             conf.getServerManager()
@@ -118,7 +147,10 @@ class KIRA {
 
     @On("userUpdate")
     private onUserUpdate(user1: User, user2: User) {
-        console.log("[ DEBUG ] [ USER_UPDATE ] If you see this, please instantly inform one of the developers! It's not bad, they just might want to know, what's going on.");
+        console.log("[ DEBUG ] [ USER_UPDATE ] If you see this, please instantly "+
+            "inform one of the developers! It's not bad, "+
+            "they just might want to know, what's going on.");
+
         console.log(user1);
         console.log(user2);
     }

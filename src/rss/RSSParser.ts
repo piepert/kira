@@ -6,7 +6,7 @@ import { KServer } from "../KServer";
 import { RSSEntry } from "./RSSEntry";
 
 export class RSSParser {
-    public static async fireFeed(url: string,
+    public static fireFeed(url: string,
         channel: KChannelConfig,
         client: Client,
         server: KServer,
@@ -19,7 +19,7 @@ export class RSSParser {
         const http = require('http');
         const fs = require('fs');
 
-        await http.get(url, function(response: IncomingMessage) {
+        http.get(url, function(response: IncomingMessage) {
             let str = "";
 
             response.on("data", (data) => {
@@ -32,15 +32,12 @@ export class RSSParser {
                     let items = result.rss.channel[0].item;
                     let entries: RSSEntry[] = [];
 
-                    // console.log("[ RSS ] Parsing feed", url);
-                    // console.log("[ RSS : TITLE ]", feed.title);
-
-                    items.forEach(item => {
+                    for (let item of items) {
                         channel.doFire(client,
                             server,
                             conf,
                             RSSEntry.createFromFeedItem(item));
-                    });
+                    }
                 });
             });
         });
