@@ -18,6 +18,7 @@ import { KCommandSay } from "./commands/KCommandSay";
 import { KCommandJoke } from "./commands/KCommandJoke";
 import { KCommandPing } from "./commands/KCommandPing";
 import { KCommandExit } from "./commands/KCommandExit";
+import { KCommandDice } from "./commands/KCommandDice";
 
 export class KCommandManager {
     static commands: KCommand[] = [];
@@ -43,6 +44,7 @@ export class KCommandManager {
         this.commands.push(new KCommandJoke());
         this.commands.push(new KCommandPing());
         this.commands.push(new KCommandExit());
+        this.commands.push(new KCommandDice());
     }
 
     public static getCommand(name: string): KCommand {
