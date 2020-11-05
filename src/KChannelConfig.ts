@@ -138,7 +138,7 @@ export class KChannelConfig {
                     return;
                 }
 
-                (channel as TextChannel).send(embed);
+                (channel as any).send({embed: embed});
                 this.rss_channel.addHash(entry.getHash());
             } else {
                 const channel = client.channels.cache.find(channel => channel.id == this.channel_id);
@@ -155,7 +155,7 @@ export class KChannelConfig {
                     .setFooter(entry.author_displayname,
                         "http://www.wikidot.com/avatar.php?userid="+entry.author_userid);
 
-                console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", embed);
+                console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", {embed: embed});
 
                 if (this.color == undefined) {
                     embed.setColor('#e6d9ad')
@@ -172,7 +172,7 @@ export class KChannelConfig {
                     return;
                 }
 
-                (channel as any).send(embed);
+                (channel as any).send({embed: embed});
                 this.rss_channel.addHash(entry.getHash());
             }
 
