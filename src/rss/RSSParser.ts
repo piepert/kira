@@ -19,7 +19,7 @@ export class RSSParser {
         const http = require('http');
         const fs = require('fs');
 
-        http.get(url, function(response: IncomingMessage) {
+        let req = http.get(url, function(response: IncomingMessage) {
             let str = "";
 
             response.on("data", (data) => {
@@ -41,5 +41,7 @@ export class RSSParser {
                 });
             });
         });
+
+        req.end();
     }
 }
