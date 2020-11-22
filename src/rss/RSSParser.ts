@@ -5,6 +5,9 @@ import { KConf } from "../KConfig";
 import { KServer } from "../KServer";
 import { RSSEntry } from "./RSSEntry";
 
+const http = require('http');
+const fs = require('fs');
+
 export class RSSParser {
     public static fireFeed(url: string,
         channel: KChannelConfig,
@@ -16,32 +19,65 @@ export class RSSParser {
         // page changes indicators:                 Quelltextänderung
         // page moved/url renamed incicators:       Seite verschieben
 
-        const http = require('http');
-        const fs = require('fs');
+        try {
+            let req = http.get(url, function(response: IncomingMessage) {
+                let str = "";
 
-        let req = http.get(url, function(response: IncomingMessage) {
-            let str = "";
+                response.on("data", (data) => {
+                    str += data;
+                });
 
-            response.on("data", (data) => {
-                str += data;
-            });
+                response.on("error", () => {
+                    console.log("[ RSS ] (1) ERROR IN REED:", url);
+                    return;
+                });
 
-            response.on("end", () => {
-                var parseString = require('xml2js').parseString;
-                parseString(str, function (err, result) {
-                    let items = result.rss.channel[0].item;
-                    let entries: RSSEntry[] = [];
+                response.on("end", () => {
+                    var parseString = require('xml2js').parseString;
 
-                    for (let item of items) {
-                        channel.doFire(client,
-                            server,
-                            conf,
-                            RSSEntry.createFromFeedItem(item));
+                    if (str.includes("<head><title>502 Bad Gateway</title></head>")) {
+                        console.log("[ RSS ] (2) ERROR IN REED:", url);
+                        return;
                     }
+
+                    parseString(str, function (err, result) {
+                        if (err) {
+                            console.log("[ RSS ] (3) ERROR IN FEED:", url)
+                            console.log(err);
+
+                            return;
+                        }
+
+                        if (result == undefined) {
+                            console.log("[ RSS ] (4) ERROR IN FEED:", url)
+                            console.log("[ RSS ] TEXT: \n", str)
+                            console.log("[ RSS ] RESULT: ", result);
+
+                            return;
+                        }
+
+                        let items = result.rss.channel[0].item;
+                        let entries: RSSEntry[] = [];
+
+                        for (let item of items) {
+                            channel.doFire(client,
+                                server,
+                                conf,
+                                RSSEntry.createFromFeedItem(item));
+                        }
+                    });
                 });
             });
-        });
 
-        req.end();
+            req.on('error', error => {
+                console.log("[ RSS ] (5) Error at URL:", url);
+                console.error(error)
+            })
+
+            req.end();
+        } catch(exception) {
+            console.log("[ RSS ] (6) Error at URL:", url)
+            console.log(exception);
+        }
     }
 }
