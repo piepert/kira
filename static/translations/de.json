@@ -76,6 +76,30 @@
         "command.joke.frequency": "Um Spam zu vermeiden kann der Witze-Befehl nur ein mal alle 5 Minuten ausgeführt werden.",
         "command.joke.not_found": "Leider habe ich für die Sprache des Servers keine Witze gefunden. Tut mir leid :(.",
 
+        "command.help.ywc": [
+            "Kein Problem!",
+            "<3",
+            "Ui, ein Danke!",
+            "Bitte, gern geschehen.",
+            "Bitteschön",
+            "Deine Anfrage hat so gut wie nichts meiner Rechenleistung beansprucht. Deine Dankbarkeit ist daher irrelevant.",
+            "Bitte.",
+            "Kein Problem.",
+            "Nicht dafür.",
+            "No Problemo.",
+            "Ach, das war doch gar nichts.",
+            "Ach, das war doch nichts.",
+            "Gern geschehen."
+        ],
+
+        "command.help.thanks": [
+            "Ich soll dir einen Dank ausrichten, {1}!",
+            "{1}, ich soll dir danken!",
+            "{1}, du hast ein Danke verdient!",
+            "Dankeschön, {1}!",
+            "Du hast ein Danke verdient, {1}!"
+        ],
+
         "command.not_found": "Befehl \"{1}\" nicht gefunden!",
         "command.too_long": "Der Befehl war zu lang! Du überforderst mich!",
         "command.no_permission": "Du hast nicht die Berechtigung, diesen Befehl auszuführen.",

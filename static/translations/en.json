@@ -75,6 +75,18 @@
         "command.joke.frequency": "To prevent spamming, the joke command can only be executed once every five minutes.",
         "command.joke.not_found": "I haven't found any jokes for the language of this server. Sorry :(",
 
+        "command.help.ywc": [
+            "You're welcome!",
+            "No problem!",
+            "I will ignore the fact, that I don't have feelings and that your gratefulness can't touch me. So: You're welcome!",
+            "Wow, I was thanked!"
+        ],
+
+        "command.help.thanks": [
+            "Thank you, {1}!",
+            "I shall send you gratefulness, {1}!"
+        ],
+
         "command.not_found": "Command \"{1}\" not found!",
         "command.too_long": "Command was too long!",
         "command.no_permission": "You don't have the permissions to run this command.",
