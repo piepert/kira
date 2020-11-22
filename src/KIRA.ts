@@ -30,13 +30,13 @@ console.log = function(... a) {
     fs.appendFileSync("logs/"+file_name, "\n");
 }
 
-console.log("LOG FILE NAME: logs/KIRA_log_"+START_TIME.getDate()  +
-"." + (START_TIME.getMonth()+1) +
-"." + START_TIME.getFullYear() +
-"." + START_TIME.getHours() +
-"_" + START_TIME.getMinutes() +
-"_" + START_TIME.getSeconds() + ".log")
 console.error = console.log;
+console.log("LOG FILE NAME: logs/KIRA_log_"+START_TIME.getDate()  +
+    "." + (START_TIME.getMonth()+1) +
+    "." + START_TIME.getFullYear() +
+    "." + START_TIME.getHours() +
+    "_" + START_TIME.getMinutes() +
+    "_" + START_TIME.getSeconds() + ".log")
 
 import { KConf } from "./KConfig";
 import { RSSParser } from "./rss/RSSParser";
@@ -52,20 +52,26 @@ import {
     Message,
     GuildMember, User
 } from "discord.js";
+import { existsSync, lstatSync, readFileSync } from "fs";
+import { KPatcher } from "./KPatcher";
 
 class KIRA {
     client: Client;
+    version: string;
 
     answerToMessage(message: Message, answer: string) {
         message.channel.send(answer);
     }
 
-    public start() {
+    public async start() {
         this.client = new Client();
         this.client.login(conf.getConfig().token);
 
+        this.version = JSON.parse(readFileSync("../package.json") as any).version;                  // KIRA is started tge from static/ directory, ...
+                                                                                                    // ... so the package.json lies in ../package.json
+
         this.client.on("ready", () => {
-            this.client.user.setActivity("v3.0.0 | !help", {
+            this.client.user.setActivity("v"+this.version+" | !help", {
                 type: "PLAYING"
             });
 
