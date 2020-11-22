@@ -19,6 +19,9 @@ import { KCommandJoke } from "./commands/KCommandJoke";
 import { KCommandPing } from "./commands/KCommandPing";
 import { KCommandExit } from "./commands/KCommandExit";
 import { KCommandDice } from "./commands/KCommandDice";
+import { KCommandThanks } from "./commands/KCommandThanks";
+import { KCommandHelp } from "./commands/KCommandHelp";
+import { KCommandPatch } from "./commands/KCommandPatch";
 
 export class KCommandManager {
     static commands: KCommand[] = [];
@@ -45,6 +48,9 @@ export class KCommandManager {
         this.commands.push(new KCommandPing());
         this.commands.push(new KCommandExit());
         this.commands.push(new KCommandDice());
+        this.commands.push(new KCommandThanks());
+        this.commands.push(new KCommandHelp());
+        this.commands.push(new KCommandPatch());
     }
 
     public static getCommand(name: string): KCommand {
