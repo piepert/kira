@@ -1,5 +1,14 @@
 Date format: YYYY-MM-DD
 
+# v3.0.2 (2020-11-13)
+
+* now loading version from package.json
+* fixed bugs of wiki-feed (mostly crashes)
+* removed duplicate saving from KRole and KUser
+* added commands:
+    * `!thanks` (`src/commands/KCommandThanks`)
+    * `!patch` (`src/commands/KCommandPatch`)
+
 # v3.0.1 (2020-10-31)
 
 * added command `!exit_hard` (`src/commands/KCommandExit.ts`)
