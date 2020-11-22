@@ -1,3 +1,20 @@
+function uniq_fast(a) {
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+
+    for(var i = 0; i < len; i++) {
+         var item = a[i];
+         if(seen[item] !== 1) {
+               seen[item] = 1;
+               out[j++] = item;
+         }
+    }
+
+    return out;
+}
+
 export class KRole {
     enabled_permissions: string[];
     disabled_permissions: string[];
@@ -17,8 +34,8 @@ export class KRole {
     public toJSONObject(): object {
         return {
             id: this.id,
-            enabled_permissions: this.enabled_permissions,
-            disabled_permissions: this.disabled_permissions
+            enabled_permissions: uniq_fast(this.enabled_permissions),
+            disabled_permissions: uniq_fast(this.disabled_permissions)
         }
     }
 
