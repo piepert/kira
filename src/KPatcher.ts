@@ -9,16 +9,11 @@ import { KConf } from "./KConfig";
 
 var rimraf = require("rimraf");
 var https = require('https');
-const publicIp = require('public-ip');
 
 export class KPatcher {
     public static async patch(channel: TextChannel, url: string, conf: KConf) {
         console.log("[ PATCH ] Installing patch from", url);
         conf.save(conf.client);
-
-        if (url.includes("://"+(await publicIp.v4()))) {
-            url = url.replace(await publicIp.v4(), "piserver");
-        }
 
         // create backup of static directory; delete translations from the
         // backup to make sure, that the translation files are getting replaced
