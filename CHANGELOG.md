@@ -1,6 +1,11 @@
 Date format: YYYY-MM-DD
 
-# v3.0.2 (2020-11-13)
+# v3.0.3 (2020-11-22)
+
+* fixed wrong date in CHANGELOG.md (v3.0.2 (2020-11-13) to v3.0.2 (2020-11-22))
+* fixed patch error for non-Windows hosts
+
+# v3.0.2 (2020-11-22)
 
 * now loading version from package.json
 * fixed bugs of wiki-feed (mostly crashes)
