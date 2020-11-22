@@ -45,24 +45,24 @@ export class KPatcher {
                         await channel.send("Installing new files...");
                         console.log("[ PATCH ] Overwriting current files.")
                         await this.overwriteCurrentFiles();
-            
+
                         // restoring old static folder
                         console.log("[ PATCH ] Restoring saved static directory.")
                         await this.restoreStaticBackup();
-            
+
                         // restart KIRA application in background (or in new CMD Window on
                         // Windows)
                         await channel.send("Okay, patch was installed! Restarting after this message.");
                         this.restartApp();
                         await channel.send("Restart finished.");
-                        
+
                     } else {
                         await channel.send("Okay, patch was downloaded! Restarting KIRA and installing new patch after this message.");
                         this.restartApp();
                         // end with ERRORLEVEL 13 to say batch script that it can close the CMD window
                         process.exit(13);
                     }
-            
+
                     process.exit(0);
                 })
                 .on("error", (error) => {
@@ -163,9 +163,7 @@ export class KPatcher {
                 if (!fs.lstatSync(to_path).isDirectory()) {
                     fs.unlinkSync(to_path)
                 } else {
-                    rimraf.sync(to_path, err => {
-                        console.log("[ PATCH ] RIMRAF ERROR:", err);
-                    })
+                    rimraf.sync(to_path);
                 }
             }
 
@@ -188,13 +186,13 @@ export class KPatcher {
         let command = process.argv;
 
         if (process.platform == "win32") {
-            command = [ 
+            command = [
                 "cmd",
                 "/k",
-                "start", 
+                "start",
                 "cmd",
                 "/k",
-                __dirname+"\\..\\run.bat", 
+                __dirname+"\\..\\run.bat",
                 __dirname+"\\..",
                 process.pid.toString()
             ];
