@@ -347,7 +347,7 @@ export class KServer {
         guild: Guild) {
 
         if (this.getUser(user.id) == undefined) {
-            console.log("[ USER : NEW_USER ] On server ", this.id, ", new user:", user.id);
+            console.log("[ USER : NEW_USER ] On server", this.id.toString()+", new user:", user.id);
             this.users.addUser(new KUser(user.id, user.username));
         } else {
             this.users.getUser(user.id).updateDisplayName(user.username);
@@ -355,7 +355,7 @@ export class KServer {
 
         if (guild.roles.cache.size != this.roles.roles.length) {
             for (let role of guild.roles.cache.keys()) {
-                console.log("[ USER : NEW_ROLE ] On server ", this.id, ", new role:", role);
+                console.log("[ USER : NEW_ROLE ] On server ", this.id.toString()+", new role:", role);
 
                 if (this.roles.getRole(role) == undefined) {
                     this.roles.addRole(new KRole(role));

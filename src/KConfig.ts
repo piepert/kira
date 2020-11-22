@@ -186,6 +186,7 @@ export class KConf {
         if (this.servers == undefined || this.servers == null)                                      // when not inited, init servers
             this.servers = new KServerManager();
 
+        console.log("[ CONFIG ] Saving settings...")
         let channels = bot.channels.cache.keys();                                                   // get all channels, the bot has read-permissions
 
         for (let index of channels) {                                                               // iterate through all channels

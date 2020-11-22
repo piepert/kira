@@ -150,12 +150,12 @@ export class KChannelConfig {
                 let embed = new MessageEmbed()
                     .setTitle(this.getTitle())
                     .setDescription("["+entry.title+"]("+entry.url+")"+
-                        (entry.subtext != "unknown" ? "  –  "+entry.subtext : ""))
+                        (entry.subtext != "unknown" && entry.subtext.trim() != "" ? "  –  "+entry.subtext : ""))
 
                     .setFooter(entry.author_displayname,
                         "http://www.wikidot.com/avatar.php?userid="+entry.author_userid);
 
-                console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", {embed: embed});
+                // console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", {embed: embed});
 
                 if (this.color == undefined) {
                     embed.setColor('#e6d9ad')
