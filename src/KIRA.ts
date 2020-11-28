@@ -79,6 +79,10 @@ class KIRA {
         });
 
         setInterval(this.minuteScheduler, 1000*60, this.client);
+
+        setInterval((bot) => {                                                                      // auto save every 60 minutes
+            conf.save(bot);
+        }, 1000*60*60, this.client)
     }
 
     public exit() {
@@ -133,8 +137,11 @@ class KIRA {
                 return;
             }
 
-            if (message[0].content.trim().toLocaleLowerCase().trim().startsWith("ping"))
+            if (message[0].content.trim()
+                    .toLocaleLowerCase()
+                    .replace(/[\!\?\.\,]/g, "") == "ping") {
                 message[0].channel.send("Pong!")
+            }
 
             conf.getServerManager()
                 .getServerByID(message[0].guild.id)
