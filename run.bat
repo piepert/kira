@@ -1,6 +1,6 @@
 @echo off
 
-if "%1" NEQ "" cd %1
+if "%1" NEQ "" cd "%1"
 cd static
 
 echo. >> error_log.txt

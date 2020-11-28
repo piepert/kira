@@ -16,10 +16,9 @@ valid: `!command_name @Test#0001` and `!command_name @Test#0001 10` .
 
 | Name | Syntax | Explanation | Needed Permission |
 | ---- | ------ | ----------- | ----------------- |
-| `ban` | `!ban <@user|userID> <days> <why...>` | | `admin.ban` |
-| `kick` | `!kick <@user|userID> <why...>` - kick user | | `admin.kick` |
-| `disable jokes` | `!dj` - disable jokes on server // MAYBE IRRELEVANT, BECAUSE OF !DEACTIVATE // | | `admin.disable_jokes` |
-| `remind` | `!remind <date> [@user|userID] <what...>` | | `admin.remind` |
+| `ban` | `!ban <@user|userID> <days> <why...>` | - | `admin.ban` |
+| `kick` | `!kick <@user|userID> <why...>` - kick user | - | `admin.kick` |
+| `remind` | `!remind <date> [@user|userID] <what...>` | - | `admin.remind` |
 | `delete` | `!delete <num> [@user|userID]` | Deletes `<num>` messages(, by @user) | `admin.delete` |
 | `raid-end` | `!raid-end` | Ends the raid mode. | `admin.raid_end` |
 | `user` | `!user <@user|userID> [show <entryID>]` | Show username, ID, join date, avatar, last post date, first post date, posts count and reports. | See user command. |
