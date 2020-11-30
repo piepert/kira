@@ -63,11 +63,11 @@ Some rules:
 | ------ | ----------- | ----------------- |
 | `!perm role <roleID> enable <permission>` | Enables a permission for the role. | `admin.perm.role.enable` |
 | `!perm role <roleID> disable <permission>` | Disables a permission for the role. | `admin.perm.role.disable` |
-| `!perm role <roleID> show` | Show's every permission the role has. | `admin.perm.role.show` |
+| `!perm role <roleID> show` | Shows every permission the role has. | `admin.perm.role.show` |
 | `!perm role <userID> remove <permission>` | Removes a permission from the enabled- and disabled-permissions lists. | `admin.perm.role.remove` |
 | `!perm user <userID> enable <permission>` | Enables a permission for the user. | `admin.perm.user.enable` |
 | `!perm user <userID> disable <permission>` | Disables a permission for the user. | `admin.perm.user.disable` |
-| `!perm user <userID> show` | Show's every permission the user has. | `admin.perm.user.show` |
+| `!perm user <userID> show` | Shows every permission the user has. | `admin.perm.user.show` |
 | `!perm user <userID> remove <permission>` | Removes a permission from the enabled- and disabled-permissions lists. | `admin.perm.user.remove` |
 
 ### Stat Command
@@ -147,13 +147,14 @@ messages.
 
 | Name | Syntax | Explanation | Needed Permission |
 | ---- | ------ | ----------- | ----------------- |
-| `load` | `!config load` | Reloads the server config. (All unsaved changes will be lost!) | `admin.config.load` |
-| `save` | `!config save` | Save all changes to server config. | `admin.config.save` |
 | `language` | `!config language [short]` | Set the language of the server to `[short]`. See the list of supported languages, standard is `en` for "English". If `[short]` is not given, it will list all supported languages. | `admin.config.language` |
 | `delete user` | `!config delu <@user|userID>` | Delete all saved stats about a user. (Message count, last written message, permissions). | `admin.config.delete_user` |
-| `role` | `!config role <type> <roleID>` | Set's KIRA's role config. See user type list for further explanation. | `admin.config.role` |
-| `channel` | `!config channel <type> <channelID>` | Set's KIRAs channel config. See channel type list for further explanation. | `admin.config.channel` |
-| `message` | `!config message <type> <content>` | Change the standard value of standard messages. For further explanation see the message type list. | |
+| `role` | `!config role <type> <roleID>` | (Not built in.) Sets KIRA's role config. See user type list for further explanation. | `admin.config.role` |
+| `feed add` | `!config feed add <feedURL> <channelID>` | - | `admin.config.channel.add` |
+| `feed color` | `!config feed color <feedID>` | - | `admin.config.channel.color` |
+| `feed delete` | `!config feed delete <feedID>` | - | `admin.config.channel.delete` |
+| `feed list` | `!config feed list [channelID]` | - | `admin.config.channel.list` |
+| `translation` | `!config translation <key> <content>` | Changes the translation value for a key on the server. | `admin.config.translation` |
 
 Supported languages:
 
@@ -167,11 +168,6 @@ User type list:
 | Type | Explanation |
 | ---- | ----------- |
 | `muted` | This role is not able to write messages. |
-
-Channel type list (text channels):
-
-| Type | Explanation |
-| ---- | ----------- |
 
 Default message types (text channels):
 
