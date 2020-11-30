@@ -35,6 +35,7 @@ export class KCommandHelp extends KCommand {
         //      !help           - show every command (see picture)
         //      !help <command> - detailed description
 
+        msg.channel.send("Wow, such a crazy emptiness! Wow patch-magic!")
         console.log("HELP COMMAND NOT FINISHED!")
     }
 }
