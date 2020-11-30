@@ -60,14 +60,9 @@ export class KCommandUser extends KCommand {
             return;
         }
 
-        let guild_user = await msg
-            .guild
-            .members
-            .cache
-            .get(UID);
+        let m_user = await client.users.fetch(UID)
 
-        let m_user;
-
+        /*
         if (guild_user == undefined) {
             m_user = (await msg.guild.fetchBans())
                 .find(user => user.user.id == UID);
@@ -80,10 +75,12 @@ export class KCommandUser extends KCommand {
                 m_user = await m_user.user.fetch();
             }
         } else {
-            m_user = guild_user.user;
+            m_user = guild_user;
         }
+        */
 
         let kuser = server.getUser(UID);
+
         if (kuser == undefined) {
             msg.channel.send(conf
                 .getTranslationStr(msg, "command.user.not_found"));
@@ -130,6 +127,11 @@ export class KCommandUser extends KCommand {
                     inline: true
                 },
                 {
+                    name: conf.getTranslationStr(msg, "command.user.entries"),
+                    value: kuser.getEntries().getEntries().length,
+                    inline: true
+                },
+                {
                     name: "AvatarURL",
                     value: m_user.avatarURL() == null
                         ? conf.getTranslationStr(
@@ -146,7 +148,7 @@ export class KCommandUser extends KCommand {
                 }
             );
 
-            msg.channel.send(embed);
+            msg.channel.send({ embed: embed });
         } else if (command.getArguments().length == 2) { // <user> show
             if (kuser.getEntries().getEntries().length == 0) {
                 msg.channel.send(conf.getTranslationStr(
