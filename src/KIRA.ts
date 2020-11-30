@@ -85,8 +85,8 @@ class KIRA {
         }, 1000*60*60, this.client)
     }
 
-    public exit() {
-        conf.save(this.client);
+    public async exit() {
+        await conf.save(this.client);
         process.exit(0);
     }
 
@@ -139,7 +139,9 @@ class KIRA {
 
             if (message[0].content.trim()
                     .toLocaleLowerCase()
-                    .replace(/[\!\?\.\,]/g, "") == "ping") {
+                    .replace(/[\!\?\.\,]/g, "") == "ping" &&
+                !message[0].content.trim().startsWith("!")) {
+
                 message[0].channel.send("Pong!")
             }
 
@@ -198,8 +200,9 @@ class KIRA {
 let kira = new KIRA;
 kira.start();
 
-process.on('SIGINT', function() {
+process.on('SIGINT', async function() {
     console.log("[ WARN ] Caught interrupt signal. Exiting and saving...");
     console.log("[ WARN ] Please do not terminate the program!");
-    kira.exit();
+
+    await kira.exit();
 });
