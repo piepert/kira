@@ -1,6 +1,6 @@
 import { Client } from "@typeit/discord";
 import { MessageEmbed, TextChannel } from "discord.js";
-import { existsSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, statSync, writeFileSync } from "fs";
 import { KConf } from "./KConfig";
 import { KServer } from "./KServer";
 import { RSSChannel } from "./rss/RSSChannel";
@@ -16,15 +16,17 @@ export class KChannelConfig {
     title: string;
     only_new_pages_allowed: boolean;
     color: string;
+    id: string;
 
     constructor() {
         this.channel_id = "";
         this.type = "";
         this.rss_channel = new RSSChannel();
         this.feed_url = "";
-        this.title = "RSS-Änderung";
+        this.title = "Update";
         this.only_new_pages_allowed = false;
-        this.color = undefined;
+        this.color = "#ffffff";
+        this.id = "00000000";
     }
 
     public loadHashes(file_name: string) {                                                          // load hashes of already fired messages from file
@@ -44,13 +46,14 @@ export class KChannelConfig {
     }
 
     public toJSONObject(server: KServer): object {
-        this.saveHashes("servers/rss_caches/"+server.getID()+"_"+crypto.createHash('sha256')
-                .update(this.feed_url+this.type+this.channel_id)
-                .digest("hex")
-                .toString()
-                .substr(0, 8)+".txt");
+        this.saveHashes("servers/"+
+                server.getID()+
+                "/rss_cache/"+
+                this.id+
+                ".txt");
 
         return {
+            id: this.id,
             channel_id: this.channel_id,
             type: this.type,
             feed_url: this.feed_url,
@@ -60,25 +63,56 @@ export class KChannelConfig {
         }
     }
 
-    public static fromJSONObject(obj: any, server: KServer): KChannelConfig {
+    public refreshID() {
+        this.id = crypto.createHash('sha256')
+            .update(this.feed_url+this.type+this.channel_id)
+            .digest("hex")
+            .toString()
+            .substr(0, 8);
+    }
+
+    public static fromJSONObject(obj: any,
+        server: KServer,
+        old_load: boolean = false): KChannelConfig {
+
         let ret: KChannelConfig = new KChannelConfig();
 
         ret.channel_id = obj.channel_id;
         ret.type = obj.type;
-        ret.rss_channel.hashes = obj.hashes;
+        ret.rss_channel.hashes = [];
         ret.feed_url = obj.feed_url;
         ret.title = obj.title;
         ret.only_new_pages_allowed = obj.only_new_pages_allowed;
         ret.color = obj.color;
 
-        ret.loadHashes("servers/rss_caches/"+server.getID()+"_"+crypto.createHash('sha256')
+        ret.id = crypto.createHash('sha256')
+            .update(ret.feed_url+ret.type+ret.channel_id)
+            .digest("hex")
+            .toString()
+            .substr(0, 8);
+
+        if (old_load) {
+            let cache_name = "servers/rss_caches/"+server.getID()+"_"+crypto.createHash('sha256')
                 .update(ret.feed_url+ret.type+ret.channel_id)
                 .digest("hex")
                 .toString()
-                .substr(0, 8)+".txt");
+                .substr(0, 8)+".txt";
+
+            if (existsSync(cache_name) && statSync(cache_name).isFile()) {
+                ret.loadHashes(cache_name);
+            }
+
+        } else {
+            ret.loadHashes("servers/"+
+                server.getID()+
+                "/rss_cache/"+
+                ret.id+".txt");
+        }
 
         return ret;
     }
+
+    public getConfigurationID(): string { return this.id; }
 
     public getChannelID(): string { return this.channel_id; }
     public setChannelID(id: string) { this.channel_id = id; }
@@ -88,6 +122,9 @@ export class KChannelConfig {
 
     public getTitle(): string { return this.title; }
     public setTitle(title: string) { this.title = title; }
+
+    public getColor(): string { return this.color; }
+    public setColor(color: string) { this.color = color; }
 
     public isNewArticle(entry: RSSEntry): boolean {
         return !this.rss_channel.existsHash(entry.getHash());                                       // if doesn't exist new, else old

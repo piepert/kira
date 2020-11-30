@@ -17,6 +17,8 @@ export class KTranslationManager {
             if (this.translations[index].getLangCode() == lang_code)
                 return this.translations[index];
         }
+
+        return undefined;
     }
 
     public async getRandomJoke(lang_code: string): Promise<string> {

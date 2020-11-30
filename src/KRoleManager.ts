@@ -19,6 +19,10 @@ export class KRoleManager {
         }
     }
 
+    public getRoles(): KRole[] {
+        return this.roles;
+    }
+
     public static fromJSONObject(obj: any): KRoleManager {
         let umgr: KRoleManager = new KRoleManager();
 

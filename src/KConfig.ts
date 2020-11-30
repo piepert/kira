@@ -3,7 +3,7 @@ import {
     Client,
     Guild,
     Collection,
-    User
+    User, GuildChannel
 } from "discord.js";
 
 import {
@@ -13,7 +13,7 @@ import {
     readdirSync,
     statSync,
     writeFile,
-    writeFileSync
+    writeFileSync, existsSync, mkdir, mkdirSync
 } from "fs";
 
 import { KServer } from "./KServer";
@@ -76,25 +76,66 @@ export class KConf {
         if (!servers_dir.endsWith("/"))
             servers_dir += "/";
 
-        files = readdirSync(servers_dir);                                                           // read all server configs in directory
+        let entries = readdirSync(servers_dir);                                                     // read all server configs in directory
+        console.log("List for files/directories to load:")
 
-        for (let index in files) {                                                                  // iterate through all files in directory
-            let file_path = servers_dir+files[index];                                               // create file path
-            let file_name = files[index];                                                           // create file name
-            let stat = statSync(file_path);                                                         // get stat
+        for (let i in entries) {
+            if ((/[0-9]{4,25}/.test(entries[i])) ||
+                (/[0-9]{4,25}\.json/.test(entries[i]))) {
 
-            if (file_name.startsWith("_") || !file_name.endsWith(".json"))                          // if file name starts with _ or isn't a json ...
-                continue;                                                                           // ... file, ignore it
+                console.log("   ->", entries[i]);
+            }
+        }
 
-            if (stat.isFile())                                                                      // if file is a file, then load server config
-                this.servers
-                    .addServer((KServer.loadFile(file_path)));
+        for (let index in entries) {                                                                // iterate through all entries in directory
+            let dir_path = servers_dir+entries[index];                                              // create file path
+            let entry_name = entries[index];                                                        // create file name
+            let stat = statSync(dir_path);                                                          // get stat
+
+            if (!(/[0-9]{4,25}/.test(entry_name)))                                                  // if entry name is not an id, skip
+                continue;
+            else if ((/[0-9]{4,25}\.json/.test(entry_name))) {
+                if (!stat.isDirectory()) {
+                    console.log("");
+                    console.log("[ LOAD ] Load old JSON file: "+entry_name);
+                    let server = KServer.loadFile(dir_path, this);
+
+                    if (this.servers.getServerByID(server.getID()) == undefined) {
+                        console.log("[ LOAD ] Added server to list.");
+                        this.servers.addServer(server);
+                    } else {
+                        console.log("[ LOAD ] [ INFO ] Server was already loaded from directory. Ignoring old file "+dir_path+".");
+                    }
+                }
+            }
+
+            if (stat.isDirectory()) {                                                               // if entry is a directory, then load server config
+                dir_path += "/";
+
+                console.log("");
+                console.log("[ LOAD ] Loading server "+entry_name+" from "+dir_path);
+
+                let server = KServer.loadDirectory(dir_path,
+                    entry_name,
+                    this,
+                    this.path_servers_dir);
+
+                if (this.servers.getServerByID(server.getID()) != undefined) {
+                    console.log("[ LOAD ] Server already exists. Replacing now.");
+                    this.servers.replaceServer(server.getID(), server);
+
+                } else {
+                    console.log("[ LOAD ] Added server to list.");
+                    this.servers.addServer(server);
+                }
+            }
         }
     }
 
-    public static async userToID(guild: Guild, user: string, server: KServer): Promise<string> {                     // make @mention to ID
+    public static async userToID(guild: Guild, user: string, server: KServer): Promise<string> {    // make @mention to ID
         if (/^[0-9]{7,20}$/.test(user) || /^<@![0-9]{7,20}>$/.test(user)) {                         // if ID or @mention
             user = user.replace("<@!", "").replace(">", "");
+            return user;
 
         } else if (/(@|).+#[0-9]{4}/.test(user)) {                                                  // if Name#0000
             if (user.startsWith("@")) {
@@ -137,6 +178,8 @@ export class KConf {
                     return u.getID();
                 }
             }
+
+            return undefined;
         } else {
             let possibilities: string[] = [];
 
@@ -172,7 +215,7 @@ export class KConf {
                 return possibilities[0];
         }
 
-        return user.trim();
+        return undefined;
     }
 
     public static compareUser(guild: Guild,
@@ -205,27 +248,82 @@ export class KConf {
             }
         }
 
-        let servers = [];                                                                           // create json object
         for (let index in this.servers.getServers()) {                                              // iterate through all servers
-            writeFileSync(
-                this.path_servers_dir+this.servers.getServers()[index].getID()+".json",             // create file path for server config
-                JSON.stringify(this.servers.getServers()[index].toJSONObject(), null, 4)            // create content for server config
-            );
+            console.log("");
+            this.saveServer(this.servers.getServers()[index])
         }
     }
 
-    public saveServer(id: string) {
-        if (this.servers.getServerByID(id) == undefined) {
+    public saveServer(server: KServer) {
+        if (server == undefined) {
             console.log("[ ERROR ] Couldn't save settings for server server:",
-                id,
+                server.getID(),
                 ", this server is unknown to me.");
             return;
         }
 
+        console.log("[ SAVE ] Saving server "+server.getID()+"...");
+
+        let server_path = this.path_servers_dir+server.getID()+"/";
+        let rss_caches_path = this.path_servers_dir+server.getID()+"/rss_cache/";
+
+        let channels_path = server_path+"channels/";
+        let channels = server.getChannelConfigs().getChannels();
+
+        let users_path = server_path+"users/";
+        let users = server.getUsers().getUsers();
+
+        let roles_path = server_path+"roles/";
+        let roles = server.getRoleManager().getRoles();
+
+        // server folder structure:
+        //  static/servers/<server_id>/
+        //      ... /<server_id>.json
+        //      ... /channels/<channel_id>.json
+        //      ... /users/<user_id>.json
+        //      ... /roles/<role_id>.json
+
+        for (let path of [
+                this.path_servers_dir,
+                server_path,
+                channels_path,
+                users_path,
+                rss_caches_path,
+                roles_path
+            ]) {
+
+            if (!existsSync(path) || !statSync(path).isDirectory()) {
+                mkdirSync(path);
+            }
+        }
+
         writeFileSync(
-            this.path_servers_dir+this.servers.getServerByID(id).getID()+".json",             // create file path for server config
-            JSON.stringify(this.servers.getServerByID(id).toJSONObject(), null, 4)            // create content for server config
+            server_path+server.getID()+".json",                                                     // create file path for server config
+            JSON.stringify(server.toJSONObject(), null, 4)                                          // create content for server config
         );
+
+        for (let i = 0; i < users.length; i++) {                                                    // save each user to a different json file
+            writeFileSync(
+                users_path+users[i].getID()+".json",
+                JSON.stringify(users[i].toJSONObject(), null, 4)
+            );
+        }
+
+        for (let i = 0; i < roles.length; i++) {                                                    // save each user to a different json file
+            writeFileSync(
+                roles_path+roles[i].getID()+".json",
+                JSON.stringify(roles[i].toJSONObject(), null, 4)
+            );
+        }
+
+        for (let i = 0; i < channels.length; i++) {                                                 // save each channel to a different json file
+            writeFileSync(
+                channels_path+channels[i].getConfigurationID()+".json",
+                JSON.stringify(channels[i].toJSONObject(server), null, 4)
+            );
+        }
+
+        console.log("[ SAVE ] Finished saving "+server.getID()+".")
     }
 
     public async reload() {
@@ -261,11 +359,32 @@ export class KConf {
     }
 
     public getTranslationStr(message: Message, key: string): string {
+        let server = this.getServerManager().getServerByID(
+                KServer.getServerIDFromMessage(message));
+
+        if (server.hasTranslation(key)) {
+            return server.getTranslation(key);
+        }
+
         return this.translations.getTranslation(
-            this.getServerManager()
-                .getServerByID(
-                    KServer.getServerIDFromMessage(message)
-                ).getLanguage(),
+            server.getLanguage(),
         ).getTranslation(key);
+    }
+
+    public static textToChannel(name: string, guild: Guild): GuildChannel {
+        let c_channel = undefined;
+        c_channel = guild.channels.cache.get(name);
+
+        if (c_channel == undefined) {
+            let c_channel = guild.channels.cache.find(channel =>                        // check for channel by name
+                channel.name === name);
+
+            if (c_channel == undefined) {
+                c_channel = guild.channels.cache.find(ch =>                             // check for channel by id
+                    ch.id.toString() == name.substr(2, name.length-3));
+            }
+        }
+
+        return c_channel;
     }
 }

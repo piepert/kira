@@ -29,7 +29,7 @@ export class KCommandSave extends KCommand {
         sender: KUser,
         client: Client) {
 
-        conf.saveServer(server.id);
+        conf.saveServer(conf.getServerManager().getServerByID(server.getID()));
         msg.channel.send(conf.getTranslationStr(msg, "command.save.start"));
     }
 }

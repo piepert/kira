@@ -10,7 +10,7 @@ import {
 
 import { KChannelConfig } from "./KChannelConfig";
 import { KUserManager } from "./KUserManager";
-import { readFileSync } from "fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from "fs";
 import { KParsedCommand } from "./KParsedCommand";
 import { KRoleManager } from "./KRoleManager";
 import { KCommandUser } from "./commands/KCommandUser";
@@ -26,12 +26,14 @@ export class KServer {
     id: string;
     language: string;
     name: string;
-    file: string;
+    cfg_path: string;
+    root_path: string;
 
     join_message: boolean;
 
     frequency_cache: Map<string, number>;
     aliases: Map<string, string>;
+    translations: Map<string, string>;
     deactivated_commands: string[];
 
     channels: KChannelConfigManager;
@@ -45,7 +47,8 @@ export class KServer {
         this.id = id;
         this.language = language;
         this.name = name;
-        this.file = "";
+        this.cfg_path = "";
+        this.root_path = "";
         this.channels = new KChannelConfigManager();
 
         this.users = new KUserManager();
@@ -53,6 +56,7 @@ export class KServer {
 
         this.deactivated_commands = [];
         this.aliases = new Map<string, string>();
+        this.translations = new Map<string, string>();
         this.frequency_cache = new Map<string, number>();
     }
 
@@ -61,24 +65,43 @@ export class KServer {
             id: this.id,
             name: this.name,
             language: this.language,
-            channels: this.channels.toJSONObject(this),
-            users: this.users.toJSONObject(),
-            roles: this.roles.toJSONObject(),
             deactivated_commands: this.deactivated_commands,
-            aliases: Object.fromEntries(this.aliases)
+            aliases: Object.fromEntries(this.aliases),
+            translations: this.translations
         }
     }
 
-    public static load(content: string, file: string): KServer {
+    public static load(content: string,
+        path: string,
+        conf: KConf,
+        old_load: boolean = false): KServer {
+
         let obj = JSON.parse(content);
         let s: KServer = new KServer(obj.id, obj.name, obj.language);
 
-        s.file = file;
-        s.users = KUserManager.fromJSONObject(obj.users);
-        s.roles = KRoleManager.fromJSONObject(obj.roles);
-        s.channels = KChannelConfigManager.fromJSONObject(obj.channels, s);
+        s.cfg_path = path;
         s.deactivated_commands = obj.deactivated_commands;
         s.frequency_cache = new Map<string, number>();
+
+        if (obj.translations == undefined) {
+            s.translations = new Map<string, string>();
+        } else {
+            s.translations = new Map<string, string>();
+
+            for (let e of Object.keys(obj.translations)) {
+                s.translations.set(e, obj.translations[e]);
+            }
+        }
+
+        if (old_load) {
+            s.users = KUserManager.fromJSONObject(obj.users);
+            s.roles = KRoleManager.fromJSONObject(obj.roles);
+            s.channels = KChannelConfigManager.fromJSONObject(obj.channels,
+                s,
+                old_load);
+
+            s.root_path = conf.path_servers_dir+s.id+"/";
+        }
 
         if (obj.aliases != undefined) {
             for (let k of Object.keys(obj.aliases)) {
@@ -90,11 +113,77 @@ export class KServer {
             s.deactivated_commands = [];
         }
 
+        if (old_load) {
+            conf.saveServer(s);
+        }
+
         return s;
     }
 
-    public static loadFile(file: string): KServer {
-        return this.load(readFileSync(file).toString(), file);
+    public static loadFile(file: string, conf: KConf): KServer {
+        return this.load(readFileSync(file).toString(), file, conf, true);
+    }
+
+    public static loadDirectory(server_path: string,
+        server_id: string,
+        conf: KConf,
+        path_servers_dir): KServer {
+
+        let channels_path = server_path+"channels/";
+        let users_path = server_path+"users/";
+        let roles_path = server_path+"roles/";
+        let rss_caches_path = server_path+"rss_cache/";
+
+        for (let path of [
+                path_servers_dir,
+                server_path,
+                channels_path,
+                users_path,
+                rss_caches_path,
+                roles_path
+            ]) {
+
+            if (!existsSync(path) || !statSync(path).isDirectory()) {
+                mkdirSync(path);
+            }
+        }
+
+        let sfile = server_path+server_id+".json";
+        let server: KServer = this.load(readFileSync(sfile).toString(), sfile, conf);
+        server.root_path = server_path;
+
+        server.users = new KUserManager();
+        server.channels = new KChannelConfigManager();
+        server.roles = new KRoleManager();
+
+        let role_files = readdirSync(roles_path);
+        for (let i = 0; i < role_files.length; i++) {
+            let file = roles_path+role_files[i];
+
+            server.roles.addRole(KRole.fromJSONObject(
+                    JSON.parse(readFileSync(file).toString()
+                )));
+        }
+
+        let user_files = readdirSync(users_path);
+        for (let i = 0; i < user_files.length; i++) {
+            let file = users_path+user_files[i];
+
+            server.users.addUser(KUser.fromJSONObject(
+                    JSON.parse(readFileSync(file).toString()
+                )));
+        }
+
+        let channel_files = readdirSync(channels_path);
+        for (let i = 0; i < channel_files.length; i++) {
+            let file = channels_path+channel_files[i];
+
+            server.channels.addChannel(KChannelConfig.fromJSONObject(
+                    JSON.parse(readFileSync(file).toString()
+                ), server));
+        }
+
+        return server;
     }
 
     public getAlias(alias: string): string {
@@ -208,8 +297,12 @@ export class KServer {
         return perms.length == 0;
     }
 
-    public reloadConfig(): KServer {
-        let s = KServer.loadFile(this.getFile());
+    public reloadConfig(conf: KConf): KServer {
+        let s = KServer.loadDirectory(this.getPath(),
+            this.id,
+            conf,
+            conf.path_servers_dir);
+
         this.channels = s.channels;
         this.id = s.id;
         this.language = s.language;
@@ -222,8 +315,8 @@ export class KServer {
         return s;
     }
 
-    public getFile(): string {
-        return this.file;
+    public getPath(): string {
+        return this.root_path;
     }
 
     public getRoleManager() {
@@ -232,6 +325,25 @@ export class KServer {
 
     public getChannelConfigs(): KChannelConfigManager {
         return this.channels;
+    }
+
+    public getChannelConfigsByID(id: string): KChannelConfig[] {
+        let occurences: KChannelConfig[] = [];
+
+        for (let i in this.channels.getChannels()) {
+            if (this.channels.getChannels()[i].getChannelID() == id)
+                occurences.push(this.channels.getChannels()[i]);
+        }
+
+        if (occurences.length != 0) {
+            return occurences;
+        }
+
+        return undefined;
+    }
+
+    public getUsers(): KUserManager {
+        return this.users;
     }
 
     public addChannelConfig(cc: KChannelConfig) {
@@ -249,9 +361,9 @@ export class KServer {
             ) != undefined;
     }
 
-    public getChannelByID(id: string): KChannelConfig {
+    public getFeedByID(id: string): KChannelConfig {
         return this.channels.channels.find(e =>
-            e.getChannelID() == id
+            e.getConfigurationID() == id
         );
 
         /*for (let i in this.channels) {
@@ -316,6 +428,20 @@ export class KServer {
         }).catch((reason) => {
             console.log("[ ERROR : KServer|317 ]", reason);
         });
+
+        let users = guild.members.cache;
+        for (let i of users) {
+            if (this.getUser(i[1].id) == undefined) {
+                this.users.addUser(new KUser(i[1].id, i[1].user.username));
+            } else if (this.getUser(i[1].id).getDisplayName() != i[1].user.username) {
+                console.log("[ USER_UPDATE : "+guild.name+" ] username was changed from "+
+                    this.getUser(i[1].id).getDisplayName()+
+                    " to "+
+                    i[1].user.username);
+
+                this.users.getUser(i[1].id).username = i[1].user.username;
+            }
+        }
     }
 
     public getUser(id: string): KUser {
@@ -523,5 +649,26 @@ export class KServer {
 
     public async handleLeave(conf: KConf, user: GuildMember) {
         console.log("[ USER_LEFT ]", user.id, "left from", this.id);
+    }
+
+    public getTranslation(key: string) {
+        return this.translations.get(key);
+    }
+
+    public hasTranslation(key: string): boolean {
+        return this.translations.has(key);
+    }
+
+    public setTranslation(key: string, value: string) {
+        return this.translations.set(key, value);
+    }
+
+    public deleteTranslation(key: string): boolean {
+        if (this.translations.has(key)) {
+            this.translations.delete(key);
+            return !this.translations.has(key);
+        }
+
+        return false;
     }
 }

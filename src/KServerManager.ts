@@ -17,6 +17,14 @@ export class KServerManager {
         );
     }
 
+    public replaceServer(id: string, server: KServer) {
+        for (let i in this.servers) {
+            if (server.getID() == this.servers[i].getID()) {
+                this.servers[i] = server;
+            }
+        }
+    }
+
     public addServer(t: KServer) {
         this.servers.push(t);
     }
