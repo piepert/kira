@@ -48,35 +48,52 @@ export class RSSParser {
                             return;
                         }
 
-                        if (result == undefined) {
-                            console.log("[ RSS ] (4) ERROR IN FEED:", url)
-                            console.log("[ RSS ] TEXT: \n", str)
-                            console.log("[ RSS ] RESULT: ", result);
+                        try {
+                            if (result == undefined) {
+                                console.log("[ RSS ] (4) ERROR IN FEED:", url)
+                                console.log("[ RSS ] TEXT: \n", str)
+                                console.log("[ RSS ] RESULT: ", result);
 
-                            return;
-                        }
+                                return;
+                            }
 
-                        let items = result.rss.channel[0].item;
-                        let entries: RSSEntry[] = [];
+                            if (result.rss == undefined) {
+                                console.log("[ RSS ] (5) ERROR IN FEED:", url)
+                                console.log("[ RSS ] TEXT: \n", str)
+                                console.log("[ RSS ] RESULT: ", result);
 
-                        for (let item of items) {
-                            channel.doFire(client,
-                                server,
-                                conf,
-                                RSSEntry.createFromFeedItem(item));
+                                return;
+                            }
+
+                            let items = result.rss.channel[0].item;
+                            let entries: RSSEntry[] = [];
+
+                            for (let item of items) {
+                                channel.doFire(client,
+                                    server,
+                                    conf,
+                                    RSSEntry.createFromFeedItem(item));
+                            }
+
+                        } catch(error) {
+                            console.log("[ RSS ] (6) CATCHED ERROR OF RSS FEED: ");
+                            console.log("[ RSS ] FEED:", url);
+                            console.log("[ RSS ] TEXT:", str);
+                            console.log("[ RSS ] RESULT:", result);
+                            console.log(error);
                         }
                     });
                 });
             });
 
             req.on('error', error => {
-                console.log("[ RSS ] (5) Error at URL:", url);
+                console.log("[ RSS ] (6) Error at URL:", url);
                 console.error(error)
             })
 
             req.end();
         } catch(exception) {
-            console.log("[ RSS ] (6) Error at URL:", url)
+            console.log("[ RSS ] (7) Error at URL:", url)
             console.log(exception);
         }
     }
