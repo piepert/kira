@@ -1,5 +1,19 @@
 Date format: YYYY-MM-DD
 
+# v3.0.4 (2020-11-30)
+
+* fixed error in feed (error: undefined `result.rss`)
+* added auto-save every 60 minutes
+* implemented command `!config` (`src/commands/KCommandConfig.ts`)
+* now saving servers in splittet configs and subdirectories
+    * KIRA still loads the old config files (from v3.0.3 and before) and converts them to the new format
+    * following folder structure:
+    * `servers/<server_id>`
+        * `.../<server_id>.json` - server-side settings
+        * `.../channels/<feed_id>.json` - channel configurations for RSS feeds
+        * `.../users/<user_id>.json` - user configurations and report entries
+        * `.../roles/<role_id>.json` - role configurations and permissions
+
 # v3.0.3 (2020-11-22)
 
 * fixed wrong date in CHANGELOG.md (v3.0.2 (2020-11-13) to v3.0.2 (2020-11-22))
