@@ -105,7 +105,7 @@ export class KPatcher {
                 res.on("end", () => {
                     console.log(`The file is finished downloading.`);
                     file.close();
-                    resolve();
+                    resolve(null);
                 })
             })
 
