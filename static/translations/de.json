@@ -1,5 +1,5 @@
 {
-    "lang": "DE - Deutsch/German",
+    "lang": "Deutsch/German",
     "jokes": "translations/jokes/jokes-de.txt",
     "strings": {
         "general.yes": "Ja",
@@ -13,8 +13,11 @@
         "command.user.creation_date": "Erstellungsdatum",
         "command.user.name": "Name",
         "command.user.message_count": "Nachrichtenanzahl (Schätzung)",
+        "command.user.entries": "Einträge",
+
         "command.user.no_entries": "Dieser Benutzer hat keine Einträge.",
         "command.user.entry_not_found": "Eintrag nicht gefunden.",
+
         "command.user.report.content": "Inhalt",
         "command.user.report.date": "Erstellungsdatum",
         "command.user.report.author": "Autor",
@@ -76,13 +79,27 @@
         "command.joke.frequency": "Um Spam zu vermeiden kann der Witze-Befehl nur ein mal alle 5 Minuten ausgeführt werden.",
         "command.joke.not_found": "Leider habe ich für die Sprache des Servers keine Witze gefunden. Tut mir leid :(.",
 
+        "command.config.channel_not_found": "Der Channel wurde nicht gefunden!",
+        "command.config.not_text_channel": "Der Channel muss ein Text-Channel sein!",
+        "command.config.feed_not_found": "Der Feed existiert nicht! Liste alle Feeds mit `{1}config feed list` auf.",
+        "command.config.list_for_channel": "**__Channel__ {1}**\n\n**Feed-ID** - **URL** - **Titel**\n{2}",
+        "command.config.channel_added": "Channel-Feed wurde hinzugefügt!",
+        "command.config.channel_deleted": "Channel-Feed wurde entfernt!",
+        "command.config.user_deleted": "User wurde entfernt!",
+        "command.config.channel_deleted.error": "Channel-Feed konnte nicht entfernt werden, da es einen Fehler im Dateisystem gab!",
+        "command.config.user_deleted.error": "User konnte nicht entfernt werden, da es einen Fehler im Dateisystem gab!",
+        "command.config.translation_deleted": "Die Übersetzung wurde entfernt!",
+        "command.config.translation_not_found": "Die Übersetzung `{1}` existiert nicht!",
+        "command.config.language_not_found": "Die Sprache `{1}` existiert nicht!",
+        "command.config.language_changed": "Die Sprache wurde zu `{1}` geändert!",
+
         "command.help.ywc": [
             "Kein Problem!",
             "<3",
             "Ui, ein Danke!",
             "Bitte, gern geschehen.",
             "Bitteschön",
-            "Deine Anfrage hat so gut wie nichts meiner Rechenleistung beansprucht. Deine Dankbarkeit ist daher irrelevant.",
+            "Deine Anfrage hat so gut wie nichts meiner Rechenleistung beansprucht, kein Danke nötig.",
             "Bitte.",
             "Kein Problem.",
             "Nicht dafür.",
@@ -103,6 +120,7 @@
         "command.not_found": "Befehl \"{1}\" nicht gefunden!",
         "command.too_long": "Der Befehl war zu lang! Du überforderst mich!",
         "command.no_permission": "Du hast nicht die Berechtigung, diesen Befehl auszuführen.",
-        "command.invalid_syntax": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe \"{1}hilfe {2}\" für Hilfe."
+        "command.invalid_syntax": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe \"{1}hilfe {2}\" für Hilfe.",
+        "command.user_not_found": "Der Benutzer `{1}` wurde nicht gefunden!"
     }
 }

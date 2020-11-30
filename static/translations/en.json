@@ -1,5 +1,5 @@
 {
-    "lang": "EN - English/English",
+    "lang": "English/English",
     "jokes": "translations/jokes/jokes-en.txt",
     "strings": {
         "general.yes": "Yes",
@@ -13,8 +13,11 @@
         "command.user.creation_date": "Creation Date",
         "command.user.name": "Name",
         "command.user.message_count": "Message Count (Estimation)",
+        "command.user.entries": "Entries",
+
         "command.user.no_entries": "This user has no entries.",
         "command.user.entry_not_found": "Entry not found.",
+
         "command.user.report.content": "Content",
         "command.user.report.date": "Creation date",
         "command.user.report.author": "Author",
@@ -75,6 +78,20 @@
         "command.joke.frequency": "To prevent spamming, the joke command can only be executed once every five minutes.",
         "command.joke.not_found": "I haven't found any jokes for the language of this server. Sorry :(",
 
+        "command.config.channel_not_found": "Channel not found!",
+        "command.config.not_text_channel": "The channel has to be a text channel!",
+        "command.config.feed_not_found": "The feed does not exist! List all feeds with `{1}config feed list`.",
+        "command.config.list_for_channel": "**__Channel__ {1}**\n\n**Feed-ID** - **URL** - **Title**\n{2}",
+        "command.config.channel_added": "Channel feed was added!",
+        "command.config.channel_deleted": "Channel-Feed was deleted!",
+        "command.config.user_deleted": "User was deleted!",
+        "command.config.channel_deleted.error": "Channel-Feed couldn't be deleted, there was a filesystem error!",
+        "command.config.user_deleted.error": "User couldn't be deleted, there was a filesystem error!",
+        "command.config.translation_deleted": "The translation string `{1}` was removed!",
+        "command.config.translation_not_found": "The translation string `{1}` doesn't exist!",
+        "command.config.language_not_found": "The language `{1}` doesn't exist!",
+        "command.config.language_changed": "KIRAs language was changed to `{1}`!",
+
         "command.help.ywc": [
             "You're welcome!",
             "No problem!",
@@ -90,6 +107,7 @@
         "command.not_found": "Command \"{1}\" not found!",
         "command.too_long": "Command was too long!",
         "command.no_permission": "You don't have the permissions to run this command.",
-        "command.invalid_syntax": "Error: You didn't use the right syntax. See \"{1}help {2}\" for help."
+        "command.invalid_syntax": "Error: You didn't use the right syntax. See \"{1}help {2}\" for help.",
+        "command.user_not_found": "User `{1}` couldn't be found!"
     }
 }
