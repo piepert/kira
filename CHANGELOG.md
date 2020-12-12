@@ -1,5 +1,27 @@
 Date format: YYYY-MM-DD
 
+# v3.0.4 (2020-12-12)
+
+* catching all uncaught exceptions and print them to console
+* added logging message/log channel, logging ...
+    * bans/unbans
+    * nickname changes
+    * alias added/removed
+    * user entries added
+    * user joined/left the server
+    * config saving
+* added `!config log <channel>` command to set the log channel for the log
+* added possibility to show all serverside translation changes (`!config translation show`)
+* added command `!welcome` (`src/commands/KCommandWelcome.ts`)
+* added command `!help` (`src/commands/KCommandHelp.ts`)
+* fixed bug in parser/tokenizer of commands with: no more problems with `"`
+* added help pages in translation files for:
+    * `!help`
+    * `!welcome`
+    * `!dice`
+    * `!joke`
+* added possibility to change color and title of RSS feeds
+
 # v3.0.4 (2020-11-30)
 
 * fixed error in feed (error: undefined `result.rss`)
