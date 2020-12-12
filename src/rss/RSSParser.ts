@@ -42,6 +42,7 @@ export class RSSParser {
 
                     parseString(str, function (err, result) {
                         if (err) {
+                            console.log(str);
                             console.log("[ RSS ] (3) ERROR IN FEED:", url)
                             console.log(err);
 
