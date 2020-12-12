@@ -6,9 +6,33 @@
         "general.no": "No",
         "general.deactivated": "The command was deactivated on this server.",
 
+        "log.user_changed.display_name": "Displayname of {1} was changed\n`[ {2} ]`",
+        "log.user_changed.display_name.old": "Old",
+        "log.user_changed.display_name.new": "New",
+        "log.kira_started.title": "Hello World! `[ {1} ]`",
+        "log.kira_started.body": "KIRA has been started.",
+        "log.kira_saving.title": "Let's file it away! `[ {1} ]`",
+        "log.kira_saving.body": "KIRA's config files are being saved.",
+        "log.user_joined.title": "New User `[ {1} ]`",
+        "log.user_joined.body": "The user <@!{1}> joined the server.",
+        "log.user_left.title": "User left server `[ {1} ]`",
+        "log.user_left.body": "The user <@!{1}> left the discord server.",
+        "log.user_banned.title": "User banned `[ {1} ]`",
+        "log.user_banned.body": "The user **{1}** was banned from the discord server.",
+        "log.user_unbanned.title": "User unbanned `[ {1} ]`",
+        "log.user_unbanned.body": "The user **{1}** was unbanned from the discord server.",
+        "log.user_entry_added.title": "New user entry `[ {1} ]`",
+        "log.user_entry_added.body": "**{1}** added an entry to **{2}**. See `{3}user {4} show {5}` for further information.",
+        "log.new_alias.title": "New alias `[ {1} ]`",
+        "log.new_alias.body": "The command `{1}` now has the alias `{2}`.",
+        "log.removed_alias.title": "Alias removed `[ {1} ]`",
+        "log.removed_alias.body": "The alias `{1}` for the command `{2}` was removed.",
+        "log.removed_all_alias.title": "All aliases removed `[ {1} ]`",
+        "log.removed_all_alias.body": "All aliases for the command `{1}` were removed.",
+
         "command.user.user": "User",
         "command.user.not_found": "User not found.",
-        "command.user.syntax_error": "Error: You didn't use the right syntax. See \"{1}help user\" for help.",
+        "command.user.syntax_error": "Error: You didn't use the right syntax. See `{1}help user` for help.",
         "command.user.avatar_not_found": "Not found.",
         "command.user.creation_date": "Creation Date",
         "command.user.name": "Name",
@@ -54,23 +78,23 @@
         "command.perm.disabled": "Permission `{1}` disabled.",
         "command.perm.removed": "Permission `{1}` removed.",
 
-        "command.deactivate.command_not_found": "Command \"{1}\" not found.",
+        "command.deactivate.command_not_found": "Command `{1}` not found.",
         "commands.deactivate.deactivated": "The command was deactivated.",
 
-        "command.activate.command_not_found": "Command \"{1}\" not found.",
+        "command.activate.command_not_found": "Command `{1}` not found.",
         "commands.activate.activated": "The command was activated.",
 
-        "command.alias.not_found": "Alias \"{1}\" not found!",
-        "command.alias.success": "Command \"{1}\" now has alias \"{2}\"!",
-        "command.alias.list": "The command \"{1}\" has the following aliases: {2}",
-        "command.alias.which": "The alias \"{1}\" stands for the command \"{2}\".",
-        "command.alias.no_aliases": "The command \"{1}\" has no aliases.",
-        "command.alias.not_allowed": "Can't create alias for command \"{1}\". Operation not allowed.",
-        "command.alias.name_not_allowed": "Can't create alias with name \"{1}\". Operation not allowed.",
+        "command.alias.not_found": "Alias `{1}` not found!",
+        "command.alias.success": "Command `{1}` now has alias `{2}`!",
+        "command.alias.list": "The command `{1}` has the following aliases: {2}",
+        "command.alias.which": "The alias `{1}` stands for the command `{2}`.",
+        "command.alias.no_aliases": "The command `{1}` has no aliases.",
+        "command.alias.not_allowed": "Can't create alias for command `{1}`. Operation not allowed.",
+        "command.alias.name_not_allowed": "Can't create alias with name `{1}`. Operation not allowed.",
 
-        "command.unalias.no_alias": "Alias \"{1}\" doesn't exist.",
-        "command.unalias.cleared": "Alias \"{1}\" was removed.",
-        "command.unalias.all_cleared": "All aliases for \"{1}\" removed.",
+        "command.unalias.no_alias": "Alias `{1}` doesn't exist.",
+        "command.unalias.cleared": "Alias `{1}` was removed.",
+        "command.unalias.all_cleared": "All aliases for `{1}` removed.",
 
         "command.say.channel_not_found": "Channel `{1}` not found.",
         "command.exit": "KIRA exiting now. Have a nice day.",
@@ -91,6 +115,82 @@
         "command.config.translation_not_found": "The translation string `{1}` doesn't exist!",
         "command.config.language_not_found": "The language `{1}` doesn't exist!",
         "command.config.language_changed": "KIRAs language was changed to `{1}`!",
+        "command.config.invalid_color": "Wrong color `{1}`. The color has to be an 6-digit hexnumber matching the pattern `#RRGGBB`.",
+        "command.config.log_set": "Alle logs will be posted in {1}.",
+        "command.config.list_translations": "All translations changed for the server:\n**Key** - **Value**\n\n",
+
+        "command.not_found": "Command `{1}` not found!",
+        "command.too_long": "Command was too long!",
+        "command.no_permission": "You don't have the permissions to run this command.",
+        "command.invalid_syntax": "Error: You didn't use the right syntax. See `{1}help {2}` for help.",
+        "command.user_not_found": "User `{1}` couldn't be found!",
+
+        "command.help.list.title": "List of KIRA commands",
+        "command.help.list.footer": "For further help, see `{1}help <command>` (without < and >).",
+        "command.help.no_help_found": "No help page found for this command.",
+        "command.help.sub.title": "Help page for {1}{2}",
+        "command.help.sub.aliases": "Aliases",
+
+        "command.help.command.help": {
+            "std": "Lists help pages.",
+            "subcommands": [
+                {
+                    "syntax": "{p}help",
+                    "help": "Lists all commands you have permissions to use."
+                },
+                {
+                    "syntax": "{p}help all",
+                    "help": "Lists every command, even the ones, you don't have permissions to use."
+                },
+                {
+                    "syntax": "{p}help <command>",
+                    "help": "Lists the help page for a particular command."
+                }
+            ]
+        },
+
+        "command.help.command.welcome": {
+            "std": "Welcomes a user.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Write a welcome message into the chat."
+                },
+                {
+                    "syntax": "{p}{c} <user>",
+                    "help": "Welcomes a user with a random welcoming message."
+                }
+            ]
+        },
+
+        "command.help.command.dice": {
+            "std": "Writes a random number.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Writes a random number from 1 to 6."
+                },
+                {
+                    "syntax": "{p}{c} <minimum> <maximum>",
+                    "help": "Writes a random number from <minimum> to <maximum>."
+                }
+            ]
+        },
+
+        "command.help.command.joke": {
+            "std": "Writes a random joke.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Writes a random joke."
+                }
+            ]
+        },
+
+        "command.help.welcome": [
+            "Welcome, {1}!",
+            "Welcome!"
+        ],
 
         "command.help.ywc": [
             "You're welcome!",
@@ -102,12 +202,6 @@
         "command.help.thanks": [
             "Thank you, {1}!",
             "I shall send you gratefulness, {1}!"
-        ],
-
-        "command.not_found": "Command \"{1}\" not found!",
-        "command.too_long": "Command was too long!",
-        "command.no_permission": "You don't have the permissions to run this command.",
-        "command.invalid_syntax": "Error: You didn't use the right syntax. See \"{1}help {2}\" for help.",
-        "command.user_not_found": "User `{1}` couldn't be found!"
+        ]
     }
 }

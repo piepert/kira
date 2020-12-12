@@ -6,9 +6,33 @@
         "general.no": "Nein",
         "general.deactivated": "Der Befehl wurde auf diesem Server deaktiviert.",
 
+        "log.user_changed.display_name": "Displayname von {1} geändert\n`[ {2} ]`",
+        "log.user_changed.display_name.old": "Alt",
+        "log.user_changed.display_name.new": "Neu",
+        "log.kira_started.title": "Hallo Welt! `[ {1} ]`",
+        "log.kira_started.body": "KIRA wurde gestartet.",
+        "log.kira_saving.title": "Ad Acta! `[ {1} ]`",
+        "log.kira_saving.body": "KIRAs Einstellungen werden gespeichert.",
+        "log.user_joined.title": "Neuer User `[ {1} ]`",
+        "log.user_joined.body": "Der Nutzer <@!{1}> ist dem Server beigetreten.",
+        "log.user_left.title": "User vom Server gegangen `[ {1} ]`",
+        "log.user_left.body": "Der Nutzer <@!{1}> hat den Discord-Server verlassen.",
+        "log.user_banned.title": "User gebannt `[ {1} ]`",
+        "log.user_banned.body": "Der Nutzer **{1}** wurde vom Server gebannt.",
+        "log.user_unbanned.title": "User entbannt `[ {1} ]`",
+        "log.user_unbanned.body": "Der Nutzer **{1}** wurde vom Server entbannt.",
+        "log.user_entry_added.title": "Neuer Akteneintrag `[ {1} ]`",
+        "log.user_entry_added.body": "Der Nutzer **{1}** hat dem Nutzer **{2}** einen neuen Eintrag hinzugefügt. Siehe `{3}user {4} show {5}` für mehr Infos.",
+        "log.new_alias.title": "Neuer Alias `[ {1} ]`",
+        "log.new_alias.body": "Der Befehl `{1}` hat nun den Alias `{2}`.",
+        "log.removed_alias.title": "Alias entfernt `[ {1} ]`",
+        "log.removed_alias.body": "Der Alias `{1}` für den Befehl `{2}` wurde gelöscht.",
+        "log.removed_all_alias.title": "Alle Alias entfernt `[ {1} ]`",
+        "log.removed_all_alias.body": "Alle Aliasse für den Befehl `{1}` wurden entfernt.",
+
         "command.user.user": "Benutzer",
         "command.user.not_found": "Benutzer nicht gefunden.",
-        "command.user.syntax_error": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe \"{1}hilfe user\" für Hilfe.",
+        "command.user.syntax_error": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe `{1}hilfe user` für Hilfe.",
         "command.user.avatar_not_found": "Nicht gefunden.",
         "command.user.creation_date": "Erstellungsdatum",
         "command.user.name": "Name",
@@ -54,26 +78,25 @@
         "command.perm.disabled": "Berechtigung `{1}` deaktiviert.",
         "command.perm.removed": "Berechtigung `{1}` entfernt.",
 
-        "command.deactivate.command_not_found": "Befehl \"{1}\" nicht gefunden.",
+        "command.deactivate.command_not_found": "Befehl `{1}` nicht gefunden.",
         "commands.deactivate.deactivated": "Der Befehl wurde deaktiviert.",
 
-        "command.activate.command_not_found": "Befehl \"{1}\" nicht gefunden.",
+        "command.activate.command_not_found": "Befehl `{1}` nicht gefunden.",
         "commands.activate.activated": "Der Befehl wurde aktiviert.",
 
-        "command.alias.not_found": "Alias \"{1}\" nicht gefunden!",
-        "command.alias.success": "Befehl \"{1}\" hat nun den Alias \"{2}\"!",
-        "command.alias.list": "Der Befehl \"{1}\" hat die Aliasse: {2}",
-        "command.alias.which": "Der Alias \"{1}\" steht für den Befehl \"{2}\".",
-        "command.alias.no_aliases": "Der Befehl \"{1}\" hat keine Aliasse.",
-        "command.alias.not_allowed": "Kann keinen Alias für \"{1}\" erstellen. Operation wird nicht erlaubt.",
-        "command.alias.name_not_allowed": "Kann keinen Alias mit dem Namen \"{1}\" erstellen. Operation wird nicht erlaubt.",
+        "command.alias.not_found": "Alias `{1}` nicht gefunden!",
+        "command.alias.success": "Befehl `{1}` hat nun den Alias `{2}`!",
+        "command.alias.list": "Der Befehl `{1}` hat die Aliasse: {2}",
+        "command.alias.which": "Der Alias `{1}` steht für den Befehl `{2}`.",
+        "command.alias.no_aliases": "Der Befehl `{1}` hat keine Aliasse.",
+        "command.alias.not_allowed": "Kann keinen Alias für `{1}` erstellen. Operation wird nicht erlaubt.",
+        "command.alias.name_not_allowed": "Kann keinen Alias mit dem Namen `{1}` erstellen. Operation wird nicht erlaubt.",
 
-        "command.unalias.no_alias": "Der Alias \"{1}\" existiert nicht.",
-        "command.unalias.cleared": "Alias \"{1}\" wurde entfernt.",
-        "command.unalias.all_cleared": "Alle Aliasse für \"{1}\" entfernt.",
+        "command.unalias.no_alias": "Der Alias `{1}` existiert nicht.",
+        "command.unalias.cleared": "Alias `{1}` wurde entfernt.",
+        "command.unalias.all_cleared": "Alle Aliasse für `{1}` entfernt.",
 
         "command.say.channel_not_found": "Der Channel `{1}` wurde nicht gefunden.",
-
         "command.exit": "KIRA stoppt jetzt. Ich wünsche einen guten Tag.",
 
         "command.joke.frequency": "Um Spam zu vermeiden kann der Witze-Befehl nur ein mal alle 5 Minuten ausgeführt werden.",
@@ -92,6 +115,85 @@
         "command.config.translation_not_found": "Die Übersetzung `{1}` existiert nicht!",
         "command.config.language_not_found": "Die Sprache `{1}` existiert nicht!",
         "command.config.language_changed": "Die Sprache wurde zu `{1}` geändert!",
+        "command.config.invalid_color": "Falsche Farbe `{1}`. Die Farbe muss eine 6-stellige Hexadezimalzahl nach dem Muster `#RRGGBB` sein.",
+        "command.config.log_set": "Alle Log-Nachrichten werden von nun an in {1} gepostet.",
+        "command.config.list_translations": "Alle Translations, die für diesen Server geändert wurden:\n**Key** - **Wert**\n\n",
+
+        "command.not_found": "Befehl `{1}` nicht gefunden!",
+        "command.too_long": "Der Befehl war zu lang! Du überforderst mich!",
+        "command.no_permission": "Du hast nicht die Berechtigung, diesen Befehl auszuführen.",
+        "command.invalid_syntax": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe `{1}hilfe {2}` für Hilfe.",
+        "command.user_not_found": "Der Benutzer `{1}` wurde nicht gefunden!",
+
+        "command.help.list.title": "Liste von KIRA-Befehlen",
+        "command.help.list.footer": "Für mehr Hilfe zu einem bestimmten Befehl, schreibe `{1}help <command>` (ohne < und >).",
+        "command.help.no_help_found": "Keine Hilfe für diesen Befehl gefunden.",
+        "command.help.sub.title": "Hilfe für {1}{2}",
+        "command.help.sub.aliases": "Aliasse",
+
+        "command.help.command.help": {
+            "std": "Gibt eine Hilfe zu Befehlen an.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Listet die Befehle auf, zu denen du Zugriff hast."
+                },
+                {
+                    "syntax": "{p}{c} all",
+                    "help": "Listet die Hilfe-Seite mit allen Befehlen auf, auch mit denen, auf die du keinen Zugriff hast."
+                },
+                {
+                    "syntax": "{p}{c} <command>",
+                    "help": "Listet die Hilfe-Seite für einen bestimmten Befehl auf."
+                }
+            ]
+        },
+
+        "command.help.command.welcome": {
+            "std": "Begrüßt einen Nutzer.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Schreibt eine Begrüßungsnachricht in den Chat."
+                },
+                {
+                    "syntax": "{p}{c} <nutzer>",
+                    "help": "Begrüßt den Nutzer <nutzer> mit einer zufälligen Nachricht."
+                }
+            ]
+        },
+
+        "command.help.command.dice": {
+            "std": "Gibt eine zufällige Zahl aus.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Gibt eine zufällige Zahl von 1 bis 6 aus."
+                },
+                {
+                    "syntax": "{p}{c} <minimum> <maximum>",
+                    "help": "Gibt eine zufällige Zahl von <minimum> bis <maximum> aus."
+                }
+            ]
+        },
+
+        "command.help.command.joke": {
+            "std": "Gibt einen zufälligen Witz aus.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Gibt einen zufälligen Witz aus."
+                }
+            ]
+        },
+
+        "command.help.welcome": [
+            "Sei willkommen, {1}!",
+            "Sei willkommen! Fühl dich ganz wie zu Hause!",
+            "Schön, dich kennenzulernen, {1}!",
+            "Du wirst dich schnell an uns gewöhnen, {1}, falls nicht, bitte nicht dem Ethikkomitee sagen.",
+            "Ab zum Standort-M001 mit di-... ich meine, willkommen beim deutschen Zweig, {1}!"
+        ],
 
         "command.help.ywc": [
             "Kein Problem!",
@@ -115,12 +217,6 @@
             "{1}, du hast ein Danke verdient!",
             "Dankeschön, {1}!",
             "Du hast ein Danke verdient, {1}!"
-        ],
-
-        "command.not_found": "Befehl \"{1}\" nicht gefunden!",
-        "command.too_long": "Der Befehl war zu lang! Du überforderst mich!",
-        "command.no_permission": "Du hast nicht die Berechtigung, diesen Befehl auszuführen.",
-        "command.invalid_syntax": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe \"{1}hilfe {2}\" für Hilfe.",
-        "command.user_not_found": "Der Benutzer `{1}` wurde nicht gefunden!"
+        ]
     }
 }
