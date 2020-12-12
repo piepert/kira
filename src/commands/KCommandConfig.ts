@@ -290,11 +290,18 @@ export class KCommandConfig extends KCommand {
         }
 
         /**
-         * translation <key> delete|<value> {3}
+         * translation show|(<key> delete|<value>) {3/1}
         */
 
         if (args[0] == "translation") {
-            if (args[2] == "delete") {
+            if (args.length == 2 && args[1] == "show") {
+                let msg_str = conf.getTranslationStr(msg,
+                    "command.config.list_translations");
+
+                for (let k in server.translations.keys()) {
+                    msg_str += "**[ `"+k+"` ]** "+server.translations[k]
+                }
+            } else if (args[2] == "delete") {
                 if (!server.deleteTranslation(args[1])) {
                     msg.channel.send(
                         conf.getTranslationStr(msg,
