@@ -13,7 +13,9 @@ export class KParsedCommand {
         message_content = message_content.trim();
 
         for (let i = 0; i < message_content.length; i++) {
-            if (message_content[i] == "\"") {
+            if (message_content[i] == "\"" &&
+                ((message_content.match(/"/g) || []).length % 2) == 0) {
+
                 i++;
 
                 while (i < message_content.length &&
