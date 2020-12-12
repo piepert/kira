@@ -51,7 +51,7 @@ export class KCommandReport extends KCommand {
             message_string += command.getArguments()[i]+" ";
         }
 
-        server.getUser(user).addEntry(message_string.trim(), msg);
+        server.getUser(user).addEntry(message_string.trim(), msg, conf);
 
         msg.channel.send(conf
             .getTranslationStr(msg, "command.report.reported")

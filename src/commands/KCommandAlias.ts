@@ -139,6 +139,17 @@ export class KCommandAlias extends KCommand {
             }
 
             server.setAlias(cmd.getArguments()[1], cmd.getArguments()[0]);
+            conf.logMessageToServer(client, server.getID(), new MessageEmbed()
+                .setColor("#fc6f6f")
+                .setTitle(conf.getTranslationForServer(
+                    msg.guild.id,
+                    "log.new_alias.title")
+                        .replace("{1}", (new Date().toLocaleString())))
+                .setDescription(conf.getTranslationForServer(
+                    msg.guild.id,
+                    "log.new_alias.body")
+                        .replace("{1}", cmd.getArguments()[0])
+                        .replace("{2}", cmd.getArguments()[1])))
 
             msg.channel.send(conf.getTranslationStr(
                 msg,

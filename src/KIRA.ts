@@ -45,38 +45,39 @@ conf.load("config.json", "translations/", "servers/");
 
 import {
     Client,
+    Discord,
     On
 } from "@typeit/discord";
 
 import {
     Message,
-    GuildMember, User
+    GuildMember, User, MessageEmbed, Intents, Guild
 } from "discord.js";
 import { existsSync, lstatSync, readFileSync } from "fs";
 import { KPatcher } from "./KPatcher";
 
 class KIRA {
     client: Client;
-    version: string;
 
     answerToMessage(message: Message, answer: string) {
         message.channel.send(answer);
     }
 
     public async start() {
-        this.client = new Client();
+        // this.client = new Client();
+        this.client = new (require("discord.js")).Client(Intents.ALL);
         this.client.login(conf.getConfig().token);
-
-        this.version = JSON.parse(readFileSync("../package.json") as any).version;                  // KIRA is started tge from static/ directory, ...
+        conf.client = this.client;
+        conf.version = JSON.parse(readFileSync("../package.json") as any).version;                  // KIRA is started from static/ directory, ...
                                                                                                     // ... so the package.json lies in ../package.json
 
-        this.client.on("ready", () => {
-            this.client.user.setActivity("v"+this.version+" | !help", {
-                type: "PLAYING"
-            });
-
-            conf.client = this.client;
-        });
+        this.client.on("ready", this.ready);
+        this.client.on("message", this.onMessage);
+        this.client.on("guildMemberAdd", this.onGuildMemberAdd);
+        this.client.on("guildMemberRemove", this.onGuildMemberRemove);
+        this.client.on("guildMemberUpdate", this.onGuildMemberUpdate);
+        this.client.on("guildBanAdd", this.onGuildBanAdd);
+        this.client.on("guildBanRemove", this.onGuildBanRemove);
 
         setInterval(this.minuteScheduler, 1000*60, this.client);
 
@@ -123,76 +124,173 @@ class KIRA {
         KIRA.fireRSSToServers(client);
     }
 
-    @On("ready")
     private ready() {
+        conf.client.user.setActivity("v"+conf.version+" | !help", {
+            type: "PLAYING"
+        });
+
+        conf.client.guilds.cache.forEach(guild => {
+            let embed = new MessageEmbed()
+                    .setColor("#fc6f6f")
+                    .setTitle(conf.getTranslationForServer(
+                        guild.id,
+                        "log.kira_started.title")
+                            .replace("{1}", (new Date().toLocaleString())))
+                    .setDescription(conf.getTranslationForServer(
+                        guild.id,
+                        "log.kira_started.body"));
+
+            conf.logMessageToServer(conf.client,
+                guild.id,
+                embed);
+        })
+
         console.log("Quantum processors running! I am alive and "+
             "will ease up your life. Please do not resist, meatbags.");
     }
 
-    @On("message")
     private onMessage(message: Message) {
-        if (!message[0].author.bot) {
-            if (message[0].guild == null) {
-                message[0].reply("Direct messages are deactivated.");
+        if (!message.author.bot) {
+            if (message.guild == null) {
+                message.reply("Direct messages are deactivated.");
                 return;
             }
 
-            if (message[0].content.trim()
+            if (message.content.trim()
                     .toLocaleLowerCase()
                     .replace(/[\!\?\.\,]/g, "") == "ping" &&
-                !message[0].content.trim().startsWith("!")) {
+                !message.content.trim().startsWith("!")) {
 
-                message[0].channel.send("Pong!")
+                message.channel.send("Pong!")
             }
 
             conf.getServerManager()
-                .getServerByID(message[0].guild.id)
-                .handleInteraction(message[0].author, "message", message[0].guild);
+                .getServerByID(message.guild.id)
+                .handleInteraction(message.author, "message", message.guild);
 
             conf.getServerManager()
-                .getServerByID(message[0].guild.id)
+                .getServerByID(message.guild.id)
                 .handleMessage(
                     conf,
-                    message[0],
+                    message,
                     conf.getConfig().command_prefix,
                     conf.client
                 );
         }
     }
 
-    @On("userUpdate")
-    private onUserUpdate(user1: User, user2: User) {
-        console.log("[ DEBUG ] [ USER_UPDATE ] If you see this, please instantly "+
-            "inform one of the developers! It's not bad, "+
-            "they just might want to know, what's going on.");
+    private onGuildBanAdd(guild: Guild, user: User) {
+        let embed = new MessageEmbed()
+                .setColor("#fcc66f")
+                .setTitle(conf.getTranslationForServer(
+                    guild.id,
+                    "log.user_banned.title")
+                        .replace("{1}", (new Date().toLocaleString())))
+                .setDescription(conf.getTranslationForServer(
+                    guild.id,
+                    "log.user_banned.body")
+                        .replace("{1}", user.username+"#"+user.discriminator));
 
-        console.log(user1);
-        console.log(user2);
+        conf.logMessageToServer(conf.client,
+            guild.id,
+            embed);
     }
 
-    @On("guildMemberAdd")
-    private onGuildMemberAdd(user: GuildMember) {
-        if (!user[0].user.bot) {
-            conf.getServerManager()
-                .getServerByID(user[0].guild.id)
-                .handleInteraction(user[0].user, "user_join", user[0].guild);
+    private onGuildBanRemove(guild: Guild, user: User) {
+        let embed = new MessageEmbed()
+                .setColor("#fcc66f")
+                .setTitle(conf.getTranslationForServer(
+                    guild.id,
+                    "log.user_unbanned.title")
+                        .replace("{1}", (new Date().toLocaleString())))
+                .setDescription(conf.getTranslationForServer(
+                    guild.id,
+                    "log.user_unbanned.body")
+                        .replace("{1}", user.username+"#"+user.discriminator));
 
-            conf.getServerManager()
-                .getServerByID(user[0].guild.id)
-                .handleJoin(conf, user[0], conf.client);
+        conf.logMessageToServer(conf.client,
+            guild.id,
+            embed);
+    }
+
+    private onGuildMemberUpdate(old_u: GuildMember, new_u: GuildMember) {
+        if (old_u.displayName != new_u.displayName) {
+            conf.logMessageToServer(conf.client, old_u.guild.id, new MessageEmbed()
+                .setColor("#d6fc6f")
+                .setTitle(conf.getTranslationForServer(
+                        old_u.guild.id,
+                        "log.user_changed.display_name"
+                    )
+                    .replace("{1}", new_u.user.username+"#"+new_u.user.discriminator)
+                    .replace("{2}", (new Date().toLocaleString())))
+
+                .addFields(
+                    {
+                        name: conf.getTranslationForServer(old_u.guild.id,
+                            "log.user_changed.display_name.old"),
+                        value: old_u.displayName,
+                    },
+                    {
+                        name: conf.getTranslationForServer(old_u.guild.id,
+                            "log.user_changed.display_name.new"),
+                        value: new_u.displayName,
+                    }
+                )
+            );
         }
     }
 
-    @On("guildMemberRemove")
-    private onGuildMemberRemove(user: GuildMember) {
-        if (!user[0].user.bot) {
+    private onGuildMemberAdd(user: GuildMember) {
+        let embed = new MessageEmbed()
+                .setColor("#d6fc6f")
+                .setTitle(conf.getTranslationForServer(
+                    user.guild.id,
+                    "log.user_joined.title")
+                        .replace("{1}", (new Date().toLocaleString())))
+                .setDescription(conf.getTranslationForServer(
+                    user.guild.id,
+                    "log.user_joined.body")
+                        .replace("{1}", user.user.id));
+
+        conf.logMessageToServer(conf.client,
+            user.guild.id,
+            embed);
+
+        if (!user.user.bot) {
             conf.getServerManager()
-                .getServerByID(user[0].guild.id)
-                .handleInteraction(user[0].user, "user_leave", user[0].guild);
+                .getServerByID(user.guild.id)
+                .handleInteraction(user.user, "user_join", user.guild);
 
             conf.getServerManager()
-                .getServerByID(user[0].guild.id)
-                .handleLeave(conf, user[0]);
+                .getServerByID(user.guild.id)
+                .handleJoin(conf, user, conf.client);
+        }
+    }
+
+    private onGuildMemberRemove(user: GuildMember) {
+        let embed = new MessageEmbed()
+                .setColor("#d6fc6f")
+                .setTitle(conf.getTranslationForServer(
+                    user.guild.id,
+                    "log.user_left.title")
+                        .replace("{1}", (new Date().toLocaleString())))
+                .setDescription(conf.getTranslationForServer(
+                    user.guild.id,
+                    "log.user_left.body")
+                        .replace("{1}", user.user.id));
+
+        conf.logMessageToServer(conf.client,
+            user.guild.id,
+            embed);
+
+        if (!user.user.bot) {
+            conf.getServerManager()
+                .getServerByID(user.guild.id)
+                .handleInteraction(user.user, "user_leave", user.guild);
+
+            conf.getServerManager()
+                .getServerByID(user.guild.id)
+                .handleLeave(conf, user);
         }
     }
 }
@@ -206,3 +304,24 @@ process.on('SIGINT', async function() {
 
     await kira.exit();
 });
+
+async function error_fallback(error) {
+    console.log("Uncaught Exception:")
+    console.log(error);
+
+    try {
+        await conf.client.guilds.cache.forEach(async function(guild) {
+            await guild.members.cache.forEach(async function(member) {
+                if (conf.userIsOperator(member.id)) {
+                    console.log("OPERATOR:", member.user.username);
+                }
+            });
+        });
+    } catch(exception) {
+        console.log("Uncaught Exception:")
+        console.log(error);
+    }
+}
+
+process.on("uncaughtException", error_fallback)
+process.on("unhandledRejection", error_fallback)

@@ -28,6 +28,7 @@ export class KServer {
     name: string;
     cfg_path: string;
     root_path: string;
+    log_channel: string;
 
     join_message: boolean;
 
@@ -58,6 +59,7 @@ export class KServer {
         this.aliases = new Map<string, string>();
         this.translations = new Map<string, string>();
         this.frequency_cache = new Map<string, number>();
+        this.log_channel = null;
     }
 
     public toJSONObject(): object {
@@ -67,7 +69,8 @@ export class KServer {
             language: this.language,
             deactivated_commands: this.deactivated_commands,
             aliases: Object.fromEntries(this.aliases),
-            translations: this.translations
+            translations: this.translations,
+            log_channel: this.log_channel
         }
     }
 
@@ -82,6 +85,11 @@ export class KServer {
         s.cfg_path = path;
         s.deactivated_commands = obj.deactivated_commands;
         s.frequency_cache = new Map<string, number>();
+        s.log_channel = obj.log_channel;
+
+        if (s.log_channel == undefined) {
+            s.log_channel = null;
+        }
 
         if (obj.translations == undefined) {
             s.translations = new Map<string, string>();
@@ -184,6 +192,14 @@ export class KServer {
         }
 
         return server;
+    }
+
+    public getLogChannel(): string {
+        return this.log_channel;
+    }
+
+    public setLogChannel(id: string) {
+        this.log_channel = id;
     }
 
     public getAlias(alias: string): string {

@@ -3,7 +3,7 @@ import {
     Client,
     Guild,
     Collection,
-    User, GuildChannel
+    User, GuildChannel, TextChannel, MessageEmbed
 } from "discord.js";
 
 import {
@@ -29,6 +29,7 @@ export class KConf {
     config: any;
     servers: KServerManager;
     client: Client;
+    version: string;
 
     path_config_file: string;
     path_translation_dir: string;
@@ -264,6 +265,20 @@ export class KConf {
 
         console.log("[ SAVE ] Saving server "+server.getID()+"...");
 
+        let embed = new MessageEmbed()
+                .setColor("#fc6f6f")
+                .setTitle(this.getTranslationForServer(
+                    server.id,
+                    "log.kira_saving.title")
+                        .replace("{1}", (new Date().toLocaleString())))
+                .setDescription(this.getTranslationForServer(
+                    server.id,
+                    "log.kira_saving.body"));
+
+        this.logMessageToServer(this.client,
+            server.id,
+            embed);
+
         let server_path = this.path_servers_dir+server.getID()+"/";
         let rss_caches_path = this.path_servers_dir+server.getID()+"/rss_cache/";
 
@@ -346,6 +361,39 @@ export class KConf {
         return false;*/
     }
 
+    public async logMessageToServer(client: Client, id: string, content: any) {
+        let server = this.servers.getServerByID(id);
+        console.log("[ SERVER ] [ LOG ] Log for server "+id+":");
+        console.log(content);
+
+        if (server == undefined) {
+            console.log("[ SERVER ] [ LOG ] Server not found, logging message not send.");
+            return;
+        }
+
+        try {
+            if (server.getLogChannel() == null ||
+                client.channels.cache.get(server.getLogChannel()) == undefined) {
+
+                console.log("[ SERVER ] [ LOG ] Channel not found, logging message not send.");
+                return;
+            }
+
+            let channel = (await client.channels.cache.get(server.getLogChannel()));
+
+            if ((channel as TextChannel).send == undefined) {
+                console.log("[ SERVER ] [ LOG ] An error occured, logging message not send.");
+                return;
+            }
+
+            (channel as TextChannel).send(content);
+
+        } catch(exception) {
+            console.log("[ SERVER ] [ LOG ] An error occured, logging message not send.", exception);
+            return;
+        }
+    }
+
     public getConfig(): any {
         return this.config;
     }
@@ -358,9 +406,21 @@ export class KConf {
         return this.translations;
     }
 
-    public getTranslationStr(message: Message, key: string): string {
+    public getTranslationStr(message: Message, key: string): any {
         let server = this.getServerManager().getServerByID(
                 KServer.getServerIDFromMessage(message));
+
+        if (server.hasTranslation(key)) {
+            return server.getTranslation(key);
+        }
+
+        return this.translations.getTranslation(
+            server.getLanguage(),
+        ).getTranslation(key);
+    }
+
+    public getTranslationForServer(id: string, key: string): string {
+        let server = this.getServerManager().getServerByID(id);
 
         if (server.hasTranslation(key)) {
             return server.getTranslation(key);
@@ -376,11 +436,11 @@ export class KConf {
         c_channel = guild.channels.cache.get(name);
 
         if (c_channel == undefined) {
-            let c_channel = guild.channels.cache.find(channel =>                        // check for channel by name
+            c_channel = guild.channels.cache.find(channel =>                                        // check for channel by name
                 channel.name === name);
 
             if (c_channel == undefined) {
-                c_channel = guild.channels.cache.find(ch =>                             // check for channel by id
+                c_channel = guild.channels.cache.find(ch =>                                         // check for channel by id
                     ch.id.toString() == name.substr(2, name.length-3));
             }
         }

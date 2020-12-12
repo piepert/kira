@@ -1,6 +1,7 @@
 import { KEntryManager } from "./KEntryManager";
 import { KEntry } from "./KEntry";
-import { Message } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
+import { KConf } from "./KConfig";
 
 function uniq_fast(a) {
     var seen = {};
@@ -215,7 +216,7 @@ export class KUser {
         this.entries = entries;
     }
 
-    public addEntry(entry: string, msg: Message) {
+    public addEntry(entry: string, msg: Message, conf: KConf) {
         let e: KEntry = new KEntry();
 
         e.setContent(entry);
@@ -229,20 +230,45 @@ export class KUser {
         e.setMsgURL(msg.url);
 
         this.entries.addEntry(e);
+
+        (async (entry, msg, conf, entry_id) => {
+            let author = msg.author;
+            let owner = msg.guild.members.cache.get(this.id);
+
+            conf.logMessageToServer(conf.client,
+                msg.guild.id,
+                (new MessageEmbed())
+                    .setColor("#fcc66f")
+                    .setTitle(conf.getTranslationForServer(
+                        msg.guild.id,
+                        "log.user_entry_added.title")
+                            .replace("{1}", (new Date().toLocaleString())))
+
+                    .setDescription(conf.getTranslationForServer(
+                        msg.guild.id,
+                        "log.user_entry_added.body")
+                            .replace("{1}", author.username+"#"+author.discriminator)
+                            .replace("{2}", owner.user.username+"#"+owner.user.discriminator)
+                            .replace("{3}", conf.getConfig().command_prefix)
+                            .replace("{4}", owner.id)
+                            .replace("{5}", entry_id))
+
+                    .setFooter(this.username, owner.user.avatarURL()))
+        })(entry, msg, conf, e.id);
     }
 
     public setBanState(state: boolean) {
 
     }
 
-    public ban(reason: string, msg: Message) {
-        this.addEntry(reason, msg);
+    public ban(reason: string, msg: Message, conf: KConf) {
+        this.addEntry(reason, msg, conf);
         this.banned = true;
         this.lastly_banned = (new Date()).toUTCString();
     }
 
-    public unban(reason: string, msg: Message) {
-        this.addEntry(reason, msg);
+    public unban(reason: string, msg: Message, conf: KConf) {
+        this.addEntry(reason, msg, conf);
         this.banned = false;
     }
 

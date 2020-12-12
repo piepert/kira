@@ -61,6 +61,16 @@ export class KCommandUnalias extends KCommand {
             }
 
             server.removeAliasesForCommand(command.getArguments()[0]);
+            conf.logMessageToServer(client, server.getID(), new MessageEmbed()
+                .setColor("#fc6f6f")
+                .setTitle(conf.getTranslationForServer(
+                    msg.guild.id,
+                    "log.removed_all_alias.title")
+                        .replace("{1}", (new Date().toLocaleString())))
+                .setDescription(conf.getTranslationForServer(
+                    msg.guild.id,
+                    "log.removed_all_alias.body")
+                        .replace("{1}", command.getArguments()[0])))
 
             msg.channel.send(conf.getTranslationStr(
                 msg,
@@ -68,6 +78,8 @@ export class KCommandUnalias extends KCommand {
             ).replace("{1}", command.getArguments()[0]));
 
         } else {
+            let owner_name = server.getAlias(command.getArguments()[0]);
+
             if (!server.removeAlias(command.getArguments()[0])) {
                 msg.channel.send(conf.getTranslationStr(
                     msg,
@@ -75,6 +87,18 @@ export class KCommandUnalias extends KCommand {
                 ).replace("{1}", command.getArguments()[0]));
 
             } else {
+                conf.logMessageToServer(client, server.getID(), new MessageEmbed()
+                    .setColor("#fc6f6f")
+                    .setTitle(conf.getTranslationForServer(
+                        msg.guild.id,
+                        "log.removed_alias.title")
+                            .replace("{1}", (new Date().toLocaleString())))
+                    .setDescription(conf.getTranslationForServer(
+                        msg.guild.id,
+                        "log.removed_alias.body")
+                            .replace("{1}", command.getArguments()[0])
+                            .replace("{2}", owner_name)))
+
                 msg.channel.send(conf.getTranslationStr(
                     msg,
                     "command.unalias.cleared"
