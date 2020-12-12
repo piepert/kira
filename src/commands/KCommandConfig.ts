@@ -69,7 +69,7 @@ export class KCommandConfig extends KCommand {
         */
 
         if (args[0] == "translation") {
-            return args.length == 3;
+            return args.length == 3 || (args.length == 2 && args[1] == "show");
         }
 
         /**
@@ -77,6 +77,14 @@ export class KCommandConfig extends KCommand {
         */
 
         if (args[0] == "delu") {
+            return args.length == 2;
+        }
+
+        /**
+         * log <channelID> {2}
+        */
+
+        if (args[0] == "log") {
             return args.length == 2;
         }
 
@@ -93,6 +101,7 @@ export class KCommandConfig extends KCommand {
      * config language list|<language_id> {2}
      * config translation <key> delete|<value> {3}
      * config delu <user> {2}
+     * config log <channel> {2}
      */
 
     // d
@@ -120,8 +129,6 @@ export class KCommandConfig extends KCommand {
             if (args[1] == "add" || (args[1] == "list" && args.length >= 3)) {                      // check if channel exists
                 let channel_id = args[2];
                 c_channel = KConf.textToChannel(channel_id, msg.guild);
-
-                console.log("Hi", channel_id, c_channel == undefined, channel_id.substr(2, channel_id.length-3));
 
                 if (c_channel == undefined) {
                     msg.channel.send(conf.getTranslationStr(msg,
@@ -203,7 +210,8 @@ export class KCommandConfig extends KCommand {
                 cc.feed_url = args[3];
                 cc.refreshID();
 
-                if (KConf.textToChannel(args[2], msg.guild) === undefined) {
+                if (KConf.textToChannel(args[2], msg.guild) === undefined ||
+                    !KConf.textToChannel(args[2], msg.guild).isText()) {
                     msg.channel.send(conf.getTranslationStr(msg,
                         "command.config.channel_not_found"))
                     return;
@@ -214,13 +222,28 @@ export class KCommandConfig extends KCommand {
                     "command.config.channel_added"));
 
             } else if (args[1] == "color") {
-                if (KConf.textToChannel(args[2], msg.guild) === undefined) {
+                if (server.getFeedByID(args[2]) === undefined) {
                     msg.channel.send(conf.getTranslationStr(msg,
                         "command.config.channel_not_found"))
                     return;
                 }
 
+                if (/#[a-f0-9]{6}/.test(args[2]) === false) {
+                    msg.channel.send(conf.getTranslationStr(msg,
+                        "command.config.invalid_color").replace("{1}", args[3]))
+                    return;
+                }
+
+                server.getFeedByID(args[2]).color = args[3];
+
             } else if (args[1] == "title") {
+                if (server.getFeedByID(args[2]) === undefined) {
+                    msg.channel.send(conf.getTranslationStr(msg,
+                        "command.config.channel_not_found"))
+                    return;
+                }
+
+                server.getFeedByID(args[2]).title = args[2];
 
             } else if (args[1] == "delete") {
                 if (server.getChannelConfigs().deleteConfig(c_feed, server)) {
@@ -314,6 +337,25 @@ export class KCommandConfig extends KCommand {
                         "command.config.user_not_found")
                     .replace("{1}", args[1]));
             }
+        }
+
+        /**
+         * log <channel> {2}
+         */
+
+        if (args[0] == "log") {
+            let channel: GuildChannel = KConf.textToChannel(args[1], msg.guild);
+
+            if (channel === undefined ||
+                !channel.isText()) {
+                msg.channel.send(conf.getTranslationStr(msg,
+                    "command.config.channel_not_found"))
+                return;
+            }
+
+            server.setLogChannel(channel.id);
+            msg.channel.send(conf.getTranslationStr(msg,
+                "command.config.log_set").replace("{1}", "<#"+channel.id+">"));
         }
     }
 }
