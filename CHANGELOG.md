@@ -1,6 +1,6 @@
 Date format: YYYY-MM-DD
 
-# v3.0.4 (2020-12-12)
+# v3.0.5 (2020-12-12)
 
 * catching all uncaught exceptions and print them to console
 * added logging message/log channel, logging ...
