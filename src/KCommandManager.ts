@@ -23,6 +23,7 @@ import { KCommandThanks } from "./commands/KCommandThanks";
 import { KCommandHelp } from "./commands/KCommandHelp";
 import { KCommandPatch } from "./commands/KCommandPatch";
 import { KCommandConfig } from "./commands/KCommandConfig";
+import { KCommandWelcome } from "./commands/KCommandWelcome";
 
 export class KCommandManager {
     static commands: KCommand[] = [];
@@ -53,6 +54,7 @@ export class KCommandManager {
         this.commands.push(new KCommandHelp());
         this.commands.push(new KCommandPatch());
         this.commands.push(new KCommandConfig());
+        this.commands.push(new KCommandWelcome());
     }
 
     public static getCommand(name: string): KCommand {
