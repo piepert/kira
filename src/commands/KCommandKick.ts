@@ -56,7 +56,10 @@ export class KCommandKick extends KCommand {
             message_string = "empty";
         }
 
-        server.getUser(user).ban(("[ KIRA-KICK "+(new Date()).toUTCString()+" ] "+message_string.trim()).trim(), msg);
+        server.getUser(user)
+            .ban(("[ KIRA-KICK "+(new Date()).toUTCString()+" ] "+message_string.trim()).trim(),
+                msg,
+                conf);
 
         await msg.guild.members.resolve(user)
             .send(conf.getTranslationStr(msg, "command.kick.user_msg")
