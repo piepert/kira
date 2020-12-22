@@ -1,5 +1,15 @@
 Date format: YYYY-MM-DD
 
+# v3.0.6 (2020-12-22)
+
+* added log message for patches
+* disabled logging for auto-saves
+* added help pages for all commands
+* added command `!syntax` (`src/commands/KCommandSyntax.ts`)
+* implemented `setBanState` and `kick` functions in `src/KUser.ts`
+* added logging of patches
+* added determination of auto-save or manual save
+
 # v3.0.5 (2020-12-12)
 
 * catching all uncaught exceptions and print them to console
