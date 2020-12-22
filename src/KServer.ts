@@ -122,7 +122,7 @@ export class KServer {
         }
 
         if (old_load) {
-            conf.saveServer(s);
+            conf.saveServer(s, true);
         }
 
         return s;
