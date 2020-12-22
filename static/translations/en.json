@@ -9,26 +9,41 @@
         "log.user_changed.display_name": "Displayname of {1} was changed\n`[ {2} ]`",
         "log.user_changed.display_name.old": "Old",
         "log.user_changed.display_name.new": "New",
+
         "log.kira_started.title": "Hello World! `[ {1} ]`",
         "log.kira_started.body": "KIRA has been started.",
+
         "log.kira_saving.title": "Let's file it away! `[ {1} ]`",
         "log.kira_saving.body": "KIRA's config files are being saved.",
+
         "log.user_joined.title": "New User `[ {1} ]`",
         "log.user_joined.body": "The user <@!{1}> joined the server.",
+
         "log.user_left.title": "User left server `[ {1} ]`",
         "log.user_left.body": "The user <@!{1}> left the discord server.",
+
         "log.user_banned.title": "User banned `[ {1} ]`",
         "log.user_banned.body": "The user **{1}** was banned from the discord server.",
+
         "log.user_unbanned.title": "User unbanned `[ {1} ]`",
         "log.user_unbanned.body": "The user **{1}** was unbanned from the discord server.",
+
         "log.user_entry_added.title": "New user entry `[ {1} ]`",
         "log.user_entry_added.body": "**{1}** added an entry to **{2}**. See `{3}user {4} show {5}` for further information.",
+
         "log.new_alias.title": "New alias `[ {1} ]`",
         "log.new_alias.body": "The command `{1}` now has the alias `{2}`.",
+
         "log.removed_alias.title": "Alias removed `[ {1} ]`",
         "log.removed_alias.body": "The alias `{1}` for the command `{2}` was removed.",
+
         "log.removed_all_alias.title": "All aliases removed `[ {1} ]`",
         "log.removed_all_alias.body": "All aliases for the command `{1}` were removed.",
+
+        "log.kira_patching.title": "Patch the tape! `[ {1} ]`",
+        "log.kira_patching.body": "A patch is being installed. {1} rescues the ship!",
+
+
 
         "command.user.user": "User",
         "command.user.not_found": "User not found.",
@@ -186,6 +201,332 @@
                 }
             ]
         },
+
+        "command.help.command.user": {
+            "std": "Gibt Informationen zu einem Nutzer.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user>",
+                    "help": "Gibt Informationen zu dem Nutzer aus."
+                },
+                {
+                    "syntax": "{p}{c} <user> show",
+                    "help": "Alle Akteneinträge des Nutzers anzeigen."
+                },
+                {
+                    "syntax": "{p}{c} <user> show <entry>",
+                    "help": "Den Eintrag mit der ID <entry> des Nutzers <user> anzeigen."
+                }
+            ]
+        },
+
+        "command.help.command.activate": {
+            "std": "Activates a command on the server.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <command>",
+                    "help": "Activates the command <command> on the server."
+                }
+            ]
+        },
+
+        "command.help.command.deactivate": {
+            "std": "Deactivates a command on the server.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <command>",
+                    "help": "Deactivates the command <command> on the server."
+                }
+            ]
+        },
+
+        "command.help.command.alias": {
+            "std": "Creates an alias for a command.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <command> <alias>",
+                    "help": "Creates an alias with the name <alias> for the command <command>."
+                },
+                {
+                    "syntax": "{p}{c} <command>",
+                    "help": "Shows all aliases for the command <command>."
+                },
+                {
+                    "syntax": "{p}{c} <alias> which",
+                    "help": "Shows, which command the alias <alias> belongs to."
+                }
+            ]
+        },
+
+        "command.help.command.ban": {
+            "std": "Bans a user.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <why>",
+                    "help": "Bans a user <user> with the message <why> and adds it to his user file. <why> will be send to him by KIRA automatically."
+                }
+            ]
+        },
+
+        "command.help.command.unban": {
+            "std": "Unbans a user.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user>",
+                    "help": "Unbans the user <user>."
+                }
+            ]
+        },
+
+        "command.help.command.config": {
+            "std": "Configurates KIRA.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} feed add <feedURL> <channelID>",
+                    "help": "Creates a new RSS feed from the RSS URL <feedURL> in the channel with the ID <channelID>."
+                },
+                {
+                    "syntax": "{p}{c} feed color <feedID> <color>",
+                    "help": "Changes the color of the RSS feed with the ID <feedID> to the color <color>. The color has to be a hex-color."
+                },
+                {
+                    "syntax": "{p}{c} feed title <feedID> <title>",
+                    "help": "Sets the feed title of the RSS feed with ID <feedID> to <title>."
+                },
+                {
+                    "syntax": "{p}{c} feed delete <feedID>",
+                    "help": "Removes the RSS feed with the ID <feedID>."
+                },
+                {
+                    "syntax": "{p}{c} feed list",
+                    "help": "Lists all RSS feeds."
+                },
+                {
+                    "syntax": "{p}{c} feed list <channelID>",
+                    "help": "Lists all RSS feeds for the channel with the ID <channelID>."
+                },
+                {
+                    "syntax": "{p}{c} language list",
+                    "help": "Lists all languages an their IDs."
+                },
+                {
+                    "syntax": "{p}{c} language <languageID>",
+                    "help": "Changes the language of KIRA to the language with the ID <languageID>."
+                },
+                {
+                    "syntax": "{p}{c} translation <key> <value>",
+                    "help": "Changes the server side translation with the key <key> to the value <value>."
+                },
+                {
+                    "syntax": "{p}{c} translation <key> delete",
+                    "help": "Removes the server side translation with the key <key>."
+                },
+                {
+                    "syntax": "{p}{c} delu <user>",
+                    "help": "Deletes all data of the user <user>."
+                },
+                {
+                    "syntax": "{p}{c} log <channelID>",
+                    "help": "Sets the log channel to <channelID>. KIRA will log new users, ban/unbans, kicks, saves and more."
+                }
+            ]
+        },
+
+        "command.help.command.kick": {
+            "std": "Kickt einen Nutzer.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <why>",
+                    "help": "Kicks a user <user> with the message <why> and adds it to his user file. <why> will be send to him by KIRA automatically."
+                }
+            ]
+        },
+
+        "command.help.command.perm": {
+            "std": "Changes the permissions of users or rolls.",
+            "subcommands": [
+                {
+                    "syntax": "General information",
+                    "help": "Every command has it's own permission. Users need to have an enabled permission in order to be able of using a command."
+                },
+                {
+                    "syntax": "Shortcuts",
+                    "help": "The permission `a.*` is equal to `a.b.c.d`. Therefore strings ending with a asterisk is equal to every permission starting with this string."
+                },
+                {
+                    "syntax": "Scopes of permissions",
+                    "help": "Permission a user has is superior to the ones of his roles, also disabled permissions disable enabled permissions. This is combinable with asterisk (for example: enabling `command.*` and disabling `command.joke`)."
+                },
+                {
+                    "syntax": "{p}{c} user <user> enable <permission>",
+                    "help": "Gives the user <user> the permission <permission>."
+                },
+                {
+                    "syntax": "{p}{c} user <user> disable <permission>",
+                    "help": "Disables the permission <permission> for the user <user>."
+                },
+                {
+                    "syntax": "{p}{c} user <user> remove <permission>",
+                    "help": "Removes the permission <permission> from the user <user>. (The permission will be removed from their enabled/disabled permissions lists.)"
+                },
+                {
+                    "syntax": "{p}{c} user <user> show",
+                    "help": "Shows all enabled and disabled permissions of user <user>."
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> enable <permission>",
+                    "help": "Activates the permission <permission> for the roll with the ID <rollID>."
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> disable <permission>",
+                    "help": "Deactivates the permission <permission> for the roll with the ID <rollID>."
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> remove <permission>",
+                    "help": "Removes the permission <permission> from the roll <rollID>. (The permission will be removed from its enabled/disabled permissions lists.)"
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> show",
+                    "help": "Shows all enabled/disabled permissions for the roll with the ID <rollID>."
+                }
+            ]
+        },
+
+        "command.help.command.reload": {
+            "std": "Reloads the server's settings.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Relaods the server's settings."
+                }
+            ]
+        },
+
+        "command.help.command.patch": {
+            "std": "Installs a KIRA Patch.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <URL>",
+                    "help": "Installs a KIRA Patch from <URL>."
+                }
+            ]
+        },
+
+        "command.help.command.save": {
+            "std": "Saves the server's settings.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "The server's settings will be saved."
+                }
+            ]
+        },
+
+        "command.help.command.say": {
+            "std": "Let's KIRA write a message.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <channel> <message>",
+                    "help": "Writes <message> in the channel <channel>."
+                }
+            ]
+        },
+
+        "command.help.command.report": {
+            "std": "Adds an entry to a user's file.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <message>",
+                    "help": "Adds an entry with <message> to <user>'s user file."
+                }
+            ]
+        },
+
+        "command.help.command.unreport": {
+            "std": "Removes a file entry.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <entryID>",
+                    "help": "Removes the entry with the ID <entryID> from <user>'s user file."
+                }
+            ]
+        },
+
+        "command.help.command.thanks": {
+            "std": "Spread thankfullness.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Thank KIRA."
+                },
+                {
+                    "syntax": "{p}{c} <user>",
+                    "help": "KIRA will thank <user>."
+                }
+            ]
+        },
+
+        "command.help.command.ping": {
+            "std": "Pong!",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Pong!"
+                }
+            ]
+        },
+
+        "command.help.command.exit_hard": {
+            "std": "Stop KIRA.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Stop KIRA."
+                }
+            ]
+        },
+
+        "command.help.command.unalias": {
+            "std": "Removes an alias.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <alias>",
+                    "help": "Removes the alias <alias>."
+                }
+            ]
+        },
+
+        "command.help.command.reload_hard": {
+            "std": "Reloads KIRA.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Reload all servers and translations."
+                }
+            ]
+        },
+
+        "command.help.command.syntax": {
+            "std": "Help for KIRAs command syntax.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Shows a help for KIRAs syntax."
+                }
+            ]
+        },
+
+        "command.help.command.refresh": {
+            "std": "Refreshes KIRAs user list.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Refreshes KIRAs user list."
+                }
+            ]
+        },
+
+        "command.help.syntax": "In help pages, everything in `<` and `>` is a necessary variable. Everything in `[` and `]` are optional. For example:\n```!help [command]```\n[command] doesn't have to be given.\n\nEvery not quoted string will be splitted at whitespaces. For example:\n```!hello world wow```\n`hello` is the command, `world` and `wow` are arguments. If you want to have `Hello World!` as one argument, you have to add quotation marks. For example: ```!a \"Hello World!\"```",
 
         "command.help.welcome": [
             "Welcome, {1}!",

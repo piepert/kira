@@ -9,26 +9,41 @@
         "log.user_changed.display_name": "Displayname von {1} geändert\n`[ {2} ]`",
         "log.user_changed.display_name.old": "Alt",
         "log.user_changed.display_name.new": "Neu",
+
         "log.kira_started.title": "Hallo Welt! `[ {1} ]`",
         "log.kira_started.body": "KIRA wurde gestartet.",
+
         "log.kira_saving.title": "Ad Acta! `[ {1} ]`",
         "log.kira_saving.body": "KIRAs Einstellungen werden gespeichert.",
+
         "log.user_joined.title": "Neuer User `[ {1} ]`",
         "log.user_joined.body": "Der Nutzer <@!{1}> ist dem Server beigetreten.",
+
         "log.user_left.title": "User vom Server gegangen `[ {1} ]`",
         "log.user_left.body": "Der Nutzer <@!{1}> hat den Discord-Server verlassen.",
+
         "log.user_banned.title": "User gebannt `[ {1} ]`",
         "log.user_banned.body": "Der Nutzer **{1}** wurde vom Server gebannt.",
+
         "log.user_unbanned.title": "User entbannt `[ {1} ]`",
         "log.user_unbanned.body": "Der Nutzer **{1}** wurde vom Server entbannt.",
+
         "log.user_entry_added.title": "Neuer Akteneintrag `[ {1} ]`",
         "log.user_entry_added.body": "Der Nutzer **{1}** hat dem Nutzer **{2}** einen neuen Eintrag hinzugefügt. Siehe `{3}user {4} show {5}` für mehr Infos.",
+
         "log.new_alias.title": "Neuer Alias `[ {1} ]`",
         "log.new_alias.body": "Der Befehl `{1}` hat nun den Alias `{2}`.",
+
         "log.removed_alias.title": "Alias entfernt `[ {1} ]`",
         "log.removed_alias.body": "Der Alias `{1}` für den Befehl `{2}` wurde gelöscht.",
+
         "log.removed_all_alias.title": "Alle Alias entfernt `[ {1} ]`",
         "log.removed_all_alias.body": "Alle Aliasse für den Befehl `{1}` wurden entfernt.",
+
+        "log.kira_patching.title": "Pflaster rauf und gut ist! `[ {1} ]`",
+        "log.kira_patching.body": "Ein Patch wird in KIRA installiert. {1} stopft das Loch!",
+
+
 
         "command.user.user": "Benutzer",
         "command.user.not_found": "Benutzer nicht gefunden.",
@@ -178,14 +193,340 @@
         },
 
         "command.help.command.joke": {
-            "std": "Gibt einen zufälligen Witz aus.",
+            "std": "Lässt KIRA einen Witz erzählen.",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
-                    "help": "Gibt einen zufälligen Witz aus."
+                    "help": "Lässt KIRA einen Witz erzählen. Dies funktioniert nur alle 5 Minuten."
                 }
             ]
         },
+
+        "command.help.command.user": {
+            "std": "Gibt Informationen zu einem Nutzer.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user>",
+                    "help": "Gibt Informationen zu dem Nutzer aus."
+                },
+                {
+                    "syntax": "{p}{c} <user> show",
+                    "help": "Alle Akteneinträge des Nutzers anzeigen."
+                },
+                {
+                    "syntax": "{p}{c} <user> show <entry>",
+                    "help": "Den Eintrag mit der ID <entry> des Nutzers <user> anzeigen."
+                }
+            ]
+        },
+
+        "command.help.command.activate": {
+            "std": "Aktiviert einen Befehl auf dem Server.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <command>",
+                    "help": "Aktiviert den Befehl <command> auf dem Server."
+                }
+            ]
+        },
+
+        "command.help.command.deactivate": {
+            "std": "Deaktiviert einen Befehl auf dem Server.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <command>",
+                    "help": "Deaktiviert den Befehl <command> auf dem Server."
+                }
+            ]
+        },
+
+        "command.help.command.alias": {
+            "std": "Erstellt einen Alias für einen Befehl.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <command> <alias>",
+                    "help": "Erstellt den Alias <alias> für den Befehl <command> auf dem Server."
+                },
+                {
+                    "syntax": "{p}{c} <command>",
+                    "help": "Zeige alle Aliasse für <command>."
+                },
+                {
+                    "syntax": "{p}{c} <alias> which",
+                    "help": "Zeigt an, für welchen Befehl der Alias <alias> steht."
+                }
+            ]
+        },
+
+        "command.help.command.ban": {
+            "std": "Bannt einen Nutzer.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <why>",
+                    "help": "Bannt den Nutzer <user> und erstellt einen Eintrag in seiner Akte mit <why>. <why> wird dem Nutzer privat geschrieben."
+                }
+            ]
+        },
+
+        "command.help.command.unban": {
+            "std": "Entbannt einen Nutzer.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user>",
+                    "help": "Entbannt den Nutzer <user>."
+                }
+            ]
+        },
+
+        "command.help.command.config": {
+            "std": "Legt die KIRA-Konfiguration für den Server fest.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} feed add <feedURL> <channelID>",
+                    "help": "Erstellt einen neuen RSS-Feed mit dem RSS-URL <feedURL> in dem Channel mit der ID <channelID>."
+                },
+                {
+                    "syntax": "{p}{c} feed color <feedID> <color>",
+                    "help": "Setzt die Farbe des RSS-Feeds mit der ID <feedID> auf <color>. Bitte beachte, dass die Farbe eine Hex-Farbe sein muss."
+                },
+                {
+                    "syntax": "{p}{c} feed title <feedID> <title>",
+                    "help": "Setzt den Titel des RSS-Feeds mit der ID <feedID> auf <title>."
+                },
+                {
+                    "syntax": "{p}{c} feed delete <feedID>",
+                    "help": "Entfernt den RSS-Feed mit der ID <feedID>."
+                },
+                {
+                    "syntax": "{p}{c} feed list",
+                    "help": "Listet alle RSS-Feeds für alle Channel auf."
+                },
+                {
+                    "syntax": "{p}{c} feed list <channelID>",
+                    "help": "Listet alle RSS-Feeds für den Channel mit der ID <channelID> auf."
+                },
+                {
+                    "syntax": "{p}{c} language list",
+                    "help": "Listet alle Sprachen und deren IDs auf."
+                },
+                {
+                    "syntax": "{p}{c} language <languageID>",
+                    "help": "Setzt die Sprache von KIRA zur Sprache mit der ID <languageID>."
+                },
+                {
+                    "syntax": "{p}{c} translation <key> <value>",
+                    "help": "Setzt für den Server die Übersetzung mit dem Schlüssel <key> auf den Wert <value>."
+                },
+                {
+                    "syntax": "{p}{c} translation <key> delete",
+                    "help": "Entfernt die serverseitig festgelegte Übersetzung mit dem Schlüssel <key>."
+                },
+                {
+                    "syntax": "{p}{c} delu <user>",
+                    "help": "Entfernt alle Daten des Nutzers <user>."
+                },
+                {
+                    "syntax": "{p}{c} log <channelID>",
+                    "help": "Setzt den Log-Channel zu <channelID>. KIRA logt in diesen Channel neue Nutzer, Speicheraktivität, Bans, Unbans und weiteres."
+                }
+            ]
+        },
+
+        "command.help.command.kick": {
+            "std": "Kickt einen Nutzer.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <why>",
+                    "help": "Kickt den Nutzer <user>, ein Eintrag mit dem Inhalt <why> wird seiner Akte hinzugefügt. Dem Nutzer wird <why> zukommen gelassen."
+                }
+            ]
+        },
+
+        "command.help.command.perm": {
+            "std": "Setzt die KIRA-Berechtigung für Nutzer oder Rollen.",
+            "subcommands": [
+                {
+                    "syntax": "Allgemeine Infos",
+                    "help": "Jeder Befehl braucht eine Berechtigung, um ausgeführt zu werden. Bei einem Nutzer oder einer seiner Rollen muss eine Berechtigung aktiviert sein, damit er einen Befehl ausführen kann."
+                },
+                {
+                    "syntax": "Abkürzungen",
+                    "help": "Die Berechtigung `a.*` ist gleichbedeutend mit `a.b.c.d`. Daher markiert eine Zeichenkette mit einem Stern also jede Berechtigung, die mit dieser Zeichenkette beginnt."
+                },
+                {
+                    "syntax": "Geltungsbereich von Berechtigungen",
+                    "help": "Die Berechtigung eines Nutzers ist höherrangig als die seiner Rolle, deaktivierte Berechtigung deaktivieren bereits aktivierte. Dies ist mit den Sternen verknüpfbar (bspw. `command.*` aktivieren und `command.joke` deaktivieren)."
+                },
+                {
+                    "syntax": "{p}{c} user <user> enable <permission>",
+                    "help": "Gibt dem Benutzer <user> die Berechtigung <permission>."
+                },
+                {
+                    "syntax": "{p}{c} user <user> disable <permission>",
+                    "help": "Nimmt dem Benutzer <user> die Berechtigung <permission>."
+                },
+                {
+                    "syntax": "{p}{c} user <user> remove <permission>",
+                    "help": "Entfernt die Berechtigung <permission> des Nutzers <user>. (Die Berechtigung wird von der Liste der aktivierten/deaktivierten Berechtigungen entfernt.)"
+                },
+                {
+                    "syntax": "{p}{c} user <user> show",
+                    "help": "Zeigt die aktivierten/deaktivierten Berechtigungen von dem Nutzer <user> an."
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> enable <permission>",
+                    "help": "Aktiviert die Berechtigung <permission> für die Rolle mit der ID <rollID>."
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> disable <permission>",
+                    "help": "Deaktiviert die Berechtigung <permission> für die Rolle mit der ID <rollID>."
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> remove <permission>",
+                    "help": "Entfernt die Berechtigung <permission> für die Rolle mit der ID <rollID>.  (Die Berechtigung wird von der Liste der aktivierten/deaktivierten Berechtigungen entfernt.)"
+                },
+                {
+                    "syntax": "{p}{c} roll <rollID> show",
+                    "help": "Zeigt alle aktivierten/deaktivierten Berechtigungen der Rolle mit der ID <rollID> an."
+                }
+            ]
+        },
+
+        "command.help.command.reload": {
+            "std": "Lädt die Einstellungen des Servers neu.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Lädt die Einstellungen des Servers neu von der Festplatte."
+                }
+            ]
+        },
+
+        "command.help.command.patch": {
+            "std": "Installiert einen Patch für KIRA.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <URL>",
+                    "help": "Installiert einen Patch für KIRA aus der Datei von <URL>."
+                }
+            ]
+        },
+
+        "command.help.command.save": {
+            "std": "Speichert die Einstellungen des Servers.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Die Einstellungen werden auf die Festplatte geschrieben."
+                }
+            ]
+        },
+
+        "command.help.command.say": {
+            "std": "Schreibt eine Nachricht als KIRA.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <channel> <message>",
+                    "help": "Schreibt die Nachricht <message> in den Channel <channel>."
+                }
+            ]
+        },
+
+        "command.help.command.report": {
+            "std": "Fügt einen Eintrag in die Akte eines Nutzers hinzu.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <message>",
+                    "help": "Fügt einen Eintrag mit dem Inhalt <message> in die Akte des Nutzers <user> hinzu."
+                }
+            ]
+        },
+
+        "command.help.command.unreport": {
+            "std": "Löscht einen Eintrag aus der Akte eines Nutzers.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <user> <entryID>",
+                    "help": "Löscht den Eintrag mit der ID <entryID> aus der Akte des Nutzers <user>."
+                }
+            ]
+        },
+
+        "command.help.command.thanks": {
+            "std": "Vergibt Danke.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Lässt KIRA ein Danke zukommen."
+                },
+                {
+                    "syntax": "{p}{c} <user>",
+                    "help": "Lässt KIRA den Nutzer <user> danken."
+                }
+            ]
+        },
+
+        "command.help.command.ping": {
+            "std": "Pong!",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Pong!"
+                }
+            ]
+        },
+
+        "command.help.command.exit_hard": {
+            "std": "Beendet KIRA.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Beendet KIRA."
+                }
+            ]
+        },
+
+        "command.help.command.unalias": {
+            "std": "Entfernt einen Alias.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <alias>",
+                    "help": "Entfernt den Alias <alias>."
+                }
+            ]
+        },
+
+        "command.help.command.reload_hard": {
+            "std": "Lädt KIRA komplett neu.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Lädt alle Server und Übersetzungen neu."
+                }
+            ]
+        },
+
+        "command.help.command.syntax": {
+            "std": "Hilfe zu KIRAs Befehlssyntax.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Zeigt eine Hilfenachricht zu KIRAs Syntax an."
+                }
+            ]
+        },
+
+        "command.help.command.refresh": {
+            "std": "Liest die Discord-Nutzer eines Servers neu ein.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Liest die Discord-Nutzer eines Servers neu ein."
+                }
+            ]
+        },
+
+        "command.help.syntax": "Auf Hilfeseiten ist alles, was in `<` und `>` steht, ein notwendiger Platzhalter. Alles in `[` und `]` sind bedingte Platzhalter, die nicht unbedingt da sein müssen. Als Beispiel der Befehl:\n```!help [command]```[command] muss nicht angegeben werden.\n\nAlles was nicht in Anführungszeichen steht, wird bei Leerzeichen getrennt. Als Beispiel: ```!hallo welt aha```\n`hallo` ist der Befehl, `welt` und `aha` sind zwei Argumente. Möchte man `Hallo Welt!` als ein Argument, muss man es in Anführungszeichen schreiben.\nBeispiel: ```!a \"Hallo Welt!\"```",
 
         "command.help.welcome": [
             "Sei willkommen, {1}!",
