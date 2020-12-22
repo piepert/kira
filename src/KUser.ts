@@ -258,10 +258,14 @@ export class KUser {
     }
 
     public setBanState(state: boolean) {
-
+        this.banned = state;
     }
 
     public ban(reason: string, msg: Message, conf: KConf) {
+        this.addEntry(reason, msg, conf);
+    }
+
+    public kick(reason: string, msg: Message, conf: KConf) {
         this.addEntry(reason, msg, conf);
         this.banned = true;
         this.lastly_banned = (new Date()).toUTCString();

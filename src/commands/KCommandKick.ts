@@ -57,7 +57,7 @@ export class KCommandKick extends KCommand {
         }
 
         server.getUser(user)
-            .ban(("[ KIRA-KICK "+(new Date()).toUTCString()+" ] "+message_string.trim()).trim(),
+            .kick(("[ KIRA-KICK "+(new Date()).toUTCString()+" ] "+message_string.trim()).trim(),
                 msg,
                 conf);
 
