@@ -226,7 +226,7 @@ export class KConf {
         return this.userToID(guild, user1, server) == this.userToID(guild, user2, server);
     }
 
-    public save(bot: Client) {                                                                      // save all settings for servers
+    public save(bot: Client, is_auto_save: boolean) {                                               // save all settings for servers
         if (this.servers == undefined || this.servers == null)                                      // when not inited, init servers
             this.servers = new KServerManager();
 
@@ -251,11 +251,11 @@ export class KConf {
 
         for (let index in this.servers.getServers()) {                                              // iterate through all servers
             console.log("");
-            this.saveServer(this.servers.getServers()[index])
+            this.saveServer(this.servers.getServers()[index], is_auto_save)
         }
     }
 
-    public saveServer(server: KServer) {
+    public saveServer(server: KServer, is_auto_save: boolean) {
         if (server == undefined) {
             console.log("[ ERROR ] Couldn't save settings for server server:",
                 server.getID(),
@@ -265,19 +265,21 @@ export class KConf {
 
         console.log("[ SAVE ] Saving server "+server.getID()+"...");
 
-        let embed = new MessageEmbed()
-                .setColor("#fc6f6f")
-                .setTitle(this.getTranslationForServer(
-                    server.id,
-                    "log.kira_saving.title")
-                        .replace("{1}", (new Date().toLocaleString())))
-                .setDescription(this.getTranslationForServer(
-                    server.id,
-                    "log.kira_saving.body"));
+        if (is_auto_save != true) {
+            let embed = new MessageEmbed()
+                    .setColor("#fc6f6f")
+                    .setTitle(this.getTranslationForServer(
+                        server.id,
+                        "log.kira_saving.title")
+                            .replace("{1}", (new Date().toLocaleString())))
+                    .setDescription(this.getTranslationForServer(
+                        server.id,
+                        "log.kira_saving.body"));
 
-        this.logMessageToServer(this.client,
-            server.id,
-            embed);
+            this.logMessageToServer(this.client,
+                server.id,
+                embed);
+        }
 
         let server_path = this.path_servers_dir+server.getID()+"/";
         let rss_caches_path = this.path_servers_dir+server.getID()+"/rss_cache/";

@@ -82,12 +82,12 @@ class KIRA {
         setInterval(this.minuteScheduler, 1000*60, this.client);
 
         setInterval((bot) => {                                                                      // auto save every 60 minutes
-            conf.save(bot);
+            conf.save(bot, true);
         }, 1000*60*60, this.client)
     }
 
     public async exit() {
-        await conf.save(this.client);
+        await conf.save(this.client, false);
         process.exit(0);
     }
 
