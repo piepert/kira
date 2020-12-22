@@ -1,5 +1,5 @@
 import { exec, spawn } from "child_process";
-import { TextChannel } from "discord.js";
+import { Message, MessageEmbed, TextChannel } from "discord.js";
 import { mkdirSync, rmdirSync, writeFileSync } from "fs";
 import fs from "fs-extra";
 import { IncomingMessage } from "http";
@@ -11,9 +11,27 @@ var rimraf = require("rimraf");
 var https = require('https');
 
 export class KPatcher {
-    public static async patch(channel: TextChannel, url: string, conf: KConf) {
+    public static async patch(msg: Message, url: string, conf: KConf) {
+        let channel = msg.channel as TextChannel;
+
         console.log("[ PATCH ] Installing patch from", url);
-        conf.save(conf.client);
+        conf.save(conf.client, false); // because a patch isn't triggered automatically, this save should be logged
+
+        let embed = new MessageEmbed()
+            .setColor("#fc6f6f")
+            .setTitle(conf.getTranslationForServer(
+                channel.guild.id,
+                "log.kira_patching.title")
+                    .replace("{1}", (new Date().toLocaleString())))
+
+            .setDescription(conf.getTranslationForServer(
+                channel.guild.id,
+                "log.kira_patching.body")
+                    .replace("{1}", "<@!"+msg.author.id+">"));
+
+        conf.logMessageToServer(conf.client,
+            channel.guild.id,
+            embed);
 
         // create backup of static directory; delete translations from the
         // backup to make sure, that the translation files are getting replaced

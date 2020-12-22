@@ -36,8 +36,6 @@ export class KCommandPatch extends KCommand {
         client: Client) {
 
         msg.channel.send("Starting patch now...");
-        KPatcher.patch(msg.channel as TextChannel,
-            command.getArguments()[0],
-            conf);
+        KPatcher.patch(msg, command.getArguments()[0], conf);
     }
 }
