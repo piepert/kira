@@ -20,6 +20,17 @@ function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function getRandomFloat(min: number, max: number) {
+    min = min;
+    max = max;
+
+    return (Math.random() * (max - min)) + min;
+}
+
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 export class KCommandDice extends KCommand {
     constructor() {
         super()
@@ -46,14 +57,27 @@ export class KCommandDice extends KCommand {
         let min = 1;
         let max = 6;
 
-        if (command.getArguments().length == 2
-            && /[1-9]+[0-9]*/.test(command.getArguments()[0])
-            && /[1-9]+[0-9]*/.test(command.getArguments()[1])) {
+        if (command.getArguments().length == 2) {
+            if (!isNumeric(command.getArguments()[0]) ||
+                !isNumeric(command.getArguments()[0])) {
 
-            min = parseInt(command.getArguments()[0]);
-            max = parseInt(command.getArguments()[1]);
+                msg.channel.send(conf.getTranslationStr(msg, "command.dice.only_numbers"));
+                return;
+            }
+
+            min = parseFloat(command.getArguments()[0]);
+            max = parseFloat(command.getArguments()[1]);
         }
 
-        msg.channel.send(getRandomInt(min, max));
+        if (min > max) {
+            msg.channel.send(conf.getTranslationStr(msg, "command.dice.min_too_big"));
+            return;
+        }
+
+        if ((min.toString()+"_"+max.toString()).indexOf('.') == -1) {                               // check if one of them is an integer
+            msg.channel.send(getRandomInt(min, max));                                               // ... if yes, generate random int
+        } else {
+            msg.channel.send(Math.floor(getRandomFloat(min, max)*100) / 100);                       // ... if no, generate random float
+        }
     }
 }
