@@ -158,7 +158,7 @@ export class KChannelConfig {
                     .setTitle(this.getTitle())
                     .setDescription("["+entry.title+"]("+entry.url+")")
                     .setFooter(entry.author_displayname,
-                        "http://www.wikidot.com/avatar.php?userid="+entry.author_userid);
+                        "http://www.wikidot.com/avatar.php?userid="+entry.author_userid+"&timestamp="+Date.now());
 
                 if (this.color == undefined) {
                     embed.setColor('#e6d9ad')
@@ -190,7 +190,7 @@ export class KChannelConfig {
                         (entry.subtext != "unknown" && entry.subtext.trim() != "" ? "  –  "+entry.subtext : ""))
 
                     .setFooter(entry.author_displayname,
-                        "http://www.wikidot.com/avatar.php?userid="+entry.author_userid);
+                        "http://www.wikidot.com/avatar.php?userid="+entry.author_userid+"&timestamp="+Date.now());
 
                 // console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", {embed: embed});
 
