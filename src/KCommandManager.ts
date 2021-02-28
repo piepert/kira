@@ -25,6 +25,9 @@ import { KCommandPatch } from "./commands/KCommandPatch";
 import { KCommandConfig } from "./commands/KCommandConfig";
 import { KCommandWelcome } from "./commands/KCommandWelcome";
 import { KCommandSyntax } from "./commands/KCommandSyntax";
+import { KCommandGetLog } from "./commands/KCommandGetLog";
+import { KCommandAutorespond } from "./commands/KCommandAutorespond";
+import { KCommandStat } from "./commands/KCommandStat";
 
 export class KCommandManager {
     static commands: KCommand[] = [];
@@ -57,6 +60,9 @@ export class KCommandManager {
         this.commands.push(new KCommandConfig());
         this.commands.push(new KCommandWelcome());
         this.commands.push(new KCommandSyntax());
+        this.commands.push(new KCommandGetLog());
+        this.commands.push(new KCommandAutorespond());
+        this.commands.push(new KCommandStat());
     }
 
     public static getCommand(name: string): KCommand {
