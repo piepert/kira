@@ -12,6 +12,13 @@ import { KServer } from "../KServer";
 import { KUser } from "../KUser";
 import { Client } from "@typeit/discord/Client";
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 export class KCommandJoke extends KCommand {
     constructor() {
         super()
@@ -35,13 +42,21 @@ export class KCommandJoke extends KCommand {
         sender: KUser,
         client: Client) {
 
-        let joke = await conf.getTranslationManager()
-            .getRandomJoke(server.getLanguage());
+        if (server.getJokeCache() == undefined ||
+            server.getJokeCache().length == 0) {
 
-        if (joke == undefined) {
-            joke = conf.getTranslationStr(msg, "command.joke.not_found");
+            let jokes = await conf.getTranslationManager()
+                .getJokes(server.getLanguage());
+
+            if (jokes == undefined) {
+                msg.channel.send(conf.getTranslationStr(msg, "command.joke.not_found"));
+                return;
+            }
+
+            shuffleArray(jokes);
+            server.setJokeCache(jokes);
         }
 
-        msg.channel.send(joke);
+        msg.channel.send(server.getJokeCache().shift());
     }
 }

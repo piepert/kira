@@ -21,10 +21,26 @@ export class KTranslationManager {
         return undefined;
     }
 
+    public getJokes(lang_code: string): string[] {
+        for (let index in this.translations) {
+            if (this.translations[index].getLangCode() == lang_code) {
+                let file = this.translations[index].joke_file;
+                let jokes = [];
+
+                if (!existsSync(file))
+                    return undefined;
+
+                return readFileSync(file, { encoding: "utf-8" })
+                    .split("\n~~\n");
+            }
+        }
+
+        return undefined;
+    }
+
     public async getRandomJoke(lang_code: string): Promise<string> {
         for (let index in this.translations) {
-            if (this.translations[index].getLangCode() == lang_code)
-            {
+            if (this.translations[index].getLangCode() == lang_code) {
                 let file = this.translations[index].joke_file;
                 let jokes = [];
 
