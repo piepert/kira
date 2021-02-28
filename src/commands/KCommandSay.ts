@@ -39,6 +39,11 @@ export class KCommandSay extends KCommand {
 
         if (channel == undefined) {
             channel = msg.guild.channels.cache.find(ch =>
+                ch.id.toString() == args[0]);
+        }
+
+        if (channel == undefined) {
+            channel = msg.guild.channels.cache.find(ch =>
                 ch.id.toString() == args[0].substr(2, args[0].length-3));
         }
 
