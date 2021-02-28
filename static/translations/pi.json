@@ -1,10 +1,10 @@
 {
-    "lang": "Deutsch/German",
-    "jokes": "translations/jokes/jokes-de.txt",
+    "lang": "Pideutsch/TheOtherGerman",
+    "jokes": "translations/jokes/jokes-pi.txt",
     "strings": {
-        "general.yes": "Ja",
-        "general.no": "Nein",
-        "general.deactivated": "Der Befehl wurde auf diesem Server deaktiviert.",
+        "general.yes": "Aye",
+        "general.no": "Narr!",
+        "general.deactivated": "Solch ein Landgestotter ist auf diesem Schiff verboten!",
 
         "log.user_changed.display_name": "Displayname von {1} geändert\n`[ {2} ]`",
         "log.user_changed.display_name.old": "Alt",
@@ -45,43 +45,43 @@
 
 
 
-        "command.user.user": "Benutzer",
-        "command.user.not_found": "Benutzer nicht gefunden.",
-        "command.user.syntax_error": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe `{1}hilfe user` für Hilfe.",
-        "command.user.avatar_not_found": "Nicht gefunden.",
-        "command.user.creation_date": "Erstellungsdatum",
+        "command.user.user": "Matrose",
+        "command.user.not_found": "Wen? Dieser Matrose ist wohl im Sturm von Bord gegangen.",
+        "command.user.syntax_error": ". Siehe `{1}hilfe user` für Hilfe.",
+        "command.user.avatar_not_found": "Flaschenpost ist flöten gegangen.",
+        "command.user.creation_date": "Rekrutierungsdatum",
         "command.user.name": "Name",
-        "command.user.message_count": "Nachrichtenanzahl (Schätzung)",
-        "command.user.entries": "Einträge",
+        "command.user.message_count": "Schwafel-Zäler (Schätzung)",
+        "command.user.entries": "Logbuch-Einträge",
 
-        "command.user.no_entries": "Dieser Benutzer hat keine Einträge.",
-        "command.user.entry_not_found": "Eintrag nicht gefunden.",
+        "command.user.no_entries": "Dieser Benutzer hat kein Logbuch!",
+        "command.user.entry_not_found": "Logbuch-Eintrag nicht gefunden.",
 
         "command.user.report.content": "Inhalt",
-        "command.user.report.date": "Erstellungsdatum",
+        "command.user.report.date": "Log vom",
         "command.user.report.author": "Autor",
-        "command.user.report.url": "Nachrichten-URL",
+        "command.user.report.url": "Flaschenpost",
 
-        "command.reload.start": "Reload startet jetzt.",
-        "command.reload.finished": "Reload beendet.",
-        "command.save.start": "Einstellungen gespeichert.",
+        "command.reload.start": "Ab in die Koje!",
+        "command.reload.finished": "Yo-ho-ho!",
+        "command.save.start": "Das merke ich mir!",
 
-        "command.report.reported": "Der Benutzer {1} wurde gemeldet.",
-        "command.report.unreported": "Der Eintrag `{1}` wurde entfernt.",
-        "command.report.user_not_found": "Der Benutzer {1} wurde nicht gefunden.",
+        "command.report.reported": "Matrose {1} hat nun einen neuen Logbuch-Eintrag.",
+        "command.report.unreported": "Der Logbuch-Eintrag `{1}` wurde entfernt.",
+        "command.report.user_not_found": "Wen? {1}? Dieser Matrose ist wohl im Sturm von Bord gegangen.",
 
-        "command.ban.banned": "Der Benutzer {1} wurde gebannt. Ein Eintrag wurde der Akte hinzugefügt.",
-        "command.ban.user_msg": "Du wurdest aus folgendem Grund von {1} gebannt: {2}",
-        "command.ban.user_not_found": "Der Benutzer {1} wurde nicht gefunden.",
-        "command.unban.unbanned": "Der Benutzer {1} wurde entbannt.",
-        "command.unban.user_msg": "Du wurdest auf {1} entbannt.",
+        "command.ban.banned": "Der Matrose {1} wurde von der Planke gestoßen und an die Haie verfüttert. So stet's auch in seinem Logbuch!",
+        "command.ban.user_msg": "Du wurdest vom Bord der {1} gestoßen und wirst nie wieder zurückkehren, da: {2}",
+        "command.ban.user_not_found": "Wen? {1}? Dieser Matrose ist wohl im Sturm von Bord gegangen.",
+        "command.unban.unbanned": "Der Matrose {1} darf das Schiff nun wieder betreten!",
+        "command.unban.user_msg": "Das Schiff {1} empfängt dich wieder.",
 
-        "command.kick.kicked": "Der Benutzer {1} wurde gekickt. Ein Eintrag wurde der Akte hinzugefügt.",
+        "command.kick.kicked": "Der Matrose {1} wurde von der Planke gestoßen, leider sind aber gerade keine Haie vor Ort. Vielleicht taucht er wieder auf, wer weiß. So stet's auch in seinem Logbuch.",
         "command.kick.user_msg": "Du wurdest aus folgendem Grund von {1} gekickt: {2}",
-        "command.kick.user_not_found": "Der Benutzer {1} wurde nicht gefunden.",
+        "command.kick.user_not_found": "Wen? {1}? Dieser Matrose ist wohl im Sturm von Bord gegangen.",
 
-        "command.refresh.refreshed_sg": "Die Benutzer wurden neu eingelesen. Es wurde {1} neuer Nutzer gefunden.",
-        "command.refresh.refreshed_pl": "Die Benutzer wurden neu eingelesen. Es wurden {1} neue Nutzer gefunden.",
+        "command.refresh.refreshed_sg": "Das Schiff wird geentert! Ach ne, doch nicht. Es wurde {1} neuer Matrose gefunden.",
+        "command.refresh.refreshed_pl": "Das Schiff wird geentert! Ach ne, doch nicht. Es wurden {1} neue Matrosen gefunden.",
 
         "command.perm.show_role_permissions": "Rolle",
         "command.perm.show_user_permissions": "Benutzer",
@@ -93,11 +93,11 @@
         "command.perm.disabled": "Berechtigung `{1}` deaktiviert.",
         "command.perm.removed": "Berechtigung `{1}` entfernt.",
 
-        "command.deactivate.command_not_found": "Befehl `{1}` nicht gefunden.",
-        "commands.deactivate.deactivated": "Der Befehl wurde deaktiviert.",
+        "command.deactivate.command_not_found": "`{1}`? Hast du Landluft geschnappt, oder was?",
+        "commands.deactivate.deactivated": "Dieses Langestotter wird hier nicht mehr akzeptiert!",
 
-        "command.activate.command_not_found": "Befehl `{1}` nicht gefunden.",
-        "commands.activate.activated": "Der Befehl wurde aktiviert.",
+        "command.activate.command_not_found": "`{1}`? Hast du Landluft geschnappt, oder was?",
+        "commands.activate.activated": "Sicher? Nun gut... Dann lass die sabbeln.",
 
         "command.alias.not_found": "Alias `{1}` nicht gefunden!",
         "command.alias.success": "Befehl `{1}` hat nun den Alias `{2}`!",
@@ -111,19 +111,19 @@
         "command.unalias.cleared": "Alias `{1}` wurde entfernt.",
         "command.unalias.all_cleared": "Alle Aliasse für `{1}` entfernt.",
 
-        "command.say.channel_not_found": "Der Channel `{1}` wurde nicht gefunden.",
-        "command.exit": "KIRA stoppt jetzt. Ich wünsche einen guten Tag.",
+        "command.say.channel_not_found": "`{1}`? Auf welchem Deck soll das sein?",
+        "command.exit": "Argh! Wir sinken! Beim Klabautermann!",
 
-        "command.joke.frequency": "Um Spam zu vermeiden kann der Witze-Befehl nur einmal alle 5 Minuten ausgeführt werden.",
-        "command.joke.not_found": "Leider habe ich für die Sprache des Servers keine Witze gefunden. Tut mir leid :(.",
+        "command.joke.frequency": "Genug Witz für jetzt! Ihr sollt die Planken schrubben, sagt Captain KIRA!",
+        "command.joke.not_found": "Keine Witze in Piratensprache? Da häng ich doch den Klüver!",
 
-        "command.config.channel_not_found": "Der Channel wurde nicht gefunden!",
-        "command.config.not_text_channel": "Der Channel muss ein Text-Channel sein!",
+        "command.config.channel_not_found": "`{1}`? Auf welchem Deck soll das sein?",
+        "command.config.not_text_channel": "Versenk mich doch! Da schrei ich doch nicht rein!",
         "command.config.feed_not_found": "Der Feed existiert nicht! Liste alle Feeds mit `{1}config feed list` auf.",
         "command.config.list_for_channel": "**__Channel__ {1}**\n\n**Feed-ID** - **URL** - **Titel**\n{2}",
         "command.config.channel_added": "Channel-Feed wurde hinzugefügt!",
         "command.config.channel_deleted": "Channel-Feed wurde entfernt!",
-        "command.config.user_deleted": "User wurde entfernt!",
+        "command.config.user_deleted": "Von Board mit ihm!",
         "command.config.channel_deleted.error": "Channel-Feed konnte nicht entfernt werden, da es einen Fehler im Dateisystem gab!",
         "command.config.user_deleted.error": "User konnte nicht entfernt werden, da es einen Fehler im Dateisystem gab!",
         "command.config.translation_deleted": "Die Übersetzung wurde entfernt!",
@@ -134,145 +134,145 @@
         "command.config.log_set": "Alle Log-Nachrichten werden von nun an in {1} gepostet.",
         "command.config.list_translations": "Alle Translations, die für diesen Server geändert wurden:\n**Key** - **Wert**\n\n",
 
-        "command.dice.only_numbers": "Eine der beiden Parameter war keine Zahl.",
-        "command.dice.min_too_big": "Die zweite Zahl muss größer sein als die Erste!",
+        "command.dice.only_numbers": "Mit solchen Zahlen zählt dein Captain nicht!",
+        "command.dice.min_too_big": "Du Trunkenbold! Deine Faselei ergibt doch gar keinen Sinn!",
 
-        "command.not_found": "Befehl `{1}` nicht gefunden!",
-        "command.too_long": "Der Befehl war zu lang! Du überforderst mich!",
-        "command.no_permission": "Du hast nicht die Berechtigung, diesen Befehl auszuführen.",
-        "command.invalid_syntax": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe `{1}hilfe {2}` für Hilfe.",
-        "command.user_not_found": "Der Benutzer `{1}` wurde nicht gefunden!",
+        "command.not_found": "`{1}`? Hast du Landluft geschnappt, oder was?",
+        "command.too_long": "Du überforderst mich! Fass dich kurz!",
+        "command.no_permission": "Arrgh! Vergiss es, das darfst du nicht! Ein einfacher Matrose wie du schrubbt das Deck!",
+        "command.invalid_syntax": "Hast du Landluft geschnappt, oder was? Ich verstehe dich nicht! Schau ins Wörterbuch: `{1}hilfe {2}`",
+        "command.user_not_found": "Wen? {1}? Dieser Matrose ist wohl im Sturm von Bord gegangen.",
 
-        "command.autorespond.not_found": "Dieses Autorespond wurde nicht gefunden.",
-        "command.autorespond.added": "Autorespond wurde hinzugefügt.",
-        "command.autorespond.already_exists": "Dieses Autorespond existiert bereits!",
-        "command.autorespond.empty": "Auf diesem Server sind keine Auto-Antworten eingerichtet worden.",
-        "command.autorespond.deleted": "Auto-Respond wurde gelöscht.",
+        "command.autorespond.not_found": "Argh, wills du mich verkackeiern? Sowas kenne ich doch gar nicht!",
+        "command.autorespond.added": "Ahoi Brause! So soll's sein!",
+        "command.autorespond.already_exists": "Mal ganz langsam. Das kenne ich schon. Du musst dich schon entscheiden, Matrose!",
+        "command.autorespond.empty": "Alles alle!",
+        "command.autorespond.deleted": "So, wech damit!",
 
-        "command.stat.name": "Name",
-        "command.stat.nothing_found": "Deine Suche ergab nichts.",
-        "command.stat.error": "Syntax-Fehler bei der Suche. Sehen sie den Hilfe-Befehl für mehr Infos.",
-
-        "command.help.list.title": "Liste von KIRA-Befehlen",
-        "command.help.list.footer": "Für mehr Hilfe zu einem bestimmten Befehl, schreibe `{1}help <command>` (ohne < und >).",
-        "command.help.no_help_found": "Keine Hilfe für diesen Befehl gefunden.",
+        "command.help.list.title": "Das Piratenwörterbuch",
+        "command.help.list.footer": "Immernoch nichts verstanden? `{1}help <command>` (ohne < und >).",
+        "command.help.no_help_found": "Für das Piratenwort gibts keine Erklärung.",
         "command.help.sub.title": "Hilfe für {1}{2}",
         "command.help.sub.aliases": "Aliasse",
 
+        "command.stat.name": "Name",
+        "command.stat.nothing_found": "Auf all den Schiffskarten wurde nix gefunden!",
+        "command.stat.error": "Syntax-Fehler bei der Suche. Sehen sie den Hilfe-Befehl für mehr Infos.",
+
         "command.help.command.help": {
-            "std": "Gibt eine Hilfe zu Befehlen an.",
+            "std": "Schwimmreifen für alle in Seenot.",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
-                    "help": "Listet die Befehle auf, zu denen du Zugriff hast."
+                    "help": "Schiffsbauhandbuch für alles, was du wissen musst. Deck schrubben reicht!"
                 },
                 {
                     "syntax": "{p}{c} all",
-                    "help": "Listet die Hilfe-Seite mit allen Befehlen auf, auch mit denen, auf die du keinen Zugriff hast."
+                    "help": "Handbuch für alle Schiffsaufgaben!"
                 },
                 {
                     "syntax": "{p}{c} <command>",
-                    "help": "Listet die Hilfe-Seite für einen bestimmten Befehl auf."
+                    "help": "Immernoch nix kapiert? Du sollst ja auch das Deck schrubben und nicht in Büchern welzen!"
                 }
             ]
         },
 
         "command.help.command.welcome": {
-            "std": "Begrüßt einen Nutzer.",
+            "std": "Ahoi!",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
-                    "help": "Schreibt eine Begrüßungsnachricht in den Chat."
+                    "help": "Ahoi an alle!"
                 },
                 {
                     "syntax": "{p}{c} <nutzer>",
-                    "help": "Begrüßt den Nutzer <nutzer> mit einer zufälligen Nachricht."
+                    "help": "Ahoi an <nutzer>!"
                 }
             ]
         },
 
         "command.help.command.dice": {
-            "std": "Gibt eine zufällige Zahl aus.",
+            "std": "Seemannsspiele werden später gespielt!",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
-                    "help": "Gibt eine zufällige Zahl von 1 bis 6 aus."
+                    "help": "Von 1 bis 6 ist alles dabei."
                 },
                 {
                     "syntax": "{p}{c} <minimum> <maximum>",
-                    "help": "Gibt eine zufällige Zahl von <minimum> bis <maximum> aus."
+                    "help": "Kenne deine Grenzen, du Klabautermann!"
                 }
             ]
         },
 
         "command.help.command.joke": {
-            "std": "Lässt KIRA einen Witz erzählen.",
+            "std": "Arr, arr, arr! Oder wie auch immer Piraten lachen.",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
-                    "help": "Lässt KIRA einen Witz erzählen. Dies funktioniert nur alle 5 Minuten."
+                    "help": "Einmal alle 5 Minuten ist es auch dir erlaubt zu kichern, du Landratte!"
                 }
             ]
         },
 
         "command.help.command.user": {
-            "std": "Gibt Informationen zu einem Nutzer.",
+            "std": "Man schnüffelt nicht in anderer Logbücher!",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <user>",
-                    "help": "Gibt Informationen zu dem Nutzer aus."
+                    "help": "Grober Lebenslauf des Matrosen."
                 },
                 {
                     "syntax": "{p}{c} <user> show",
-                    "help": "Alle Akteneinträge des Nutzers anzeigen."
+                    "help": "Ganzes Logbuch."
                 },
                 {
                     "syntax": "{p}{c} <user> show <entry>",
-                    "help": "Den Eintrag mit der ID <entry> des Nutzers <user> anzeigen."
+                    "help": "Siehe dir eine Seite des Logbuchs genauer an!"
                 }
             ]
         },
 
         "command.help.command.activate": {
-            "std": "Aktiviert einen Befehl auf dem Server.",
+            "std": "Erlaube Ihnen etwas!",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <command>",
-                    "help": "Aktiviert den Befehl <command> auf dem Server."
+                    "help": "Aye, <command> ist jetzt wieder erlaubt!"
                 }
             ]
         },
 
         "command.help.command.deactivate": {
-            "std": "Deaktiviert einen Befehl auf dem Server.",
+            "std": "Verbiete Ihnen etwas!",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <command>",
-                    "help": "Deaktiviert den Befehl <command> auf dem Server."
+                    "help": "Aye, <command> ist jetzt verboten!"
                 }
             ]
         },
 
         "command.help.command.alias": {
-            "std": "Erstellt einen Alias für einen Befehl.",
+            "std": "Aalias, Aal im Glas!.",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <command> <alias>",
-                    "help": "Erstellt den Alias <alias> für den Befehl <command> auf dem Server."
+                    "help": "<alias>? Das ist also das gleiche wie <command>?"
                 },
                 {
                     "syntax": "{p}{c} <command>",
-                    "help": "Zeige alle Aliasse für <command>."
+                    "help": "Aale Aaliasse für <command>."
                 },
                 {
                     "syntax": "{p}{c} <alias> which",
-                    "help": "Zeigt an, für welchen Befehl der Alias <alias> steht."
+                    "help": "Aalias <alias>? Das steht doch für..."
                 }
             ]
         },
 
         "command.help.command.ban": {
-            "std": "Bannt einen Nutzer.",
+            "std": "Von Bord mit dem Verräter. Über die Planke mit ihm!",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <user> <why>",
@@ -282,7 +282,7 @@
         },
 
         "command.help.command.unban": {
-            "std": "Entbannt einen Nutzer.",
+            "std": "Ganz selten lassen wir auch mal einen Rettungsreifen ins Wasser fallen.",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <user>",
@@ -292,7 +292,7 @@
         },
 
         "command.help.command.config": {
-            "std": "Legt die KIRA-Konfiguration für den Server fest.",
+            "std": "Setz die Regeln für dieses Schiff, Captain.",
             "subcommands": [
                 {
                     "syntax": "{p}{c} feed add <feedURL> <channelID>",
@@ -346,7 +346,7 @@
         },
 
         "command.help.command.kick": {
-            "std": "Kickt einen Nutzer.",
+            "std": "Den Matrosen kann man auch auf ein anderes Schiff versetzen.",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <user> <why>",
@@ -356,7 +356,7 @@
         },
 
         "command.help.command.perm": {
-            "std": "Setzt die KIRA-Berechtigung für Nutzer oder Rollen.",
+            "std": "Wenn man ihnen keine Rechte gibt, meutern sie!",
             "subcommands": [
                 {
                     "syntax": "Allgemeine Infos",
@@ -416,7 +416,7 @@
         },
 
         "command.help.command.patch": {
-            "std": "Installiert einen Patch für KIRA.",
+            "std": "Löcher im Schiffsrumpf stopfen.",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <URL>",
@@ -436,7 +436,7 @@
         },
 
         "command.help.command.say": {
-            "std": "Schreibt eine Nachricht als KIRA.",
+            "std": "Captain Kira sagt, ...",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <channel> <message>",
@@ -446,7 +446,7 @@
         },
 
         "command.help.command.report": {
-            "std": "Fügt einen Eintrag in die Akte eines Nutzers hinzu.",
+            "std": "Neuer Eintrag in das Logbuch eines Matrosen.",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <user> <message>",
@@ -456,7 +456,7 @@
         },
 
         "command.help.command.unreport": {
-            "std": "Löscht einen Eintrag aus der Akte eines Nutzers.",
+            "std": "Reiß 'ne Seite aus dem Logbuch! Das fällt bestimmt niemandem auf!",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <user> <entryID>",
@@ -466,7 +466,7 @@
         },
 
         "command.help.command.thanks": {
-            "std": "Vergibt Danke.",
+            "std": "Danke? Seit wann bedankt sich ein Pirat?",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
@@ -490,7 +490,7 @@
         },
 
         "command.help.command.exit_hard": {
-            "std": "Beendet KIRA.",
+            "std": "Captain KIRA über die Planke schicken.",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
@@ -500,7 +500,7 @@
         },
 
         "command.help.command.unalias": {
-            "std": "Entfernt einen Alias.",
+            "std": "Weg mit dem Aalias!",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <alias>",
@@ -510,7 +510,7 @@
         },
 
         "command.help.command.reload_hard": {
-            "std": "Lädt KIRA komplett neu.",
+            "std": "Kippt einen kalten Eimer Wasser über Captain KIRA.",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
@@ -520,7 +520,7 @@
         },
 
         "command.help.command.syntax": {
-            "std": "Hilfe zu KIRAs Befehlssyntax.",
+            "std": "Keine Hilfe hier!",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
@@ -530,7 +530,7 @@
         },
 
         "command.help.command.refresh": {
-            "std": "Liest die Discord-Nutzer eines Servers neu ein.",
+            "std": "Stellt unbekannte Matrosen Captain KIRA vor.",
             "subcommands": [
                 {
                     "syntax": "{p}{c}",
@@ -540,7 +540,7 @@
         },
 
         "command.help.command.get_log": {
-            "std": "Schickt dir die Logs des Discord-Bots per Direktnachricht.",
+            "std": "Schickt dir die persönlichen Logbücher von Captain KIRA.",
             "subcommands": [
                 {
                     "syntax": "{p}{c} <date>",
@@ -558,7 +558,7 @@
         },
 
         "command.help.command.autorespond": {
-            "std": "Managet die automatischen Antworten uf bestimmte Nachrichten.",
+            "std": "Wer A sagt, ...",
             "subcommands": [
                 {
                     "syntax": "{p}{c} del <key>",
@@ -574,7 +574,7 @@
                 },
                 {
                     "syntax": "{p}{c} add <key> <response>",
-                    "help": "Auf die Nachricht <key> wird mit <respond> geantwortet. Hinweis: Nutze Anführungszeichen um <key> und <respond>, damit KIRA die beiden Nachrichten korrekt deuten kann."
+                    "help": "Auf die Nachricht <key> wird mit <response> geantwortet. Hinweis: Nutze Anführungszeichen um <key> und <respond>, damit KIRA die beiden Nachrichten korrekt deuten kann."
                 },
                 {
                     "syntax": "{p}{c} add \"<key>\" \"<response>\"",
@@ -624,35 +624,22 @@
         "command.help.syntax": "Auf Hilfeseiten ist alles, was in `<` und `>` steht, ein notwendiger Platzhalter. Alles in `[` und `]` sind bedingte Platzhalter, die nicht unbedingt da sein müssen. Als Beispiel der Befehl:\n```!help [command]```[command] muss nicht angegeben werden.\n\nAlles was nicht in Anführungszeichen steht, wird bei Leerzeichen getrennt. Als Beispiel: ```!hallo welt aha```\n`hallo` ist der Befehl, `welt` und `aha` sind zwei Argumente. Möchte man `Hallo Welt!` als ein Argument, muss man es in Anführungszeichen schreiben.\nBeispiel: ```!a \"Hallo Welt!\"```",
 
         "command.help.welcome": [
-            "Sei willkommen, {1}!",
-            "Sei willkommen! Fühl dich ganz wie zu Hause!",
-            "Schön, dich kennenzulernen, {1}!",
-            "Du wirst dich schnell an uns gewöhnen, {1}, falls nicht, bitte nicht dem Ethikkomitee sagen.",
-            "Ab zum Standort-M001 mit di-... ich meine, willkommen beim deutschen Zweig, {1}!"
+            "Ahoi, {1}!",
+            "Ahoi! Fang an die Decks zu schrubben!",
+            "{1}? Ein neuer Matrose? Setz dich und kipp dir eins hinter die Augenklappe!"
         ],
 
         "command.help.ywc": [
-            "Kein Problem!",
-            "<3",
-            "Ui, ein Danke!",
-            "Bitte, gern geschehen.",
-            "Bitteschön",
-            "Deine Anfrage hat so gut wie nichts meiner Rechenleistung beansprucht, kein Danke nötig.",
-            "Bitte.",
-            "Kein Problem.",
-            "Nicht dafür.",
-            "No Problemo.",
-            "Ach, das war doch gar nichts.",
-            "Ach, das war doch nichts.",
-            "Gern geschehen."
+            "Aye!",
+            "Zurück ans Deckschrubben!",
+            "Unter Seemännern hilft man sich aus!"
         ],
 
         "command.help.thanks": [
-            "Ich soll dir einen Dank ausrichten, {1}!",
-            "{1}, ich soll dir danken!",
-            "{1}, du hast ein Danke verdient!",
-            "Dankeschön, {1}!",
-            "Du hast ein Danke verdient, {1}!"
+            "Ein Matrose dankt, {1}!",
+            "{1}, der Herr der See sei dir dankbar!",
+            "Piraten danken nicht!",
+            "Aye aye, Captain!"
         ]
     }
 }

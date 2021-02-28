@@ -134,11 +134,24 @@
         "command.config.log_set": "Alle logs will be posted in {1}.",
         "command.config.list_translations": "All translations changed for the server:\n**Key** - **Value**\n\n",
 
+        "command.dice.only_numbers": "One of the parameters wasn't a number.",
+        "command.dice.min_too_big": "The second number has to be bigger than the first!",
+
         "command.not_found": "Command `{1}` not found!",
         "command.too_long": "Command was too long!",
         "command.no_permission": "You don't have the permissions to run this command.",
         "command.invalid_syntax": "Error: You didn't use the right syntax. See `{1}help {2}` for help.",
         "command.user_not_found": "User `{1}` couldn't be found!",
+
+        "command.autorespond.not_found": "This autorespond-message doesn't exist.",
+        "command.autorespond.added": "Autorespond was added.",
+        "command.autorespond.already_exists": "This autorespond already exists!",
+        "command.autorespond.empty": "No auto-responses defined on this server.",
+        "command.autorespond.deleted": "Auto-response was deleted.",
+
+        "command.stat.name": "Name",
+        "command.stat.nothing_found": "Your search has no results.",
+        "command.stat.error": "Error in your search syntax. Consult the help command for more information.",
 
         "command.help.list.title": "List of KIRA commands",
         "command.help.list.footer": "For further help, see `{1}help <command>` (without < and >).",
@@ -522,6 +535,88 @@
                 {
                     "syntax": "{p}{c}",
                     "help": "Refreshes KIRAs user list."
+                }
+            ]
+        },
+
+        "command.help.command.get_log": {
+            "std": "Sends you the logs of the bot via a direct message.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <date>",
+                    "help": "Sends you the log from the date <date>. Notice the date format DD.MM.YYYY!"
+                },
+                {
+                    "syntax": "{p}{c} last",
+                    "help": "Sends you the last 3 logs."
+                },
+                {
+                    "syntax": "{p}{c} current",
+                    "help": "Sends you the current log."
+                }
+            ]
+        },
+
+        "command.help.command.autorespond": {
+            "std": "Manages the auto-response messages.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} del <key>",
+                    "help": "Deletes a auto-response message. Please note: Use quotation marks around <key> to help KIRA get it correctly."
+                },
+                {
+                    "syntax": "{p}{c} del \"<key>\"",
+                    "help": "Deletes a auto-response message."
+                },
+                {
+                    "syntax": "{p}{c} list",
+                    "help": "Lists all auto-responses."
+                },
+                {
+                    "syntax": "{p}{c} add <key> <response>",
+                    "help": "The message <key> is automatically answered by KIRA with <response>. Please note: Use quotation marks around <key> and <respond> to help KIRA get it correctly."
+                },
+                {
+                    "syntax": "{p}{c} add \"<key>\" \"<response>\"",
+                    "help": "The message <key> is automatically answered by KIRA with <response>."
+                }
+            ]
+        },
+
+        "command.help.command.stat": {
+            "std": "Searches for users in the member-list of the server.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <queries...> [or <queries...> ...]",
+                    "help": "Picks all users, who fulfill certain queries. A user has to fulfill all queries to be listed. Multiple queries can be connected by \"or\"."
+                },
+                {
+                    "syntax": "(Query) last_message:<time>",
+                    "help": "The last message of a user has to be in a specific lapse of time: <time>."
+                },
+                {
+                    "syntax": "(Query) messages_count:<count> oder messages_count<<count> oder messages_count><count>",
+                    "help": "The user has to have more (>), less (<) or equal (:) messages compared to <count>. See the example at the end."
+                },
+                {
+                    "syntax": "(Query) has_permission:<permission>",
+                    "help": "The user has the permission <permission>."
+                },
+                {
+                    "syntax": "(Query) has_role:<id>",
+                    "help": "The user has a roll with the ID <id>. Only IDs are allowed."
+                },
+                {
+                    "syntax": "(Query) member_since:<time>",
+                    "help": "The user is a member since <time>."
+                },
+                {
+                    "syntax": "(Notice) Zeit-Syntax",
+                    "help": "To define a space of time, you use numbers with one of the suffixes d (day), w (weel), m (month) or y (year). 1y2m means 1 year and 2 months. 3d5m means 3 days and 5 months. Spaces are not allowed."
+                },
+                {
+                    "syntax": "(Example) !stat last_message:1m member_since:1m or messages_count<10",
+                    "help": "Lists all users, who either did join or write a message in the last month or all users who did write less than 10 messages."
                 }
             ]
         },
