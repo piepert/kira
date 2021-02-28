@@ -31,7 +31,10 @@ export class KUser {
     message_count: number;
     operator: boolean;
     banned: boolean;
+
     lastly_banned: string;
+    last_message: string;
+    joined_server: string;
 
     public constructor(id: string, name: string) {
         this.id = id;
@@ -46,6 +49,8 @@ export class KUser {
         this.operator = false;
         this.banned = false;
         this.lastly_banned = "never";
+        this.last_message = "never";
+        this.joined_server = "never";
     }
 
     public getCanPermissions(): string[] {
@@ -257,6 +262,22 @@ export class KUser {
         })(entry, msg, conf, e.id);
     }
 
+    public setLastMessageDate(date: string) {
+        this.last_message = date;
+    }
+
+    public getLastMessageDate() {
+        return this.last_message;
+    }
+
+    public setJoinDate(joined: string) {
+        this.joined_server = joined;
+    }
+
+    public getJoinDate() {
+        return this.joined_server;
+    }
+
     public setBanState(state: boolean) {
         this.banned = state;
     }
@@ -288,7 +309,10 @@ export class KUser {
             message_count: this.message_count,
             operator: this.operator,
             banned: this.banned,
-            lastly_banned: this.lastly_banned
+
+            lastly_banned: this.lastly_banned,
+            last_message: this.last_message,
+            joined_server: this.joined_server
         }
     }
 
@@ -299,6 +323,8 @@ export class KUser {
         user.setDisabledPermissions(obj.disabled_permissions);
         user.setEnabledPermissions(obj.enabled_permissions);
         user.setBanState(obj.banned)
+        user.setLastMessageDate(obj.last_message);
+        user.setJoinDate(obj.joined_server);
         user.lastly_banned = obj.lastly_banned;
         user.operator = obj.operator;
 

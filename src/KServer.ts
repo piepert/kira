@@ -10,7 +10,7 @@ import {
 
 import { KChannelConfig } from "./KChannelConfig";
 import { KUserManager } from "./KUserManager";
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from "fs";
+import { existsSync, fstat, fstatSync, lstatSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from "fs";
 import { KParsedCommand } from "./KParsedCommand";
 import { KRoleManager } from "./KRoleManager";
 import { KCommandUser } from "./commands/KCommandUser";
@@ -24,20 +24,22 @@ import { Rule } from "@typeit/discord";
 
 export class KServer {
     id: string;
-    language: string;
+    language: string;                                                           // server language as lang_code
     name: string;
-    cfg_path: string;
-    root_path: string;
-    log_channel: string;
+    cfg_path: string;                                                           // path for server config/json
+    root_path: string;                                                          // path for server directory
+    log_channel: string;                                                        // id of log-channel on server
 
     join_message: boolean;
 
-    frequency_cache: Map<string, number>;
-    aliases: Map<string, string>;
-    translations: Map<string, string>;
+    frequency_cache: Map<string, number>;                                       // all frequencies, key is command_name
+    aliases: Map<string, string>;                                               // all aliases for commands
+    translations: Map<string, string>;                                          // overwritten translation strings
+    autoresponds: Map<string, string>;
     deactivated_commands: string[];
+    jokes_cache: Map<string, string[]>;                                         // randomized list of all jokes for the server-language
 
-    channels: KChannelConfigManager;
+    channels: KChannelConfigManager;                                            // wiki-feed list on server
     users: KUserManager;
     roles: KRoleManager;
 
@@ -59,6 +61,7 @@ export class KServer {
         this.aliases = new Map<string, string>();
         this.translations = new Map<string, string>();
         this.frequency_cache = new Map<string, number>();
+        this.autoresponds = new Map<string, string>();
         this.log_channel = null;
     }
 
@@ -70,7 +73,8 @@ export class KServer {
             deactivated_commands: this.deactivated_commands,
             aliases: Object.fromEntries(this.aliases),
             translations: this.translations,
-            log_channel: this.log_channel
+            log_channel: this.log_channel,
+            autoresponds: [...this.autoresponds]
         }
     }
 
@@ -86,6 +90,7 @@ export class KServer {
         s.deactivated_commands = obj.deactivated_commands;
         s.frequency_cache = new Map<string, number>();
         s.log_channel = obj.log_channel;
+        s.jokes_cache = new Map<string, string[]>();
 
         if (s.log_channel == undefined) {
             s.log_channel = null;
@@ -99,6 +104,12 @@ export class KServer {
             for (let e of Object.keys(obj.translations)) {
                 s.translations.set(e, obj.translations[e]);
             }
+        }
+
+        if (obj.autoresponds != undefined) {
+            s.autoresponds = new Map<string, string>(obj.autoresponds);
+        } else {
+            s.translations = new Map<string, string>();
         }
 
         if (old_load) {
@@ -123,6 +134,11 @@ export class KServer {
 
         if (old_load) {
             conf.saveServer(s, true);
+
+            if (existsSync(path) && lstatSync(path).isFile()) {
+                console.log("[ LOAD ] Remove old JSON and replacing it by server-directory:", path);
+                rmSync(path);
+            }
         }
 
         return s;
@@ -192,6 +208,14 @@ export class KServer {
         }
 
         return server;
+    }
+
+    public getJokeCache(): string[] {
+        return this.jokes_cache.get(this.language);
+    }
+
+    public setJokeCache(cache: string[]) {
+        this.jokes_cache.set(this.language, cache);
     }
 
     public getLogChannel(): string {
@@ -415,19 +439,55 @@ export class KServer {
         return message.guild.id;
     }
 
+    public async refreshUser(user: any, guild: Guild) {
+        if (user.user != undefined) {
+            user.username = user.user.username;
+        }
+
+        if (this.getUser(user.id) == undefined) {
+            this.users.addUser(new KUser(user.id, user.username));
+        }
+
+        if (this.getUser(user.id).getDisplayName() != user.username) {
+            console.log("[ USER_UPDATE : "+guild.name+" ] username was changed from "+
+                this.getUser(user.id).getDisplayName()+
+                " to "+
+                user.username);
+
+            this.users.getUser(user.id).username = user.username;
+        }
+
+        if (this.getUser(user.id)
+            .getLastMessageDate()
+            .trim()
+            .toLocaleLowerCase() == "never") {
+
+            if (user.lastMessage == undefined) {
+                // this.users.getUser(user.id).setLastMessageDate((new Date()).toUTCString());
+            } else {
+                this.users.getUser(user.id)
+                    .setLastMessageDate((new Date(user.lastMessage.createdTimestamp)).toUTCString());
+            }
+        }
+
+        if (this.getUser(user.id)
+            .getJoinDate()
+            .trim()
+            .toLocaleLowerCase() == "never") {
+
+            if (user.joinedAt == undefined) {
+                // this.users.getUser(user.id).setLastMessageDate((new Date()).toUTCString());
+            } else {
+                this.users.getUser(user.id)
+                    .setJoinDate(user.joinedAt.toUTCString());
+            }
+        }
+    }
+
     public async refreshUsers(guild: Guild) {
         guild.members.fetch().then((users) => {
             for (let i of users) {
-                if (this.getUser(i[1].id) == undefined) {
-                    this.users.addUser(new KUser(i[1].id, i[1].user.username));
-                } else if (this.getUser(i[1].id).getDisplayName() != i[1].user.username) {
-                    console.log("[ USER_UPDATE : "+guild.name+" ] username was changed from "+
-                        this.getUser(i[1].id).getDisplayName()+
-                        " to "+
-                        i[1].user.username);
-
-                    this.users.getUser(i[1].id).username = i[1].user.username;
-                }
+                this.refreshUser(i[1], guild);
             }
         }).catch((reason) => {
             console.log("[ ERROR : KServer|305 ]", reason);
@@ -435,11 +495,7 @@ export class KServer {
 
         guild.fetchBans().then((bans) => {
             for (let i of bans) {
-                if (this.getUser(i[1].user.id) == undefined) {
-                    this.users.addUser(new KUser(i[1].user.id, i[1].user.username));
-                } else if (this.getUser(i[1].user.id).getDisplayName() != i[1].user.username) {
-                    this.users.getUser(i[1].user.id).username = i[1].user.username;
-                }
+                this.refreshUser(i[1].user as any, guild);
             }
         }).catch((reason) => {
             console.log("[ ERROR : KServer|317 ]", reason);
@@ -447,16 +503,7 @@ export class KServer {
 
         let users = guild.members.cache;
         for (let i of users) {
-            if (this.getUser(i[1].id) == undefined) {
-                this.users.addUser(new KUser(i[1].id, i[1].user.username));
-            } else if (this.getUser(i[1].id).getDisplayName() != i[1].user.username) {
-                console.log("[ USER_UPDATE : "+guild.name+" ] username was changed from "+
-                    this.getUser(i[1].id).getDisplayName()+
-                    " to "+
-                    i[1].user.username);
-
-                this.users.getUser(i[1].id).username = i[1].user.username;
-            }
+            this.refreshUser(i[1], guild);
         }
     }
 
@@ -525,6 +572,8 @@ export class KServer {
         if (command.getName().length > 1000) {
             msg.channel.send(conf.getTranslationStr(msg, "command.too_long"));
             return;
+        } else if (command.getName().length <= 0) {
+            return;
         }
 
         if (this.getAlias(command.getName()) != undefined) {
@@ -534,13 +583,23 @@ export class KServer {
         let c: KCommand = KCommandManager.getCommand(command.getName());
 
         if (c == undefined) {
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.not_found")
-                    .replace("{1}", command.getName())
-            );
+            command.setName(command.getName().toLocaleLowerCase());
 
-            return;
+            if (this.getAlias(command.getName()) != undefined) {
+                command.setName(this.getAlias(command.getName()));
+            }
+
+            c = KCommandManager.getCommand(command.getName());
+
+            if (c == undefined) {
+                msg.channel.send(conf.getTranslationStr(
+                    msg,
+                    "command.not_found")
+                        .replace("{1}", command.getName())
+                );
+
+                return;
+            }
         }
 
         if (this.isCommandDeactivated(c.getName())) {
@@ -621,13 +680,100 @@ export class KServer {
         }
     }
 
+    public static levenshtein(a: string, b: string) {
+        var m = [], i, j, min = Math.min;
+
+        if (!(a && b)) return (b || a).length;
+
+        for (i = 0; i <= b.length; m[i] = [i++]);
+        for (j = 0; j <= a.length; m[0][j] = j++);
+
+        for (i = 1; i <= b.length; i++) {
+            for (j = 1; j <= a.length; j++) {
+                m[i][j] = b.charAt(i - 1) == a.charAt(j - 1)
+                    ? m[i - 1][j - 1]
+                    : m[i][j] = min(
+                        m[i - 1][j - 1] + 1,
+                        min(m[i][j - 1] + 1, m[i - 1 ][j]))
+            }
+        }
+
+        return m[b.length][a.length];
+    }
+
+    public freeMessageForRespondCheck(content: string): string {
+        return content.trim()
+            .replace(/ /g, "")
+            .replace(/\,/g, "")
+            .replace(/\?/g, "")
+            .replace(/\!/g, "")
+            .replace(/\./g, "")
+            .toLowerCase();
+    }
+
+    public hasAutorespond(content: string): boolean {
+        let ar_content = this.freeMessageForRespondCheck(content);
+
+        for (let key of this.autoresponds.keys()) {
+            let a = ar_content;
+            let b = key;
+
+            if (b.length > a.length) {
+                [ a, b ] = [ b, a ];
+            }
+
+            if (ar_content == key || KServer.levenshtein(a, b) <= 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public getAutorespond(content: string): string {
+        let ar_content = this.freeMessageForRespondCheck(content);
+        let ret = this.autoresponds.get(ar_content);
+
+        if (ret == undefined) {                                                                     // if message not in autorespond, check for ...
+            for (let key of this.autoresponds.keys()) {                                             // ... levenstein distance (because of typos)
+                if (ar_content == key || KServer.levenshtein(ar_content, key) <= 2) {
+                    ret = this.autoresponds.get(key);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    public addAutorespond(message: string, respond: string) {
+        this.autoresponds.set(
+            this.freeMessageForRespondCheck(message),
+            respond.trim()
+        );
+    }
+
+    public removeAutorespond(message: string) {
+        this.autoresponds.delete(this.freeMessageForRespondCheck(message));
+    }
+
     public async handleMessage(conf: KConf,
         msg: Message,
         command_prefix: string,
         client: Client) {
 
+        this.users.getUser(msg.author.id)
+            .setLastMessageDate((new Date(msg.createdTimestamp)).toUTCString());
+
         if (msg.content.startsWith(command_prefix)) {
             this.handleCommand(conf, msg, command_prefix, client);
+
+        } else if (this.hasAutorespond(msg.content)) {
+            console.log("[ AUTORESPOND ] on "+this.getID()+" in",
+                "#"+msg.channel.id+":",
+                msg.content);
+
+            msg.channel.send(this.getAutorespond(msg.content));
+
         } else {
             /*
             console.log("[ MESSAGE : "+msg.guild.name+" ] [ #"+(msg.channel as TextChannel).name+" ] "+
