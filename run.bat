@@ -40,6 +40,7 @@ echo Load static backup...
 echo Load static backup...>>error_log.txt
 powershell -command "copy-item ../static_backup/* -destination ../static/ -force -recurse -verbose"
 rmdir patch /s /q
+npm install
 
 :KIRA_START
 node --trace-warnings ..\dist\KIRA.js 2>> error_log.txt
