@@ -1,5 +1,28 @@
 Date format: YYYY-MM-DD
 
+# v3.0.7 (28.2.2021)
+
+* ignore empty command names (just `!` or `! abc`)
+* added command `!get_log` (`src/commands/KCommandGetLog.ts`)
+* added command `!stat` (`src/commands/KCommandStat.ts`)
+* added possibility to use `!say` with the plain channel ID
+* added DM commands for KIRA operators
+    * it's now possible as a KIRA operator to execute the command from another
+      server by using the following syntax: `<server_id> <command ...>`
+    * everything after `server_id` will be treated as a normal message on this
+      server sent by the operator
+* added case-insensitivity for command names and aliasses (case-sensitive
+  command names are still possible)
+* fixed losing of status by updating the status every 12h
+* fixed link generation for wikidot avatars in wiki-feeds (now with timestamp)
+* changed log name format to `KIRA_log_DD.MM.YYYY.log`, the log
+  file will change with the current date
+* added auto-response on messages, customizable for every server
+* now going to erase old server-config-jsons and replace it with a new
+  server-directory
+* jokes are being put into a randomized waitlist instead of picking one
+  randomly from the file
+
 # v3.0.6 (2020-12-22)
 
 * added log message for patches
