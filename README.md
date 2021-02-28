@@ -16,12 +16,12 @@ valid: `!command_name @Test#0001` and `!command_name @Test#0001 10` .
 
 | Name | Syntax | Explanation | Needed Permission |
 | ---- | ------ | ----------- | ----------------- |
-| `ban` | `!ban <@user|userID> <days> <why...>` | - | `admin.ban` |
-| `kick` | `!kick <@user|userID> <why...>` - kick user | - | `admin.kick` |
-| `remind` | `!remind <date> [@user|userID] <what...>` | - | `admin.remind` |
-| `delete` | `!delete <num> [@user|userID]` | Deletes `<num>` messages(, by @user) | `admin.delete` |
+| `ban` | `!ban <@user｜userID> <days> <why...>` | - | `admin.ban` |
+| `kick` | `!kick <@user｜userID> <why...>` - kick user | - | `admin.kick` |
+| `remind` | `!remind <date> [@user｜userID] <what...>` | - | `admin.remind` |
+| `delete` | `!delete <num> [@user｜userID]` | Deletes `<num>` messages(, by @user) | `admin.delete` |
 | `raid-end` | `!raid-end` | Ends the raid mode. | `admin.raid_end` |
-| `user` | `!user <@user|userID> [show <entryID>]` | Show username, ID, join date, avatar, last post date, first post date, posts count and reports. | See user command. |
+| `user` | `!user <@user｜userID> [show <entryID>]` | Show username, ID, join date, avatar, last post date, first post date, posts count and reports. | See user command. |
 | `unreport` | `!unreport <user> [reportID]` | Delete all reports of user. If `reportID` is given, only delete the report with this ID. | `admin.report` |
 | `say` | `!say <channelID> <what>` | Write a message as KIRA into the channel with `<channelID>`. Cross-Server-Messages (sending a message from a server's channel to another server's channel) aren't allowed. | `admin.say` |
 | `perm` | See perm command. | See perm command. | See perm command. |
@@ -73,26 +73,31 @@ Some rules:
 ### Stat Command
 --------------------------------------------------------------------------------
 
+The stat command searchs for users who can be filtered by the following queries.
+The result will be a table of user's names and their IDs.
+
 | Syntax | Explanation | Needed Permission |
 | ------ | ----------- | ----------------- |
 | `!stat <search queries> ...` | Search for given queries in user activities. | `admin.stat` |
 
-The queries can be connected by `or` or `and`. You can add brackets to change
-the order of the evaluation. Add a `!` before the query to negate it.
+The queries can be connected by `or`. Everything without an "or" will be
+interpreted as an "and" connection. Add a `!` before the query to negate it.
 
 Possible Queries:
 
 | Query | Syntax | Explanation |
 | ----- | ------ | ----------- |
-| `inactive` | `inactive:<time>` | User didn't write a message since `<time>`. |
-| `active` | `active:<time>` | User did write a message in the last `<time>` days/weeks/... |
-| `messages_less` | `messages_less:<number>[:<time>]` | User did write less than `<number>` messages [in time `<time>`]. |
-| `messages_more` | `messages_more:<number>[:<time>]` | User did write more than `<number>` messages [in time `<time>`]. Note that you can't check for more than 100 messages (due to API limitations). |
-| `permission` | `permission:<permission>` | User has permission `<permission>`. |
-| `role` | `role:<name|roleID>` | User has role `<name|roleID>`. |
+| last_message | `last_message:<time>` | Last message in time `<time>`. |
+| messages_count | `messages_count:<number>` | Message count is less, greater or equal to `<number>`. |
+| has_permission | `has_permission:<permission>` | User has permission-string `<permission>`. |
+| has_role | `has_role:<id>` | User has role with id `<id>`. |
+| member_since | `member_since:<time>` | User joined in time `<time>`. |
 
-The argument `<time>` is a number with a suffix, where the suffixes have to be one
-of the following:
+For number-values (currently only for `messages_count`), you can use `<` or `>`
+instead of `:` to check if the value is less (`<`) or greater (`>`).
+
+The argument `<time>` is a number with a suffix, where the suffixes have to be
+one of the following:
 
 | Suffix | Explanation |
 | ------ | ----------- |
@@ -101,29 +106,22 @@ of the following:
 | `m`    | Months      |
 | `y`    | Years       |
 
-So `1y` means 1 year. Combinations like 2m1d (2 months and 1 day) are not
-possible.
+So `1y` means 1 year. Combinations like 2m1d (2 months and 1 day) are possible.
 
 ### Stat Command Examples
 
 List every user that wrote a message in the last week (`active:1w`) and that
-wrote more than 10 messages (`message_more:10`).
+wrote more than 10 messages (`messages_count>10`).
 ```bash
-!stat active:1w and message_more:10
+!stat last_message:1w messages_count>10
 ```
 
 --------------------------------------------------------------------------------
 
-List every user that wasn't active in the last week. 1'st way:
+List every user that wasn't active in the last week.
 ```bash
-!stat !active:1w
+!stat !last_message:1w
 ```
-2'nd way:
-```bash
-!stat inactive:1w
-```
-
-Both ways check, if the user didn't write a message for 1 week.
 
 --------------------------------------------------------------------------------
 
@@ -131,7 +129,7 @@ List every user that was active for the last 6 months and doesn't have the
 `command.joke` permission (and whose roles doesn't have the `command.joke`
 permission).
 ```bash
-!stat active:6m and !permission:command.joke
+!stat last_message:6m !has_permission:command.joke
 ```
 --------------------------------------------------------------------------------
 
@@ -139,7 +137,7 @@ List every user that was active for 6 months and from that get every user, who
 either don't has the `command.joke` permission or has written less than 10
 messages.
 ```bash
-!stat active:6m and (!permission:command.joke or message_less:10)
+!stat last_message:6m !has_permission:command.joke or last_message:6m messages_count<10
 ```
 
 ### Config Command
@@ -148,7 +146,7 @@ messages.
 | Name | Syntax | Explanation | Needed Permission |
 | ---- | ------ | ----------- | ----------------- |
 | `language` | `!config language [short]` | Set the language of the server to `[short]`. See the list of supported languages, standard is `en` for "English". If `[short]` is not given, it will list all supported languages. | `admin.config.language` |
-| `delete user` | `!config delu <@user|userID>` | Delete all saved stats about a user. (Message count, last written message, permissions). | `admin.config.delete_user` |
+| `delete user` | `!config delu <@user｜userID>` | Delete all saved stats about a user. (Message count, last written message, permissions). | `admin.config.delete_user` |
 | `role` | `!config role <type> <roleID>` | (Not built in.) Sets KIRA's role config. See user type list for further explanation. | `admin.config.role` |
 | `feed add` | `!config feed add <feedURL> <channelID>` | - | `admin.config.channel.add` |
 | `feed color` | `!config feed color <feedID>` | - | `admin.config.channel.color` |
@@ -198,8 +196,8 @@ Syntax:
 
 | Syntax | Explanation |
 | ------ | ----------- |
-| `!user <userID|@user>` | Show everything, but reports. |
-| `!user <userID|@user> show [reportID]` | Show all reports shortened (id+reason), if `reportID` is given, show report, author, reason, creation date and link to message. |
+| `!user <userID｜@user>` | Show everything, but reports. |
+| `!user <userID｜@user> show [reportID]` | Show all reports shortened (id+reason), if `reportID` is given, show report, author, reason, creation date and link to message. |
 
 ## Normal Commands
 --------------------------------------------------------------------------------
@@ -207,9 +205,11 @@ Syntax:
 | Name | Syntax | Explanation | Needed Permission |
 | ---- | ------ | ----------- | ----------------- |
 | `info` | `!info` | Shows information about KIRA. | `commands.info` |
-| `search` | `!search [branch] <query>` | Search for `<query>`. Standard branch is EN, but it can be changed with the `!config` command. | `commands.search` |
-| `search-author` | `!search [branch] <query>` | Search for `<query>` on the authors list page. The standard branch is EN, bit it can be changed with the `!config` command. | `commands.search_author` |
+| ~~`search`~~ | ~~`!search [branch] <query>`~~ | ~~Search for `<query>`. Standard branch is EN, but it can be changed with the `!config` command.~~ | ~~`commands.search`~~ |
+| ~~`search-author`~~ | ~~`!search [branch] <query>`~~ | ~~Search for `<query>` on the authors list page. The standard branch is EN, bit it can be changed with the `!config` command.~~ | ~~`commands.search_author`~~ |
 | `joke` | `!joke` | Writes a random joke. Is possible every 5 minutes and can only be used in the bot-channel (which can be set using the `!config` command). | `commands.joke` |
-| `report` | `!report <@user|userID> <why>` | Report a player. | `commands.info` |
+| `report` | `!report <@user｜userID> <why>` | Report a player. | `commands.info` |
 | `raid` | `!raid` | Enable raid-mode. New joined users and users with more than 20 messages per minute will be muted. | `commands.info` |
-| `search-tags` | `!search-tags <tag>` | Searchs for articles with tag `<tag>`. |
+| ~~`search-tags`~~ | ~~`!search-tags <tag>`~~ | ~~Searchs for articles with tag `<tag>`.~~ |
+
+~~abc~~ - Might never get implementet
