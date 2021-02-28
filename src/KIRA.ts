@@ -1,6 +1,5 @@
 // @ts-expect-error
 console.old_log = console.log;
-const START_TIME = new Date();
 
 console.log = function(... a) {
     const fs = require("fs");
@@ -8,22 +7,21 @@ console.log = function(... a) {
         fs.mkdirSync("logs");
     }
 
-    let file_name = "KIRA_log_"+START_TIME.getDate()  +
-        "." + (START_TIME.getMonth()+1) +
-        "." + START_TIME.getFullYear() +
-        "." + START_TIME.getHours() +
-        "_" + START_TIME.getMinutes() +
-        "_" + START_TIME.getSeconds() + ".log";
+    let d = new Date();
+    let d_str = d.toLocaleString();
+    let file_name = "KIRA_log_"+ ("0" + d.getDate().toString()).slice(-2) +
+        "." + ("0" + (d.getMonth()+1).toString()).slice(-2) +
+        "." + d.getFullYear() + ".log";
 
-    fs.appendFileSync("logs/"+file_name, "[ "+(new Date()).toLocaleString()+" ] ");
-    process.stdout.write("[ "+(new Date()).toLocaleString()+" ] ");
+    fs.appendFileSync("logs/"+file_name, "[ "+d_str+" ] ");
+    process.stdout.write("[ "+d_str+" ] ");
 
     // @ts-expect-error
     console.old_log(... a);
 
     a.forEach(print => {
         fs.appendFileSync("logs/"+file_name,
-            (typeof print == "string" ? print.toString() :
+            (typeof print == "string" ? print.toString().replace(/\n/g, "\n[ "+d_str+" ] ") :
             (typeof print == "object" ? JSON.stringify(print) : print))+" ");
     });
 
@@ -31,12 +29,8 @@ console.log = function(... a) {
 }
 
 console.error = console.log;
-console.log("LOG FILE NAME: logs/KIRA_log_"+START_TIME.getDate()  +
-    "." + (START_TIME.getMonth()+1) +
-    "." + START_TIME.getFullYear() +
-    "." + START_TIME.getHours() +
-    "_" + START_TIME.getMinutes() +
-    "_" + START_TIME.getSeconds() + ".log")
+console.log("\n===================================================");
+console.log("[ INFO ] Kira started at", (new Date()).toLocaleString());
 
 import { KConf } from "./KConfig";
 import { RSSParser } from "./rss/RSSParser";
@@ -51,10 +45,14 @@ import {
 
 import {
     Message,
-    GuildMember, User, MessageEmbed, Intents, Guild
+    GuildMember, User, MessageEmbed, Intents, Guild, TextChannel
 } from "discord.js";
+
 import { existsSync, lstatSync, readFileSync } from "fs";
 import { KPatcher } from "./KPatcher";
+import { callbackify } from "util";
+import { exit } from "process";
+import { KServer } from "./KServer";
 
 class KIRA {
     client: Client;
@@ -70,6 +68,8 @@ class KIRA {
         conf.client = this.client;
         conf.version = JSON.parse(readFileSync("../package.json") as any).version;                  // KIRA is started from static/ directory, ...
                                                                                                     // ... so the package.json lies in ../package.json
+
+        Object(this.client).onMessage = this.onMessage;
 
         this.client.on("ready", this.ready);
         this.client.on("message", this.onMessage);
@@ -125,9 +125,15 @@ class KIRA {
     }
 
     private ready() {
-        conf.client.user.setActivity("v"+conf.version+" | !help", {
+        conf.client.user.setActivity("v"+conf.version+" | "+conf.getConfig().command_prefix+"help", {
             type: "PLAYING"
         });
+
+        setInterval(() => {
+            conf.client.user.setActivity("v"+conf.version+" | "+conf.getConfig().command_prefix+"help", {
+                type: "PLAYING"
+            });
+        }, 12*1000*60*60);
 
         conf.client.guilds.cache.forEach(guild => {
             let embed = new MessageEmbed()
@@ -151,15 +157,48 @@ class KIRA {
 
     private onMessage(message: Message) {
         if (!message.author.bot) {
-            if (message.guild == null) {
-                message.reply("Direct messages are deactivated.");
-                return;
+            if (message.guild == null) {                                                            // operator command
+                let guild: Guild = message.guild;
+
+                if (!conf.userIsOperator(message.author.id)) {
+                    message.reply("Direct messages are deactivated.");
+                    return;
+                }
+
+                guild = conf.client.guilds.cache.get(message.content.split(" ")[0]);
+
+                if (guild == null ||
+                    guild == undefined ||
+                    guild.toString().trim() == "") {
+
+                    message.reply("Incorrect operator-message syntax.");
+                    return;
+                }
+
+                for (let ch of guild.channels.cache.keys()) {
+                    if (guild.channels.cache.get(ch).isText()) {
+                        let old_message = Object.assign({}, message);
+                        let channel = guild.channels.cache.get(ch) as TextChannel;
+
+                        channel.messages.fetch({ limit: 1 }).then(messages => {
+                            message = messages.first();
+                            message.author = old_message.author;
+                            message.content = old_message.content.split(" ").slice(1).join(" ");
+
+                            this.onMessage(message);
+                        })
+
+                        return;
+                    }
+                }
             }
 
             if (message.content.trim()
                     .toLocaleLowerCase()
                     .replace(/[\!\?\.\,]/g, "") == "ping" &&
-                !message.content.trim().startsWith("!")) {
+                !message.content
+                    .trim()
+                    .startsWith(conf.getConfig().command_prefix)) {
 
                 message.channel.send("Pong!")
             }
@@ -299,7 +338,7 @@ let kira = new KIRA;
 kira.start();
 
 process.on('SIGINT', async function() {
-    console.log("[ WARN ] Caught interrupt signal. Exiting and saving...");
+    console.log("\n[ WARN ] Caught interrupt signal. Exiting and saving...");
     console.log("[ WARN ] Please do not terminate the program!");
 
     await kira.exit();
@@ -309,6 +348,7 @@ async function error_fallback(error) {
     console.log("Uncaught Exception:")
     console.log(error);
 
+    /*
     try {
         await conf.client.guilds.cache.forEach(async function(guild) {
             await guild.members.cache.forEach(async function(member) {
@@ -321,6 +361,7 @@ async function error_fallback(error) {
         console.log("Uncaught Exception:")
         console.log(error);
     }
+    */
 }
 
 process.on("uncaughtException", error_fallback)
