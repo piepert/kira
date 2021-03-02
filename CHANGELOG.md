@@ -1,5 +1,9 @@
 Date format: YYYY-MM-DD
 
+# v3.0.8 (2.3.2021)
+
+* hotfix for crashes on new servers
+
 # v3.0.7 (28.2.2021)
 
 * ignore empty command names (just `!` or `! abc`)

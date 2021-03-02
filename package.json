@@ -1,6 +1,6 @@
 {
   "name": "kira",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "A bot for the German SCP-Wiki-Discord.",
   "main": "dist/app.js",
   "scripts": {

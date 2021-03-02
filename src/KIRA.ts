@@ -78,6 +78,7 @@ class KIRA {
         this.client.on("guildMemberUpdate", this.onGuildMemberUpdate);
         this.client.on("guildBanAdd", this.onGuildBanAdd);
         this.client.on("guildBanRemove", this.onGuildBanRemove);
+        this.client.on("guildCreate", this.onGuildCreate);
 
         setInterval(this.minuteScheduler, 1000*60, this.client);
 
@@ -136,6 +137,10 @@ class KIRA {
         }, 12*1000*60*60);
 
         conf.client.guilds.cache.forEach(guild => {
+            if (conf.servers.getServerByID(guild.id) === undefined) {
+                conf.save(conf.client, false);
+            }
+
             let embed = new MessageEmbed()
                     .setColor("#fc6f6f")
                     .setTitle(conf.getTranslationForServer(
@@ -153,6 +158,11 @@ class KIRA {
 
         console.log("Quantum processors running! I am alive and "+
             "will ease up your life. Please do not resist, meatbags.");
+    }
+
+    private onGuildCreate(guild: Guild) {
+        console.log("[ INFO ] Joined server "+guild.id+"!");
+        conf.save(conf.client, false);
     }
 
     private onMessage(message: Message) {

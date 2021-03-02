@@ -424,6 +424,14 @@ export class KConf {
     public getTranslationForServer(id: string, key: string): string {
         let server = this.getServerManager().getServerByID(id);
 
+        if (server === undefined) {
+            console.log("Error! Server undefined! Can't get translation for", id);
+
+            return this.translations.getTranslation(
+                "en",
+            ).getTranslation(key);
+        }
+
         if (server.hasTranslation(key)) {
             return server.getTranslation(key);
         }
