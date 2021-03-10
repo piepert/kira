@@ -542,11 +542,10 @@ export class KServer {
             this.users.getUser(user.id).updateDisplayName(user.username);
         }
 
-        if (guild.roles.cache.size != this.roles.roles.length) {
+        if (guild.roles.cache.size > this.roles.roles.length) {
             for (let role of guild.roles.cache.keys()) {
-                console.log("[ USER : NEW_ROLE ] On server ", this.id.toString()+", new role:", role);
-
                 if (this.roles.getRole(role) == undefined) {
+                    console.log("[ USER : NEW_ROLE ] On server ", this.id.toString()+", new role:", role);
                     this.roles.addRole(new KRole(role));
                 }
             }
@@ -640,7 +639,9 @@ export class KServer {
                 .replace("{2}", command.getName()));
         } else {
             if (c.getFrequencyMaximum() != undefined) {                                             // check if command is more used than specified in
-                if (this.frequency_cache[c.getName()] >= c.getFrequencyMaximum()) {                 // ... a time
+                if (this.frequency_cache[c.getName()] >= c.getFrequencyMaximum() &&                 // ... a time
+                    !conf.userIsOperator(msg.author.id)) {
+
                     msg.channel.send(conf.getTranslationStr(msg, "command."+c.getName()+".frequency"));
                     return;
 
