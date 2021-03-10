@@ -356,7 +356,7 @@
         },
 
         "command.help.command.perm": {
-            "std": "Changes the permissions of users or rolls.",
+            "std": "Changes the permissions of users or roles.",
             "subcommands": [
                 {
                     "syntax": "General information",
@@ -387,20 +387,20 @@
                     "help": "Shows all enabled and disabled permissions of user <user>."
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> enable <permission>",
-                    "help": "Activates the permission <permission> for the roll with the ID <rollID>."
+                    "syntax": "{p}{c} role <roleID> enable <permission>",
+                    "help": "Activates the permission <permission> for the role with the ID <roleID>."
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> disable <permission>",
-                    "help": "Deactivates the permission <permission> for the roll with the ID <rollID>."
+                    "syntax": "{p}{c} role <roleID> disable <permission>",
+                    "help": "Deactivates the permission <permission> for the role with the ID <roleID>."
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> remove <permission>",
-                    "help": "Removes the permission <permission> from the roll <rollID>. (The permission will be removed from its enabled/disabled permissions lists.)"
+                    "syntax": "{p}{c} role <roleID> remove <permission>",
+                    "help": "Removes the permission <permission> from the role <roleID>. (The permission will be removed from its enabled/disabled permissions lists.)"
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> show",
-                    "help": "Shows all enabled/disabled permissions for the roll with the ID <rollID>."
+                    "syntax": "{p}{c} role <roleID> show",
+                    "help": "Shows all enabled/disabled permissions for the role with the ID <roleID>."
                 }
             ]
         },
@@ -604,7 +604,7 @@
                 },
                 {
                     "syntax": "(Query) has_role:<id>",
-                    "help": "The user has a roll with the ID <id>. Only IDs are allowed."
+                    "help": "The user has a role with the ID <id>. Only IDs are allowed."
                 },
                 {
                     "syntax": "(Query) member_since:<time>",

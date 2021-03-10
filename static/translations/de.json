@@ -387,20 +387,20 @@
                     "help": "Zeigt die aktivierten/deaktivierten Berechtigungen von dem Nutzer <user> an."
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> enable <permission>",
-                    "help": "Aktiviert die Berechtigung <permission> für die Rolle mit der ID <rollID>."
+                    "syntax": "{p}{c} role <roleID> enable <permission>",
+                    "help": "Aktiviert die Berechtigung <permission> für die Rolle mit der ID <roleID>."
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> disable <permission>",
-                    "help": "Deaktiviert die Berechtigung <permission> für die Rolle mit der ID <rollID>."
+                    "syntax": "{p}{c} role <roleID> disable <permission>",
+                    "help": "Deaktiviert die Berechtigung <permission> für die Rolle mit der ID <roleID>."
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> remove <permission>",
-                    "help": "Entfernt die Berechtigung <permission> für die Rolle mit der ID <rollID>.  (Die Berechtigung wird von der Liste der aktivierten/deaktivierten Berechtigungen entfernt.)"
+                    "syntax": "{p}{c} role <roleID> remove <permission>",
+                    "help": "Entfernt die Berechtigung <permission> für die Rolle mit der ID <roleID>.  (Die Berechtigung wird von der Liste der aktivierten/deaktivierten Berechtigungen entfernt.)"
                 },
                 {
-                    "syntax": "{p}{c} roll <rollID> show",
-                    "help": "Zeigt alle aktivierten/deaktivierten Berechtigungen der Rolle mit der ID <rollID> an."
+                    "syntax": "{p}{c} role <roleID> show",
+                    "help": "Zeigt alle aktivierten/deaktivierten Berechtigungen der Rolle mit der ID <roleID> an."
                 }
             ]
         },
