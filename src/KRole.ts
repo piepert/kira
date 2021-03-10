@@ -69,7 +69,7 @@ export class KRole {
     }
 
     public getDisabledPermissions(): string[] {
-        return this.enabled_permissions;
+        return this.disabled_permissions;
     }
 
     public getCanPermissions(): string[] {
@@ -152,12 +152,22 @@ export class KRole {
     public disablePermission(permission: string) {
         if (!this.isPermissionDisabled(permission)) {
             this.disabled_permissions.push(permission);
+            const index = this.disabled_permissions.indexOf(permission);
+
+            if (index > -1) {
+                this.enabled_permissions.splice(index, 1);
+            }
         }
     }
 
     public enablePermission(permission: string) {
         if (!this.isPermissionEnabled(permission)) {
             this.enabled_permissions.push(permission);
+            const index = this.disabled_permissions.indexOf(permission);
+
+            if (index > -1) {
+                this.disabled_permissions.splice(index, 1);
+            }
         }
     }
 
