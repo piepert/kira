@@ -71,7 +71,7 @@ export class KCommandHelp extends KCommand {
                             c.getName());
 
                     let name = prefix+c.getName()+
-                        (names.length > 0 ? " (aka " : "")+
+                        (names.length > 0 ? " (" : "")+
                         names.map(e => prefix+e)
                             .join(", ")+
                         (names.length > 0 ? ")" : "");
