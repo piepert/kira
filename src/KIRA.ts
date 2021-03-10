@@ -354,25 +354,8 @@ process.on('SIGINT', async function() {
     await kira.exit();
 });
 
-async function error_fallback(error) {
-    console.log("Uncaught Exception:")
-    console.log(error);
-
-    /*
-    try {
-        await conf.client.guilds.cache.forEach(async function(guild) {
-            await guild.members.cache.forEach(async function(member) {
-                if (conf.userIsOperator(member.id)) {
-                    console.log("OPERATOR:", member.user.username);
-                }
-            });
-        });
-    } catch(exception) {
-        console.log("Uncaught Exception:")
-        console.log(error);
-    }
-    */
-}
-
-process.on("uncaughtException", error_fallback)
-process.on("unhandledRejection", error_fallback)
+process.on('unhandledRejection', (reason, p) => {
+    console.error("Unhandled Rejection:", reason, p);
+}).on('uncaughtException', err => {
+    console.error("Uncaught Exception:", err);
+});
