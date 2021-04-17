@@ -14,6 +14,7 @@ import { KServer } from "../KServer";
 import { KRole } from "../KRole";
 import { KUser } from "../KUser";
 import { Client } from "@typeit/discord/Client";
+import { KCommandManager } from "../KCommandManager";
 
 export class KCommandPerm extends KCommand {
     constructor() {
@@ -35,15 +36,22 @@ export class KCommandPerm extends KCommand {
 
     public validateSyntax(cmd: KParsedCommand): boolean {
         if (cmd.getArguments().length < 4 &&
-            cmd.getArguments().length != 3) {                                                       // check for command syntax !user
+            (cmd.getArguments().length != 3 &&
+            cmd.getArguments().length != 1)) {
             return false;
         }
 
         if (cmd.getArguments()[0] != "user"
             && cmd.getArguments()[0] != "role"
             && cmd.getArguments()[0] != "u"
-            && cmd.getArguments()[0] != "r") {
+            && cmd.getArguments()[0] != "r"
+            && cmd.getArguments()[0] != "list") {
 
+            return false;
+        }
+
+        if (cmd.getArguments().length == 1
+            && cmd.getArguments()[0] != "list") {
             return false;
         }
 
@@ -87,16 +95,25 @@ export class KCommandPerm extends KCommand {
             do_permissions.push(command.getArguments()[i]);
         }
 
-        if (command.getArguments()[0] == "role"
+        if (command.getArguments()[0] == "list") {
+            let e = new MessageEmbed()
+                .setTitle(server.getTranslation("command.perm.list"));
+
+            for (let command of KCommandManager.commands) {
+                e.addField(conf.getConfig().command_prefix+command.getName(),
+                    command.getPermissions().join("\n"),
+                    true);
+            }
+
+            msg.channel.send(e)
+
+        } else if (command.getArguments()[0] == "role"
             || command.getArguments()[0] == "r") {
 
             let role: Role = await msg.guild.roles.cache.get(use_id);
 
             if (role == undefined) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.perm.role_not_found"
-                ));
+                msg.channel.send(server.getTranslation("command.perm.role_not_found"));
                 return;
             }
 
@@ -106,23 +123,17 @@ export class KCommandPerm extends KCommand {
                 .getRole(role.id);
 
             if (krole == undefined) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.perm.role_not_found"
-                ));
-
+                msg.channel.send(server.getTranslation("command.perm.role_not_found"));
                 return;
             }
 
             if (show) {
                 if (!sender.canPermission("admin.perm.role.show")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
+                    msg.channel.send(server.getTranslation("command.no_permission"));
+                    return;
                 }
 
-                let no_perms: string = conf.getTranslationStr(msg, "command.perm.no_registered_permissions");
+                let no_perms: string = server.getTranslation("command.perm.no_registered_permissions");
                 let enabled_permissions: string[] = [ no_perms ];
                 let disabled_permissions: string[] = [ no_perms ];
 
@@ -140,31 +151,25 @@ export class KCommandPerm extends KCommand {
                 }
 
                 msg.channel.send(new MessageEmbed()
-                    .setTitle(conf.getTranslationStr(
-                            msg,
-                            "command.perm.show_role_permissions"
-                        )+": "+role.name)
+                    .setTitle(server.getTranslation("command.perm.show_role_permissions")
+                        +": "+role.name)
 
                     .setColor(role.hexColor)
                     .addFields(
                         {
-                            name: conf.getTranslationStr(msg,
-                                "command.perm.show_enabled"),
+                            name: server.getTranslation("command.perm.show_enabled"),
                             value: enabled_permissions
                         },
                         {
-                            name: conf.getTranslationStr(msg,
-                                "command.perm.show_disabled"),
+                            name: server.getTranslation("command.perm.show_disabled"),
                             value: disabled_permissions
                         }
                     )
                 );
             } else if (enable) {
                 if (!sender.canPermission("admin.perm.role.enable")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
+                    msg.channel.send(server.getTranslation("command.no_permission"));
+                    return;
                 }
 
                 for (let i in do_permissions) {
@@ -179,10 +184,8 @@ export class KCommandPerm extends KCommand {
                         .replace("{1}", do_permissions.join("`, `")));
             } else if (disable) {
                 if (!sender.canPermission("admin.perm.role.disable")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
+                    msg.channel.send(server.getTranslation("command.no_permission"));
+                    return;
                 }
 
                 for (let i in do_permissions) {
@@ -197,11 +200,7 @@ export class KCommandPerm extends KCommand {
                         .replace("{1}", do_permissions.join("`, `")));
             } else if (remove) {
                 if (!sender.canPermission("admin.perm.role.remove")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
-
+                    msg.channel.send(server.getTranslation("command.no_permission"));
                     return;
                 }
 
@@ -256,13 +255,11 @@ export class KCommandPerm extends KCommand {
 
             if (show) {
                 if (!sender.canPermission("admin.perm.user.show")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
+                    msg.channel.send(server.getTranslation("command.no_permission"));
+                    return;
                 }
 
-                let no_perms: string = conf.getTranslationStr(msg, "command.perm.no_registered_permissions");
+                let no_perms: string = server.getTranslation("command.perm.no_registered_permissions");
                 let enabled_permissions: string[] = [ no_perms ];
                 let disabled_permissions: string[] = [ no_perms ];
 
@@ -280,31 +277,23 @@ export class KCommandPerm extends KCommand {
                 }
 
                 msg.channel.send(new MessageEmbed()
-                    .setTitle(conf.getTranslationStr(
-                            msg,
-                            "command.perm.show_user_permissions"
-                        )+": "+kuser.getDisplayName())
+                    .setTitle(server.getTranslation("command.perm.show_user_permissions")
+                        +": "+kuser.getDisplayName())
 
                     .addFields(
                         {
-                            name: conf.getTranslationStr(msg,
-                                "command.perm.show_enabled"),
+                            name: server.getTranslation("command.perm.show_enabled"),
                             value: enabled_permissions
                         },
                         {
-                            name: conf.getTranslationStr(msg,
-                                "command.perm.show_disabled"),
+                            name: server.getTranslation("command.perm.show_disabled"),
                             value: disabled_permissions
                         }
                     )
                 );
             } else if (enable) {
                 if (!sender.canPermission("admin.perm.user.enable")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
-
+                    msg.channel.send(server.getTranslation("command.no_permission"));
                     return;
                 }
 
@@ -319,11 +308,7 @@ export class KCommandPerm extends KCommand {
 
             } else if (disable) {
                 if (!sender.canPermission("admin.perm.user.disable")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
-
+                    msg.channel.send(server.getTranslation("command.no_permission"));
                     return;
                 }
 
@@ -338,11 +323,7 @@ export class KCommandPerm extends KCommand {
 
             } else if (remove) {
                 if (!sender.canPermission("admin.perm.user.remove")) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.no_permission"
-                    ));
-
+                    msg.channel.send(server.getTranslation("command.no_permission"));
                     return;
                 }
 
