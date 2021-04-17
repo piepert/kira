@@ -17,10 +17,10 @@
         "log.kira_saving.body": "KIRA's config files are being saved.",
 
         "log.user_joined.title": "New User `[ {1} ]`",
-        "log.user_joined.body": "The user <@!{1}> joined the server.",
+        "log.user_joined.body": "The user **{1}** (<@!{2}>) with displayname `{3}` joined the server.",
 
         "log.user_left.title": "User left server `[ {1} ]`",
-        "log.user_left.body": "The user <@!{1}> left the discord server.",
+        "log.user_left.body": "The user **{1}** (<@!{2}>) with displayname `{3}` left the discord server.",
 
         "log.user_banned.title": "User banned `[ {1} ]`",
         "log.user_banned.body": "The user **{1}** was banned from the discord server.",

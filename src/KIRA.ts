@@ -53,6 +53,8 @@ import { KPatcher } from "./KPatcher";
 import { callbackify } from "util";
 import { exit } from "process";
 import { KServer } from "./KServer";
+import { KCommandShip } from "./commands/KCommandShip";
+import { KParsedCommand } from "./KParsedCommand";
 
 class KIRA {
     client: Client;
@@ -283,6 +285,10 @@ class KIRA {
                         name: conf.getTranslationForServer(old_u.guild.id,
                             "log.user_changed.display_name.new"),
                         value: new_u.displayName,
+                    },
+                    {
+                        name: "ID",
+                        value: "<@!"+new_u.id+">",
                     }
                 )
             );
@@ -299,7 +305,9 @@ class KIRA {
                 .setDescription(conf.getTranslationForServer(
                     user.guild.id,
                     "log.user_joined.body")
-                        .replace("{1}", user.user.id));
+                    .replace("{1}", user.user.username+"#"+user.user.discriminator)
+                    .replace("{2}", user.id)
+                    .replace("{3}", user.displayName));
 
         conf.logMessageToServer(conf.client,
             user.guild.id,
@@ -326,7 +334,9 @@ class KIRA {
                 .setDescription(conf.getTranslationForServer(
                     user.guild.id,
                     "log.user_left.body")
-                        .replace("{1}", user.user.id));
+                    .replace("{1}", user.user.username+"#"+user.user.discriminator)
+                    .replace("{2}", user.id)
+                    .replace("{3}", user.displayName));
 
         conf.logMessageToServer(conf.client,
             user.guild.id,

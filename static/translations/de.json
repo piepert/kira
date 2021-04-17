@@ -17,10 +17,10 @@
         "log.kira_saving.body": "KIRAs Einstellungen werden gespeichert.",
 
         "log.user_joined.title": "Neuer User `[ {1} ]`",
-        "log.user_joined.body": "Der Nutzer <@!{1}> ist dem Server beigetreten.",
+        "log.user_joined.body": "Der Nutzer **{1}** (<@!{2}>) mit dem Displaynamen `{3}` ist dem Discord-Server beigetreten.",
 
         "log.user_left.title": "User vom Server gegangen `[ {1} ]`",
-        "log.user_left.body": "Der Nutzer <@!{1}> hat den Discord-Server verlassen.",
+        "log.user_left.body": "Der Nutzer **{1}** (<@!{2}>) mit dem Displaynamen `{3}` hat den Discord-Server verlassen.",
 
         "log.user_banned.title": "User gebannt `[ {1} ]`",
         "log.user_banned.body": "Der Nutzer **{1}** wurde vom Server gebannt.",
