@@ -92,6 +92,7 @@
         "command.perm.enabled": "Permission `{1}` enabled.",
         "command.perm.disabled": "Permission `{1}` disabled.",
         "command.perm.removed": "Permission `{1}` removed.",
+        "command.perm.list": "Permissions",
 
         "command.deactivate.command_not_found": "Command `{1}` not found.",
         "commands.deactivate.deactivated": "The command was deactivated.",
@@ -133,9 +134,14 @@
         "command.config.invalid_color": "Wrong color `{1}`. The color has to be an 6-digit hexnumber matching the pattern `#RRGGBB`.",
         "command.config.log_set": "Alle logs will be posted in {1}.",
         "command.config.list_translations": "All translations changed for the server:\n**Key** - **Value**\n\n",
+        "command.config.mute_role_set": "Role {1} will now be used for !mute.",
+        "command.config.mute_role_show": "For !mute the role {1} is used.",
+        "command.config.mute_role_not_found": "Role {1} not found!",
 
         "command.dice.only_numbers": "One of the parameters wasn't a number.",
         "command.dice.min_too_big": "The second number has to be bigger than the first!",
+        "command.dice.too_many_dice": "A maximum of 10 dice can be rolled at a time!",
+        "command.dice.interdimensional": "Spheres are not good dices.",
 
         "command.not_found": "Command `{1}` not found!",
         "command.too_long": "Command was too long!",
@@ -152,6 +158,18 @@
         "command.stat.name": "Name",
         "command.stat.nothing_found": "Your search has no results.",
         "command.stat.error": "Error in your search syntax. Consult the help command for more information.",
+
+        "command.mute.left": "{1} mutes left to mute.",
+        "command.mute.muted": "{1} was muted.",
+        "command.mute.already_muted": "{1} was already muted.",
+        "command.unmute.unmuted": "{1} is not muted anymore.",
+        "command.unmute.not_muted": "{1} is not muted.",
+
+        "command.info.version": "Version",
+        "command.info.uptime": "Uptime",
+        "command.info.bugs_features": "Bug-Reports and Feature-Requests",
+        "command.info.title": "General KIRA information",
+        "command.info.node": "NodeJS version",
 
         "command.help.list.title": "List of KIRA commands",
         "command.help.list.footer": "For further help, see `{1}help <command>` (without < and >).",
@@ -201,6 +219,14 @@
                 {
                     "syntax": "{p}{c} <minimum> <maximum>",
                     "help": "Writes a random number from <minimum> to <maximum>."
+                },
+                {
+                    "syntax": "{p}{c} <die> ...",
+                    "help": "You can roll up to 10 dice. Use the dice syntax <COUNT>d<FACES>+/-<MALUS>."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} 2d20+2 d6",
+                    "help": "Rolls two 20-faced dice and adds 2 to the result (but 20 is max). After that KIRA rolls a 6-faced dice."
                 }
             ]
         },
@@ -341,6 +367,14 @@
                 {
                     "syntax": "{p}{c} log <channelID>",
                     "help": "Sets the log channel to <channelID>. KIRA will log new users, ban/unbans, kicks, saves and more."
+                },
+                {
+                    "syntax": "{p}{c} mute-role show",
+                    "help": "Shows the role that's used for !mute."
+                },
+                {
+                    "syntax": "{p}{c} mute-role set <roleID>",
+                    "help": "Sets the role to <roleID> that's used for !mute."
                 }
             ]
         },
@@ -369,6 +403,10 @@
                 {
                     "syntax": "Scopes of permissions",
                     "help": "Permission a user has is superior to the ones of his roles, also disabled permissions disable enabled permissions. This is combinable with asterisk (for example: enabling `command.*` and disabling `command.joke`)."
+                },
+                {
+                    "syntax": "{p}{c} list",
+                    "help": "Lists all permissions."
                 },
                 {
                     "syntax": "{p}{c} user <user> enable <permission>",
@@ -621,6 +659,26 @@
             ]
         },
 
+        "command.help.command.ship": {
+            "std": "Mixes two names.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <name> <name>",
+                    "help": "Creates a name for a shipping of two characters. For Names with spaces see `!help syntax`."
+                }
+            ]
+        },
+
+        "command.help.command.info": {
+            "std": "Lists general information about the currently running KIRA instance.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Lists general information about the currently running KIRA instance."
+                }
+            ]
+        },
+
         "command.help.syntax": "In help pages, everything in `<` and `>` is a necessary variable. Everything in `[` and `]` are optional. For example:\n```!help [command]```\n[command] doesn't have to be given.\n\nEvery not quoted string will be splitted at whitespaces. For example:\n```!hello world wow```\n`hello` is the command, `world` and `wow` are arguments. If you want to have `Hello World!` as one argument, you have to add quotation marks. For example: ```!a \"Hello World!\"```",
 
         "command.help.welcome": [
@@ -638,6 +696,14 @@
         "command.help.thanks": [
             "Thank you, {1}!",
             "I shall send you gratefulness, {1}!"
+        ],
+
+        "command.ship.jealous": [
+
+        ],
+
+        "command.ship.kira_kai": [
+
         ]
     }
 }

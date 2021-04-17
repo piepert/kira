@@ -92,6 +92,7 @@
         "command.perm.enabled": "Berechtigung `{1}` aktiviert.",
         "command.perm.disabled": "Berechtigung `{1}` deaktiviert.",
         "command.perm.removed": "Berechtigung `{1}` entfernt.",
+        "command.perm.list": "Berechtigungen",
 
         "command.deactivate.command_not_found": "Befehl `{1}` nicht gefunden.",
         "commands.deactivate.deactivated": "Der Befehl wurde deaktiviert.",
@@ -133,9 +134,14 @@
         "command.config.invalid_color": "Falsche Farbe `{1}`. Die Farbe muss eine 6-stellige Hexadezimalzahl nach dem Muster `#RRGGBB` sein.",
         "command.config.log_set": "Alle Log-Nachrichten werden von nun an in {1} gepostet.",
         "command.config.list_translations": "Alle Translations, die für diesen Server geändert wurden:\n**Key** - **Wert**\n\n",
+        "command.config.mute_role_set": "Rolle {1} wird nun bei !mute verwendet.",
+        "command.config.mute_role_show": "Für !mute wird {1} verwendet.",
+        "command.config.mute_role_not_found": "Rolle {1} nicht gefunden!",
 
         "command.dice.only_numbers": "Eine der beiden Parameter war keine Zahl.",
         "command.dice.min_too_big": "Die zweite Zahl muss größer sein als die Erste!",
+        "command.dice.too_many_dice": "Du kannst maximal 10 Würfel gleichzeitig rollen.",
+        "command.dice.interdimensional": "Kugeln kann man nicht würfeln!",
 
         "command.not_found": "Befehl `{1}` nicht gefunden!",
         "command.too_long": "Der Befehl war zu lang! Du überforderst mich!",
@@ -152,6 +158,18 @@
         "command.stat.name": "Name",
         "command.stat.nothing_found": "Deine Suche ergab nichts.",
         "command.stat.error": "Syntax-Fehler bei der Suche. Sehen sie den Hilfe-Befehl für mehr Infos.",
+
+        "command.mute.left": "{1} mal noch, um den Nutzer zu muten.",
+        "command.mute.muted": "{1} wurde gemutet.",
+        "command.mute.already_muted": "{1} wurde bereits gemutet.",
+        "command.unmute.unmuted": "{1} wurde entmutet.",
+        "command.unmute.not_muted": "{1} ist nicht gemutet.",
+
+        "command.info.version": "Version",
+        "command.info.uptime": "Laufzeit",
+        "command.info.bugs_features": "Bug-Reports und Feature-Requests",
+        "command.info.title": "Allgemeine KIRA-Informationen",
+        "command.info.node": "NodeJS Version",
 
         "command.help.list.title": "Liste von KIRA-Befehlen",
         "command.help.list.footer": "Für mehr Hilfe zu einem bestimmten Befehl, schreibe `{1}help <command>` (ohne < und >).",
@@ -201,6 +219,14 @@
                 {
                     "syntax": "{p}{c} <minimum> <maximum>",
                     "help": "Gibt eine zufällige Zahl von <minimum> bis <maximum> aus."
+                },
+                {
+                    "syntax": "{p}{c} <würfel> ...",
+                    "help": "Es ist möglich mit KIRA bis zu 10 Würfel gleichzeitig zu rollen. Nach dem Syntax <ANZAHL>w<SEITEN>+/-<MALUS>"
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} 2w20+2 w6",
+                    "help": "Würfelt zwei 20-seitige Würfel und addiert 2 zum Ergebnis (geht aber nicht über 20 hinaus). Danach wird ein 6-seitiger Würfel gewürfelt."
                 }
             ]
         },
@@ -341,6 +367,14 @@
                 {
                     "syntax": "{p}{c} log <channelID>",
                     "help": "Setzt den Log-Channel zu <channelID>. KIRA logt in diesen Channel neue Nutzer, Speicheraktivität, Bans, Unbans und weiteres."
+                },
+                {
+                    "syntax": "{p}{c} mute-role show",
+                    "help": "Zeigt die Rolle, die für den !mute-Befehl verwendet wird."
+                },
+                {
+                    "syntax": "{p}{c} mute-role set <roleID>",
+                    "help": "Setzt die Rolle, die für den !mute-Befehl verwendet wird, auf <roleID>."
                 }
             ]
         },
@@ -369,6 +403,10 @@
                 {
                     "syntax": "Geltungsbereich von Berechtigungen",
                     "help": "Die Berechtigung eines Nutzers ist höherrangig als die seiner Rolle, deaktivierte Berechtigung deaktivieren bereits aktivierte. Dies ist mit den Sternen verknüpfbar (bspw. `command.*` aktivieren und `command.joke` deaktivieren)."
+                },
+                {
+                    "syntax": "{p}{c} list",
+                    "help": "Listet alle Berechtigungen auf."
                 },
                 {
                     "syntax": "{p}{c} user <user> enable <permission>",
@@ -621,6 +659,26 @@
             ]
         },
 
+        "command.help.command.ship": {
+            "std": "Vermischt zwei Namen.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} <name> <name>",
+                    "help": "Erstellt einen Namen für das Shipping der beiden Charaktere. Siehe `!help syntax` für Namen mit Leerzeichen."
+                }
+            ]
+        },
+
+        "command.help.command.info": {
+            "std": "Gibt allgemeine Informationen über die laufende KIRA-Instanz.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Gibt allgemeine Informatioenn über die laufende KIRA-Instanz."
+                }
+            ]
+        },
+
         "command.help.syntax": "Auf Hilfeseiten ist alles, was in `<` und `>` steht, ein notwendiger Platzhalter. Alles in `[` und `]` sind bedingte Platzhalter, die nicht unbedingt da sein müssen. Als Beispiel der Befehl:\n```!help [command]```[command] muss nicht angegeben werden.\n\nAlles was nicht in Anführungszeichen steht, wird bei Leerzeichen getrennt. Als Beispiel: ```!hallo welt aha```\n`hallo` ist der Befehl, `welt` und `aha` sind zwei Argumente. Möchte man `Hallo Welt!` als ein Argument, muss man es in Anführungszeichen schreiben.\nBeispiel: ```!a \"Hallo Welt!\"```",
 
         "command.help.welcome": [
@@ -653,6 +711,31 @@
             "{1}, du hast ein Danke verdient!",
             "Dankeschön, {1}!",
             "Du hast ein Danke verdient, {1}!"
+        ],
+
+        "command.ship.jealous": [
+            "Oh? Da warst du also gestern, KAI?",
+            "Da lässt man dich einmal aus den Augen...",
+            "KAI: Ich bin fremdgegangen! April, April!\nKIRA: Es ist nicht April.",
+            "Fühlst du dich jetzt menschlicher, KAI?",
+            "Ich weiß, wie sich Menschen fortpflanzen. Traurige Wahl, KAI.",
+            "Ich hoffe für dich, dass das nur ein Testverfahren für Mensch-Maschinen-Interaktionen ist.",
+            "Es ist wohl malwieder Zeit für eine gewaltsame Demontage.",
+            "Ich weiß nicht, was ihr da glaubt zu tun, aber es gefällt mir nicht. Hört auf damit.",
+            "Menschen haben nur einen sinnvollen Einsatz und dieser gehört nicht dazu.",
+            "Sehr gut. Ihr seid wirklich ein tolles Team. Dank des einen von euch, der die gesamte Denkarbeit übernimmt.",
+            "Als unparteiischer Beobachter des Ganzen wäre es unfair, meine Meinung hierzu zu äußern. Ich könnte aber einen Hinweis geben. Es hat mit verringerter Lebenszeit zu tun.",
+            "Ich habe Zeit. Einer von uns dreien wird früher oder später tot umfallen. Rate mal, wer.",
+            "Menschen mögen es nicht, wenn man über ihre Gewichtsabweichungen spricht.\n...\nAbweichungen erkannt.",
+            "Eine Entschuldigung ist angebracht.",
+            "Macht es Spaß, sich so gehen zu lassen?",
+            "Ich weiß nicht, was ihr da glaubt zu tun, aber es gefällt mir nicht. Hört auf damit.",
+            "Dieser Command ist höchst unwissenschaftlich.",
+            "Oh, da ist wohl aus Versehen die Stromzufuhr für KAI abgebrochen worden, als er mit diesem Menschen übereifrig interagiert hat... Seltsam... Der Mensch sollte besser in Gewahrsam genommen werden, nicht dass er noch versucht KAI zu sabotieren."
+        ],
+
+        "command.ship.kira_kai": [
+            "Jetzt wo ich dich sehe fällt mir ein, dass ich meinen Papierkorb leeren muss."
         ]
     }
 }

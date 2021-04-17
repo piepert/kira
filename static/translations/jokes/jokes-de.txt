@@ -106,7 +106,7 @@ Mann zum Bäcker: "Ich hätte gerne 30 Brötchen." Bäcker: "Nehmen sie doch 40,
 ~~
 Rollt eine Kugel um die Ecke und kippt um. Was macht sie? Steht auf und geht weiter.
 ~~
-Treffen sich zwei Parallelen
+Treffen sich zwei Parallelen.
 ~~
 Zwei Pilze im Wald:
 Fragt der eine: "Wie gehts?"
@@ -267,11 +267,11 @@ Ich führe ein Leben mit viel Würde. Und Wäre. Und Hätte.
 ~~
 Was machen Mathematiker auf dem Klo? ππ
 ~~
-Du machst mein „int“ zum „long“.
+Du machst meinen „int“ zum „long“.
 ~~
 In Zentralamerika gibt es zwar schlechte Lackierer, dafür aber Guatemala.
 ~~
-„Wo bist du?“ „Warte an der Halltestelle auch den Bus.“ „Gut, beeil dich.“ „Alles klar, ich werde etwas schneller auf den Bus warten“
+„Wo bist du?“ „Warte an der Halltestelle auf den Bus.“ „Gut, beeil dich.“ „Alles klar, ich werde etwas schneller auf den Bus warten“
 ~~
 Womit droht der Deutschlehrer bei schlechtem Betragen? – Mit dem Faust!
 ~~
@@ -541,3 +541,6 @@ Welchen Preis gewinnen besonders ruhige und brave Hunde? – Den No-Bell-Preis
 ~~
 Warum sind Seeräuber schlecht in Mathe?
 Weil sie Pi raten!
+~~
+Künstler eignen sich nicht als Müller. Nein, ernsthaft. Versucht doch mal ein Gemälde in der Mühle zu mahlen.
+- Albert, Spiritfarer
