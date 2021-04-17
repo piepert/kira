@@ -1,5 +1,16 @@
 Date format: YYYY-MM-DD
 
+# v3.0.9 (17.4.2021)
+
+* added optional RPG-syntax for !dice
+* added command `!mute` (`src/commands/KCommandMute.ts`)
+* added command `!unmute` (`src/commands/KCommandUnmute.ts`)
+* added command `!ship` (`src/commands/KCommandShip.ts`)
+* added command `!info` (`src/commands/KCommandInfo.ts`)
+* fixed messages at leave-event and join-event
+* added list of all permissions with `!perm list`
+* changed from `conf.getTranslationStr` in commands to `server.getTranslation`
+
 # v3.0.8 (2.3.2021)
 
 * hotfix for crashes on new servers
