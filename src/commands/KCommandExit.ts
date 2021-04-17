@@ -29,7 +29,7 @@ export class KCommandExit extends KCommand {
         sender: KUser,
         client: Client) {
 
-        msg.channel.send(conf.getTranslationStr(msg, "command.exit")).then((message) => {
+        msg.channel.send(server.getTranslation("command.exit")).then((message) => {
             conf.save(client, false);
             process.exit(0);
         });

@@ -100,14 +100,14 @@ export class KCommandUser extends KCommand {
         if (command.getArguments().length == 1) { // <user>
             let embed = new MessageEmbed()
 
-            .setTitle(conf.getTranslationStr(msg, "command.user.user")+
+            .setTitle(server.getTranslation("command.user.user")+
                 ": "+m_user.username)
 
             .setImage(m_user.avatarURL())
             .setColor('#add8e6')
             .addFields(
                 {
-                    name: conf.getTranslationStr(msg, "command.user.name"),
+                    name: server.getTranslation("command.user.name"),
                     value: m_user.username+"#"+m_user.discriminator,
                     inline: true
                 },
@@ -117,43 +117,39 @@ export class KCommandUser extends KCommand {
                     inline: true
                 },
                 {
-                    name: conf.getTranslationStr(msg, "command.user.creation_date"),
+                    name: server.getTranslation("command.user.creation_date"),
                     value: date,
                     inline: true
                 },
                 {
-                    name: conf.getTranslationStr(msg, "command.user.message_count"),
+                    name: server.getTranslation("command.user.message_count"),
                     value: kuser.getMessageCount(),
                     inline: true
                 },
                 {
-                    name: conf.getTranslationStr(msg, "command.user.entries"),
+                    name: server.getTranslation("command.user.entries"),
                     value: kuser.getEntries().getEntries().length,
                     inline: true
                 },
                 {
                     name: "AvatarURL",
                     value: m_user.avatarURL() == null
-                        ? conf.getTranslationStr(
-                            msg,
-                            "command.user.avatar_not_found")
+                        ? server.getTranslation("command.user.avatar_not_found")
                         : m_user.avatarURL()
                 },
                 {
                     name: "Banned?",
                     value: (await msg.guild.fetchBans())
                         .find(user => user.user.id == UID) != undefined
-                            ? conf.getTranslationStr(msg, "general.yes")
-                            : conf.getTranslationStr(msg, "general.no")
+                            ? server.getTranslation("general.yes")
+                            : server.getTranslation("general.no")
                 }
             );
 
             msg.channel.send({ embed: embed });
         } else if (command.getArguments().length == 2) { // <user> show
             if (kuser.getEntries().getEntries().length == 0) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.user.no_entries"));
+                msg.channel.send(server.getTranslation("command.user.no_entries"));
 
                 return;
             }
@@ -170,15 +166,12 @@ export class KCommandUser extends KCommand {
             let e = kuser.getEntries().getEntry(command.getArguments()[2]);
 
             if (e == undefined) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.user.entry_not_found"));
-
+                msg.channel.send(server.getTranslation("command.user.entry_not_found"));
                 return;
             }
 
             let embed = new MessageEmbed()
-                .setTitle(conf.getTranslationStr(msg, "command.user.user")+
+                .setTitle(server.getTranslation("command.user.user")+
                     ": "+m_user.username)
                 .setColor('#f54242')
                 .addFields(
@@ -193,23 +186,23 @@ export class KCommandUser extends KCommand {
                         inline: true
                     },
                     {
-                        name: conf.getTranslationStr(msg, "command.user.report.date"),
+                        name: server.getTranslation("command.user.report.date"),
                         value: e.getDate().toUTCString(),
                         inline: false
                     },
                     {
-                        name: conf.getTranslationStr(msg, "command.user.report.content"),
+                        name: server.getTranslation("command.user.report.content"),
                         value: e.getContent().toString().length == 0 ?
                             "<empty>" : e.getContent().toString(),
                         inline: false
                     },
                     {
-                        name: conf.getTranslationStr(msg, "command.user.report.author"),
+                        name: server.getTranslation("command.user.report.author"),
                         value: e.getAuthorID()+" / "+server.getUser(e.getAuthorID()).username,
                         inline: false
                     },
                     {
-                        name: conf.getTranslationStr(msg, "command.user.report.url"),
+                        name: server.getTranslation("command.user.report.url"),
                         value: e.getMsgURL()
                     }
                 );

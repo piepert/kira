@@ -62,7 +62,7 @@ export class KCommandBan extends KCommand {
                 conf);
 
         await msg.guild.members.resolve(user)
-            .send(conf.getTranslationStr(msg, "command.ban.user_msg")
+            .send(server.getTranslation("command.ban.user_msg")
                 .replace("{1}", msg.guild.name)
                 .replace("{2}", message_string.trim()));
 

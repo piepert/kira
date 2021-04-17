@@ -29,10 +29,10 @@ export class KCommandWelcome extends KCommand {
         sender: KUser,
         client: Client) {
 
-        let welcome = conf.getTranslationStr(msg, "command.help.welcome");
+        let welcome: string[] = server.getTranslation("command.help.welcome") as string[];
 
         if (command.getArguments().length == 0) {
-            welcome = (welcome as string[]).filter(e => !e.includes("{1}"));
+            welcome = welcome.filter(e => !e.includes("{1}"));
             msg.channel.send(welcome[Math.floor(Math.random() * welcome.length)]);
 
         } else {

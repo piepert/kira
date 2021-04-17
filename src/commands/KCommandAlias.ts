@@ -47,9 +47,7 @@ export class KCommandAlias extends KCommand {
 
         if (KCommandManager.getCommand(cmd.getArguments()[0]) == undefined
             && cmd.getArguments()[1] != "which") {
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.not_found")
+            msg.channel.send(server.getTranslation("command.not_found")
                     .replace("{1}", cmd.getArguments()[0])
             );
 
@@ -59,19 +57,15 @@ export class KCommandAlias extends KCommand {
         if (cmd.getArguments()[1] != "which") {
             for (let e of [ "unalias" ]) {
                 if (cmd.getArguments()[0] == e) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.alias.not_allowed"
-                    ).replace("{1}", e));
+                    msg.channel.send(server.getTranslation("command.alias.not_allowed")
+                        .replace("{1}", e));
 
                     return;
                 }
 
                 if (cmd.getArguments()[1] == e) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.alias.name_not_allowed"
-                    ).replace("{1}", e));
+                    msg.channel.send(server.getTranslation("command.alias.name_not_allowed")
+                        .replace("{1}", e));
 
                     return;
                 }
@@ -80,11 +74,7 @@ export class KCommandAlias extends KCommand {
 
         if (cmd.getArguments().length == 1) {
             if (!sender.canPermission("admin.alias.list")) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.no_permission")
-                );
-
+                msg.channel.send(server.getTranslation("command.no_permission"));
                 return;
             }
 
@@ -92,11 +82,8 @@ export class KCommandAlias extends KCommand {
             let ca = server.getAliasesForCommand(cmd.getArguments()[0]);
 
             if (ca.length == 0) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.alias.no_aliases")
-                        .replace("{1}", cmd.getArguments()[0])
-                );
+                msg.channel.send(server.getTranslation("command.alias.no_aliases")
+                    .replace("{1}", cmd.getArguments()[0]));
 
                 return;
             }
@@ -107,32 +94,26 @@ export class KCommandAlias extends KCommand {
 
             aliases = aliases.trimEnd().substr(0, aliases.length-2);
 
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.alias.list")
+            msg.channel.send(server.getTranslation("command.alias.list")
                     .replace("{1}", cmd.getArguments()[0])
                     .replace("{2}", aliases)
             );
         } else if (cmd.getArguments()[1] == "which") {
             if (server.getAlias(cmd.getArguments()[0]) == undefined) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.alias.not_found")
+                msg.channel.send(server.getTranslation("command.alias.not_found")
                         .replace("{1}", cmd.getArguments()[0])
                 );
 
                 return;
             }
 
-            msg.channel.send(conf.getTranslationStr(msg, "command.alias.which")
+            msg.channel.send(server.getTranslation("command.alias.which")
                 .replace("{1}", cmd.getArguments()[0])
                 .replace("{2}", server.getAlias(cmd.getArguments()[0])));
 
         } else {
             if (!sender.canPermission("admin.alias.create")) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.no_permission")
+                msg.channel.send(server.getTranslation("command.no_permission")
                 );
 
                 return;
@@ -151,12 +132,9 @@ export class KCommandAlias extends KCommand {
                         .replace("{1}", cmd.getArguments()[0])
                         .replace("{2}", cmd.getArguments()[1])))
 
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.alias.success")
+            msg.channel.send(server.getTranslation("command.alias.success")
                     .replace("{1}", cmd.getArguments()[0])
-                    .replace("{2}", cmd.getArguments()[1])
-            );
+                    .replace("{2}", cmd.getArguments()[1]));
         }
     }
 }

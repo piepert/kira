@@ -91,10 +91,10 @@ export class KCommandStat extends KCommand {
         }
     }
 
-    public performQuery(query_list: any[],
+    public async performQuery(query_list: any[],
         users: KUser[],
         guild: Guild,
-        query: any = undefined): KUser[] {
+        query: any = undefined): Promise<KUser[]> {
 
         if (query == undefined) {
             query = query_list.shift();
@@ -129,6 +129,19 @@ export class KCommandStat extends KCommand {
             users = users.map(user => {
                 if (this.compareObjectsToNum(user.getMessageCount(), parseInt(query.value))
                     != this.operandToComparationNum(query.operand)) {
+
+                    if (inverted) return user;
+                    user = undefined;
+                }
+
+                return (inverted ? undefined : user);
+            });
+        }
+
+        // messages_count      Number                  Message count <,>,: Number
+        else if (query.name == "has_no_role") {
+            users = users.map(user => {
+                if (guild.members.cache.get(user.id).roles.cache.size > 0) {
 
                     if (inverted) return user;
                     user = undefined;
@@ -217,6 +230,8 @@ export class KCommandStat extends KCommand {
         let tmp_query = [];
 
         for (let filter of args) {
+            filter = filter.toLocaleLowerCase();
+
             if (filter == "or") {
                 queries.push(tmp_query);
                 tmp_query = [];
@@ -229,6 +244,15 @@ export class KCommandStat extends KCommand {
                 value: null,
                 operand: ":"
             };
+
+            if (filter == "has_no_role") {
+                tmp_query.push({
+                    name: "has_no_role",
+                    value: "has_no_role",
+                    operand: ":"
+                });
+                continue;
+            }
 
             if (splitted.length != 2) {
                 o.operand = "<";
@@ -271,6 +295,7 @@ export class KCommandStat extends KCommand {
         has_permission      Permission-String       Has Permission-String
         has_role            Role-ID                 Has Role-ID
         member_since        Time (h,d,w,m,y)        Member date in Time
+        has_no_role         -                       Checks if the member has no role
     */
     public async run(conf: KConf,
         msg: Message,
@@ -286,14 +311,12 @@ export class KCommandStat extends KCommand {
         let result: KUser[] = [];
 
         if (queries == null) {
-            msg.channel.send(conf.getTranslationStr(msg,
-                "command.stat.error"));
-            return;
+            msg.channel.send(server.getTranslation("command.stat.error"));
             return;
         }
 
         for (let query of queries) {
-            result = result.concat(this.performQuery(query,
+            result = result.concat(await this.performQuery(query,
                     user_list,
                     client.guilds.cache.get(server.getID())));
         }
@@ -302,14 +325,13 @@ export class KCommandStat extends KCommand {
             (v, i, a) => a.findIndex(t => (t.getID() === v.getID())) === i);
 
         if (result.length == 0) {
-            msg.channel.send(conf.getTranslationStr(msg,
-                "command.stat.nothing_found"));
+            msg.channel.send(server.getTranslation("command.stat.nothing_found"));
             return;
         }
 
         let user_table = [
             [
-                conf.getTranslationStr(msg, "command.stat.name"),
+                server.getTranslation("command.stat.name"),
                 "ID"
             ]
         ];

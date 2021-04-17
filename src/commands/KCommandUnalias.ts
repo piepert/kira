@@ -52,10 +52,8 @@ export class KCommandUnalias extends KCommand {
 
         if (command.getArguments().length == 2) {
             if (KCommandManager.getCommand(command.getArguments()[0]) == undefined) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.not_found"
-                ).replace("{1}", command.getArguments()[0]));
+                msg.channel.send(server.getTranslation("command.not_found")
+                    .replace("{1}", command.getArguments()[0]));
 
                 return;
             }
@@ -72,18 +70,14 @@ export class KCommandUnalias extends KCommand {
                     "log.removed_all_alias.body")
                         .replace("{1}", command.getArguments()[0])))
 
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.unalias.all_cleared"
-            ).replace("{1}", command.getArguments()[0]));
+            msg.channel.send(server.getTranslation("command.unalias.all_cleared")
+                .replace("{1}", command.getArguments()[0]));
 
         } else {
             let owner_name = server.getAlias(command.getArguments()[0]);
 
             if (!server.removeAlias(command.getArguments()[0])) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.unalias.no_alias"
+                msg.channel.send(server.getTranslation("command.unalias.no_alias"
                 ).replace("{1}", command.getArguments()[0]));
 
             } else {
@@ -99,9 +93,7 @@ export class KCommandUnalias extends KCommand {
                             .replace("{1}", command.getArguments()[0])
                             .replace("{2}", owner_name)))
 
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.unalias.cleared"
+                msg.channel.send(server.getTranslation("command.unalias.cleared"
                 ).replace("{1}", command.getArguments()[0]));
             }
         }

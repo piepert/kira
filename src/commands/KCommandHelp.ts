@@ -47,9 +47,7 @@ export class KCommandHelp extends KCommand {
 
             let embed = new MessageEmbed()
                 .setColor("#6fdefc")
-                .setTitle(conf.getTranslationStr(
-                    msg,
-                    "command.help.list.title"));
+                .setTitle(server.getTranslation("command.help.list.title"));
 
             for (let c of KCommandManager.commands) {
                 if (user.canPermissionsOR(c.getPermissions()) ||
@@ -63,9 +61,7 @@ export class KCommandHelp extends KCommand {
                         continue;
                     }
 
-                    let command_help = conf.getTranslationStr(
-                        msg,
-                        "command.help.command."+c.getName());
+                    let command_help = server.getTranslation("command.help.command."+c.getName());
 
                     let names = server.getAliasesForCommand(
                             c.getName());
@@ -78,9 +74,7 @@ export class KCommandHelp extends KCommand {
 
                     if (command_help == undefined) {
                         embed.addField(name,
-                            conf.getTranslationStr(
-                                msg,
-                                "command.help.no_help_found"));
+                            server.getTranslation("command.help.no_help_found"));
                         continue;
                     }
 
@@ -91,9 +85,7 @@ export class KCommandHelp extends KCommand {
             }
 
             msg.channel.send(embed);
-            msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.help.list.footer")
+            msg.channel.send(server.getTranslation("command.help.list.footer")
                     .replace("{1}", prefix))
 
         } else if (command.getArguments().length == 1) {
@@ -106,31 +98,23 @@ export class KCommandHelp extends KCommand {
             let c: KCommand = KCommandManager.getCommand(name);
 
             if (c == undefined) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.help.no_help_found"))
+                msg.channel.send(server.getTranslation("command.help.no_help_found"))
                 return;
 
             } else {
-                let command_help = conf.getTranslationStr(
-                    msg,
-                    "command.help.command."+c.getName());
+                let command_help = server.getTranslation("command.help.command."+c.getName());
 
                 if (command_help == undefined ||
                     command_help.subcommands == undefined) {
 
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.help.no_help_found"))
+                    msg.channel.send(server.getTranslation("command.help.no_help_found"))
                     return;
 
                 }
 
                 let embed = new MessageEmbed()
                     .setColor("#6fdefc")
-                    .setTitle(conf.getTranslationStr(
-                        msg,
-                        "command.help.sub.title")
+                    .setTitle(server.getTranslation("command.help.sub.title")
                             .replace("{1}", prefix)
                             .replace("{2}", c.getName()));
 

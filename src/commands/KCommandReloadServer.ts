@@ -29,8 +29,8 @@ export class KCommandReloadServer extends KCommand {
         sender: KUser,
         client: Client) {
 
-        msg.channel.send(conf.getTranslationStr(msg, "command.reload.start"));
+        msg.channel.send(server.getTranslation("command.reload.start"));
         conf.getServerManager().getServerByID(msg.guild.id).reloadConfig(conf);
-        msg.channel.send(conf.getTranslationStr(msg, "command.reload.finished"));
+        msg.channel.send(server.getTranslation("command.reload.finished"));
     }
 }

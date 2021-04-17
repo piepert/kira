@@ -32,15 +32,9 @@ export class KCommandActivate extends KCommand {
 
         if (KCommandManager.getCommand(command.getArguments()[0]) != undefined) {
             server.activateCommand(command.getArguments()[0]);
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "commands.activate.activated"
-            ));
+            msg.channel.send(server.getTranslation("commands.activate.activated"));
         } else {
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "commands.activate.command_not_found"
-            ));
+            msg.channel.send(server.getTranslation("commands.activate.command_not_found"));
         }
     }
 }

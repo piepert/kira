@@ -49,7 +49,7 @@ export class KCommandJoke extends KCommand {
                 .getJokes(server.getLanguage());
 
             if (jokes == undefined || jokes.length == 0) {
-                msg.channel.send(conf.getTranslationStr(msg, "command.joke.not_found"));
+                msg.channel.send(server.getTranslation("command.joke.not_found"));
                 return;
             }
 

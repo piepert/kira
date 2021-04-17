@@ -29,6 +29,6 @@ export class KCommandSyntax extends KCommand {
         sender: KUser,
         client: Client) {
 
-        msg.channel.send(conf.getTranslationStr(msg, "command.help.syntax"));
+        msg.channel.send(server.getTranslation("command.help.syntax"));
     }
 }

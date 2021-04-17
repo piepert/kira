@@ -62,13 +62,12 @@ export class KCommandKick extends KCommand {
                 conf);
 
         await msg.guild.members.resolve(user)
-            .send(conf.getTranslationStr(msg, "command.kick.user_msg")
+            .send(server.getTranslation("command.kick.user_msg")
                 .replace("{1}", msg.guild.name)
                 .replace("{2}", message_string.trim()));
 
         msg.guild.members.resolve(user).kick()
-        msg.channel.send(conf
-            .getTranslationStr(msg, "command.kick.kicked")
+        msg.channel.send(server.getTranslation("command.kick.kicked")
             .replace("{1}", server.getUser(user).getDisplayName()));
     }
 }

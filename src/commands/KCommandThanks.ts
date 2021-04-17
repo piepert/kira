@@ -39,7 +39,7 @@ export class KCommandThanks extends KCommand {
                 .replace("?", "") == "kira"
 
             if (is_kira) {
-                let thanks = conf.getTranslationStr(msg, "command.help.ywc");
+                let thanks = server.getTranslation("command.help.ywc");
                 msg.channel.send(thanks[Math.floor(Math.random() * thanks.length)]);
                 return;
             }
@@ -47,12 +47,12 @@ export class KCommandThanks extends KCommand {
 
         if (command.getArguments().length == 0) {
 
-            let thanks = conf.getTranslationStr(msg, "command.help.ywc");
+            let thanks = server.getTranslation("command.help.ywc");
             msg.channel.send(thanks[Math.floor(Math.random() * thanks.length)]);
 
         } else {
             let text = command.getArguments().join(" ");
-            let thanks = conf.getTranslationStr(msg, "command.help.thanks");
+            let thanks = server.getTranslation("command.help.thanks");
 
             msg.channel
                 .send(thanks[Math.floor(Math.random() * thanks.length)]

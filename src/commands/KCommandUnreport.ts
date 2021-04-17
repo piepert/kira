@@ -52,9 +52,7 @@ export class KCommandUnreport extends KCommand {
 
         if (entry == undefined) {
 
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.user.entry_not_found"));
+            msg.channel.send(server.getTranslation("command.user.entry_not_found"));
             return;
         }
 

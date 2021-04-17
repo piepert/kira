@@ -9,11 +9,9 @@ import {
 import { KCommand } from "./KCommand";
 import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
-import { config, send } from "process";
 import { KServer } from "../KServer";
 import { KRole } from "../KRole";
 import { KUser } from "../KUser";
-import { KCommandManager } from "../KCommandManager";
 import { Client } from "@typeit/discord/Client";
 import { KChannelConfig } from "../KChannelConfig";
 
@@ -69,6 +67,14 @@ export class KCommandConfig extends KCommand {
         */
 
         if (args[0] == "translation") {
+            return args.length == 3 || (args.length == 2 && args[1] == "show");
+        }
+
+        /**
+         * mute-role show|(set <value>) {3}
+        */
+
+        if (args[0] == "mute-role") {
             return args.length == 3 || (args.length == 2 && args[1] == "show");
         }
 
@@ -131,14 +137,12 @@ export class KCommandConfig extends KCommand {
                 c_channel = KConf.textToChannel(channel_id, msg.guild);
 
                 if (c_channel == undefined) {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                            "command.config.channel_not_found"))
+                    msg.channel.send(server.getTranslation("command.config.channel_not_found"))
                     return;
                 }
 
                 if (!c_channel.isText()) {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                            "command.config.not_text_channel"))
+                    msg.channel.send(server.getTranslation("command.config.not_text_channel"))
                     return;
                 }
 
@@ -146,9 +150,7 @@ export class KCommandConfig extends KCommand {
                 c_feed = args[2];
 
                 if (server.getFeedByID(c_feed) == undefined) {
-                    msg.channel.send(conf.getTranslationStr(
-                        msg,
-                        "command.config.feed_not_found")
+                    msg.channel.send(server.getTranslation("command.config.feed_not_found")
                             .replace("{1}", conf.getConfig().command_prefix))
                     return;
                 }
@@ -159,16 +161,14 @@ export class KCommandConfig extends KCommand {
                     let feeds: KChannelConfig[] = server.getChannelConfigsByID(c_channel.id);
 
                     if (feeds == undefined) {
-                        msg.channel.send(conf.getTranslationStr(msg,
-                                "command.config.channel_not_found"))
+                        msg.channel.send(server.getTranslation("command.config.channel_not_found"))
                         return;
                     } else {
                         let list = feeds.map((e) => {
                             return ("`"+e.getConfigurationID()+"` - "+e.feed_url+" - "+e.title);
                         })
 
-                        let message_str = conf.getTranslationStr(msg,
-                            "command.config.list_for_channel");
+                        let message_str = server.getTranslation("command.config.list_for_channel");
 
                         message_str = message_str.replace("{1}", "<#"+c_channel.id+">");
                         message_str = message_str.replace("{2}", list.join("\n"));
@@ -187,15 +187,14 @@ export class KCommandConfig extends KCommand {
                                 return ("`"+e.getConfigurationID()+"` - "+e.feed_url+" - "+e.title);
                             })
 
-                            let message_str = conf.getTranslationStr(msg,
-                                "command.config.list_for_channel");
+                            let message_str = server.getTranslation("command.config.list_for_channel");
 
                             message_str = message_str.replace("{1}", "<#"+channel+">");
                             message_str = message_str.replace("{2}", list.join("\n"));
 
                             if (!first) {
                                 message_str = "​\n\n"+message_str;                                   // NOTE: there is a zero width space char ...
-                                                                                                    // .. before \n\n to print the new lines!
+                                                                                                    // ... before \n\n to print the new lines!
                             } else {
                                 first = false;
                             }
@@ -212,25 +211,21 @@ export class KCommandConfig extends KCommand {
 
                 if (KConf.textToChannel(args[2], msg.guild) === undefined ||
                     !KConf.textToChannel(args[2], msg.guild).isText()) {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                        "command.config.channel_not_found"))
+                    msg.channel.send(server.getTranslation("command.config.channel_not_found"))
                     return;
                 }
 
                 server.addChannelConfig(cc);
-                msg.channel.send(conf.getTranslationStr(msg,
-                    "command.config.channel_added"));
+                msg.channel.send(server.getTranslation("command.config.channel_added"));
 
             } else if (args[1] == "color") {
                 if (server.getFeedByID(args[2]) === undefined) {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                        "command.config.channel_not_found"))
+                    msg.channel.send(server.getTranslation("command.config.channel_not_found"))
                     return;
                 }
 
                 if (/#[a-f0-9]{6}/.test(args[2]) === false) {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                        "command.config.invalid_color").replace("{1}", args[3]))
+                    msg.channel.send(server.getTranslation("command.config.invalid_color").replace("{1}", args[3]))
                     return;
                 }
 
@@ -238,8 +233,7 @@ export class KCommandConfig extends KCommand {
 
             } else if (args[1] == "title") {
                 if (server.getFeedByID(args[2]) === undefined) {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                        "command.config.channel_not_found"))
+                    msg.channel.send(server.getTranslation("command.config.channel_not_found"))
                     return;
                 }
 
@@ -247,11 +241,9 @@ export class KCommandConfig extends KCommand {
 
             } else if (args[1] == "delete") {
                 if (server.getChannelConfigs().deleteConfig(c_feed, server)) {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                        "command.config.channel_deleted"));
+                    msg.channel.send(server.getTranslation("command.config.channel_deleted"));
                 } else {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                        "command.config.channel_deleted.error"));
+                    msg.channel.send(server.getTranslation("command.config.channel_deleted.error"));
                 }
             }
         }
@@ -275,15 +267,13 @@ export class KCommandConfig extends KCommand {
             } else {
                 if (conf.getTranslationManager().getTranslation(args[1]) === undefined) {
                     msg.channel.send(
-                        conf.getTranslationStr(msg,
-                                "command.config.language_not_found")
+                        server.getTranslation("command.config.language_not_found")
                         .replace("{1}", args[1]));
                 } else {
                     server.setLanguage(args[1]);
 
                     msg.channel.send(
-                        conf.getTranslationStr(msg,
-                                "command.config.language_changed")
+                        server.getTranslation("command.config.language_changed")
                         .replace("{1}", args[1]));
                 }
             }
@@ -295,8 +285,7 @@ export class KCommandConfig extends KCommand {
 
         if (args[0] == "translation") {
             if (args.length == 2 && args[1] == "show") {
-                let msg_str = conf.getTranslationStr(msg,
-                    "command.config.list_translations");
+                let msg_str = server.getTranslation("command.config.list_translations");
 
                 for (let k in server.translations.keys()) {
                     msg_str += "**[ `"+k+"` ]** "+server.translations[k]
@@ -304,18 +293,44 @@ export class KCommandConfig extends KCommand {
             } else if (args[2] == "delete") {
                 if (!server.deleteTranslation(args[1])) {
                     msg.channel.send(
-                        conf.getTranslationStr(msg,
-                                "command.config.translation_not_found")
+                        server.getTranslation("command.config.translation_not_found")
                         .replace("{1}", args[1]));
 
                 } else {
                     msg.channel.send(
-                        conf.getTranslationStr(msg,
-                            "command.config.translation_deleted")
+                        server.getTranslation("command.config.translation_deleted")
                         .replace("{1}", args[1]));
                 }
             } else {
                 server.setTranslation(args[1], args[2]);
+            }
+        }
+
+        /**
+         * mute-role show|(set <value>) {3/1}
+        */
+
+        if (args[0] == "mute-role") {
+            if (args.length == 2 && args[1] == "show") {
+                msg.channel.send(
+                    server.getTranslation("command.config.mute_role_show")
+                    .replace("{1}", server.getMuteRoll()));
+
+            } else if (args[1] == "set") {
+                let role = await KConf.roleToID(msg.guild, args[2]);
+                console.log(role);
+
+                if (role != undefined && msg.guild.roles.cache.has(role)) {
+                    server.setMuteRoll(role);
+
+                    msg.channel.send(
+                        server.getTranslation("command.config.mute_role_set")
+                        .replace("{1}", args[2]));
+                } else {
+                    msg.channel.send(
+                        server.getTranslation("command.config.mute_role_not_found")
+                        .replace("{1}", args[2]));
+                }
             }
         }
 
@@ -329,19 +344,16 @@ export class KCommandConfig extends KCommand {
             if (server.getUsers().getUser(UID) !== undefined) {
                 if (server.getUsers().deleteUser(UID, server)) {
                     msg.channel.send(
-                        conf.getTranslationStr(msg,
-                                "command.config.user_deleted")
+                        server.getTranslation("command.config.user_deleted")
                         .replace("{1}", args[1]));
 
                 } else {
-                    msg.channel.send(conf.getTranslationStr(msg,
-                        "command.config.user_deleted.error"));
+                    msg.channel.send(server.getTranslation("command.config.user_deleted.error"));
                 }
 
             } else {
                 msg.channel.send(
-                    conf.getTranslationStr(msg,
-                        "command.config.user_not_found")
+                    server.getTranslation("command.config.user_not_found")
                     .replace("{1}", args[1]));
             }
         }
@@ -355,14 +367,13 @@ export class KCommandConfig extends KCommand {
 
             if (channel === undefined ||
                 !channel.isText()) {
-                msg.channel.send(conf.getTranslationStr(msg,
-                    "command.config.channel_not_found"))
+                msg.channel.send(server.getTranslation("command.config.channel_not_found"))
                 return;
             }
 
             server.setLogChannel(channel.id);
-            msg.channel.send(conf.getTranslationStr(msg,
-                "command.config.log_set").replace("{1}", "<#"+channel.id+">"));
+            msg.channel.send(server.getTranslation("command.config.log_set")
+                .replace("{1}", "<#"+channel.id+">"));
         }
     }
 }

@@ -32,15 +32,9 @@ export class KCommandDeactivate extends KCommand {
 
         if (KCommandManager.getCommand(command.getArguments()[0]) != undefined) {
             server.deactivateCommand(command.getArguments()[0]);
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "commands.deactivate.deactivated"
-            ));
+            msg.channel.send(server.getTranslation("commands.deactivate.deactivated"));
         } else {
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "commands.deactivate.command_not_found"
-            ));
+            msg.channel.send(server.getTranslation("commands.deactivate.command_not_found"));
         }
     }
 }

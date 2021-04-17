@@ -50,19 +50,13 @@ export class KCommandAutorespond extends KCommand {
             let word = words.join(" ");
 
             if (!server.hasAutorespond(word)) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.autorespond.not_found"
-                ));
+                msg.channel.send(server.getTranslation("command.autorespond.not_found"));
                 return;
             }
 
             server.removeAutorespond(words.join(" "))
 
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.autorespond.deleted"
-            ));
+            msg.channel.send(server.getTranslation("command.autorespond.deleted"));
         } else if (command.arguments[0] == "add") {
             let key = words.shift();
             let value = words.join(" ");
@@ -70,22 +64,13 @@ export class KCommandAutorespond extends KCommand {
             if (!server.hasAutorespond(key)) {
                 server.addAutorespond(key, value);
 
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.autorespond.added"
-                ));
+                msg.channel.send(server.getTranslation("command.autorespond.added"));
             } else {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.autorespond.already_exists"
-                ));
+                msg.channel.send(server.getTranslation("command.autorespond.already_exists"));
             }
         } else {
             if (server.autoresponds.size == 0) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.autorespond.empty"
-                ));
+                msg.channel.send(server.getTranslation("command.autorespond.empty"));
                 return;
             }
 

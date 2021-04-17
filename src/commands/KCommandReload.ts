@@ -28,10 +28,10 @@ export class KCommandReload extends KCommand {
         command: KParsedCommand,
         sender: KUser,
         client: Client) {
-        msg.channel.send(conf.getTranslationStr(msg, "command.reload.start"));
+        msg.channel.send(server.getTranslation("command.reload.start"));
 
         conf.reload().then(() => {
-            msg.channel.send(conf.getTranslationStr(msg, "command.reload.finished"));
+            msg.channel.send(server.getTranslation("command.reload.finished"));
         });
     }
 }

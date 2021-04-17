@@ -51,7 +51,7 @@ export class KCommandUnban extends KCommand {
 
         // KIRA can't send messages to banned users, because they aren't on the server
         /* await msg.guild.members.resolve(user)
-            .send(conf.getTranslationStr(msg, "command.unban.user_msg")
+            .send(server.getTranslation(msg, "command.unban.user_msg")
                 .replace("{1}", msg.guild.name)); */
 
         msg.channel.send(conf

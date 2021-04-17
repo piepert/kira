@@ -36,14 +36,10 @@ export class KCommandRefresh extends KCommand {
             let c = server.users.users.length - count_b;
 
             if (c == 1) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.refresh.refreshed_sg")
+                msg.channel.send(server.getTranslation("command.refresh.refreshed_sg")
                         .replace("{1}",(c).toString()));
             } else {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.refresh.refreshed_pl")
+                msg.channel.send(server.getTranslation("command.refresh.refreshed_pl")
                         .replace("{1}", (c).toString()));
             }
         });
