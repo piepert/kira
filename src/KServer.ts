@@ -21,6 +21,7 @@ import { KUser } from "./KUser";
 import { KRole } from "./KRole";
 import { KChannelConfigManager } from "./KChannelConfigManager";
 import { Rule } from "@typeit/discord";
+import { config } from "process";
 
 export class KServer {
     id: string;
@@ -29,10 +30,12 @@ export class KServer {
     cfg_path: string;                                                           // path for server config/json
     root_path: string;                                                          // path for server directory
     log_channel: string;                                                        // id of log-channel on server
+    mute_roll: string;
 
     join_message: boolean;
 
     frequency_cache: Map<string, number>;                                       // all frequencies, key is command_name
+    mute_user_cache: Map<string, string[]>;                                       // all frequencies, key is command_name
     aliases: Map<string, string>;                                               // all aliases for commands
     translations: Map<string, string>;                                          // overwritten translation strings
     autoresponds: Map<string, string>;
@@ -42,10 +45,12 @@ export class KServer {
     channels: KChannelConfigManager;                                            // wiki-feed list on server
     users: KUserManager;
     roles: KRoleManager;
+    config: KConf;
 
     constructor(id: string,
         name: string,
-        language: string) {
+        language: string,
+        conf: KConf) {
 
         this.id = id;
         this.language = language;
@@ -53,6 +58,7 @@ export class KServer {
         this.cfg_path = "";
         this.root_path = "";
         this.channels = new KChannelConfigManager();
+        this.mute_roll = "";
 
         this.users = new KUserManager();
         this.roles = new KRoleManager();
@@ -63,7 +69,10 @@ export class KServer {
         this.frequency_cache = new Map<string, number>();
         this.autoresponds = new Map<string, string>();
         this.log_channel = null;
+        this.config = conf;
     }
+
+    public setConf(conf: KConf) { this.config = conf; }
 
     public toJSONObject(): object {
         return {
@@ -74,7 +83,8 @@ export class KServer {
             aliases: Object.fromEntries(this.aliases),
             translations: this.translations,
             log_channel: this.log_channel,
-            autoresponds: [...this.autoresponds]
+            autoresponds: [...this.autoresponds],
+            mute_roll: this.mute_roll
         }
     }
 
@@ -84,13 +94,15 @@ export class KServer {
         old_load: boolean = false): KServer {
 
         let obj = JSON.parse(content);
-        let s: KServer = new KServer(obj.id, obj.name, obj.language);
+        let s: KServer = new KServer(obj.id, obj.name, obj.language, conf);
 
         s.cfg_path = path;
         s.deactivated_commands = obj.deactivated_commands;
         s.frequency_cache = new Map<string, number>();
+        s.mute_user_cache = new Map<string, string[]>();
         s.log_channel = obj.log_channel;
         s.jokes_cache = new Map<string, string[]>();
+        s.mute_roll = obj.mute_roll;
 
         if (s.log_channel == undefined) {
             s.log_channel = null;
@@ -208,6 +220,40 @@ export class KServer {
         }
 
         return server;
+    }
+
+    public incMuteCount(muteID: string, senderID): boolean {
+        if (this.mute_user_cache[muteID] === undefined) {
+            this.mute_user_cache[muteID] = [ senderID ];
+        } else {
+            if (this.mute_user_cache[muteID].includes(senderID)) {
+                return false;
+            }
+
+            this.mute_user_cache[muteID].push(senderID);
+        }
+
+        return true;
+    }
+
+    public resetMuteCount(userID: string) {
+        this.mute_user_cache[userID] = [];
+    }
+
+    public getMuteCount(userID: string): number {
+        if (this.mute_user_cache[userID] === undefined) {
+            return 0;
+        } else {
+            return this.mute_user_cache[userID].length;
+        }
+    }
+
+    public setMuteRoll(id: string) {
+        this.mute_roll = id;
+    }
+
+    public getMuteRoll(): string {
+        return this.mute_roll;
     }
 
     public getJokeCache(): string[] {
@@ -569,7 +615,7 @@ export class KServer {
         let command: KParsedCommand = KParsedCommand.parse(msg.content, pref);
 
         if (command.getName().length > 1000) {
-            msg.channel.send(conf.getTranslationStr(msg, "command.too_long"));
+            msg.channel.send(this.getTranslation("command.too_long"));
             return;
         } else if (command.getName().length <= 0) {
             return;
@@ -591,21 +637,15 @@ export class KServer {
             c = KCommandManager.getCommand(command.getName());
 
             if (c == undefined) {
-                msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.not_found")
-                        .replace("{1}", command.getName())
-                );
+                msg.channel.send(this.getTranslation("command.not_found")
+                        .replace("{1}", command.getName()));
 
                 return;
             }
         }
 
         if (this.isCommandDeactivated(c.getName())) {
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "general.deactivated"
-            ));
+            msg.channel.send(this.getTranslation("general.deactivated"));
             return;
         }
 
@@ -627,22 +667,18 @@ export class KServer {
             || (c.permissions[0] == "OPERATOR"                                                      // ... is not for operators
                 && !conf.userIsOperator(msg.author.id))) {
 
-            msg.channel.send(conf.getTranslationStr(
-                msg,
-                "command.no_permission"
-            ));
+            msg.channel.send(this.getTranslation("command.no_permission"));
         } else if (!c.validateSyntax(command)) {
-            msg.channel.send(conf.getTranslationStr(
-                    msg,
-                    "command.invalid_syntax")
+            msg.channel.send(this.getTranslation("command.invalid_syntax")
                 .replace("{1}", conf.getConfig().command_prefix)
                 .replace("{2}", command.getName()));
+
         } else {
             if (c.getFrequencyMaximum() != undefined) {                                             // check if command is more used than specified in
                 if (this.frequency_cache[c.getName()] >= c.getFrequencyMaximum() &&                 // ... a time
                     !conf.userIsOperator(msg.author.id)) {
 
-                    msg.channel.send(conf.getTranslationStr(msg, "command."+c.getName()+".frequency"));
+                    msg.channel.send(this.getTranslation("command."+c.getName()+".frequency"));
                     return;
 
                 } else if (this.frequency_cache[c.getName()] == undefined ||
@@ -814,7 +850,11 @@ export class KServer {
         console.log("[ USER_LEFT ]", user.id, "left from", this.id);
     }
 
-    public getTranslation(key: string) {
+    public getTranslation(key: string): any {
+        if (this.translations.get(key) === undefined) {
+            return this.config.getTranslationForServer(this.id, key);
+        }
+
         return this.translations.get(key);
     }
 

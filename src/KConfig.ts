@@ -103,7 +103,7 @@ export class KConf {
 
                     if (this.servers.getServerByID(server.getID()) == undefined) {
                         console.log("[ LOAD ] Added server to list.");
-                        this.servers.addServer(server);
+                        this.servers.addServer(server, this);
                     } else {
                         console.log("[ LOAD ] [ INFO ] Server was already loaded from directory. Ignoring old file "+dir_path+".");
                     }
@@ -127,14 +127,14 @@ export class KConf {
 
                 } else {
                     console.log("[ LOAD ] Added server to list.");
-                    this.servers.addServer(server);
+                    this.servers.addServer(server, this);
                 }
             }
         }
     }
 
     public static async userToID(guild: Guild, user: string, server: KServer): Promise<string> {    // make @mention to ID
-        if (/^[0-9]{7,20}$/.test(user) || /^<@![0-9]{7,20}>$/.test(user)) {                         // if ID or @mention
+        if (/^[0-9]{7,25}$/.test(user) || /^<@![0-9]{7,25}>$/.test(user)) {                         // if ID or @mention
             user = user.replace("<@!", "").replace(">", "");
             return user;
 
@@ -219,6 +219,26 @@ export class KConf {
         return undefined;
     }
 
+    public static async roleToID(guild: Guild, role: string): Promise<string> {                     // make @mention to ID
+        if (/^[0-9]{7,25}$/.test(role) || /^<@\&[0-9]{7,25}>$/.test(role)) {                         // if ID or @mention
+            role = role.replace("<@&", "").replace(">", "");
+            return role;
+        }
+
+        let possibilities: string[] = [];
+
+        for (let r of guild.roles.cache.values()) {                                 // iterate through all users
+            if (r.name.trim().startsWith(role.trim())) {
+                possibilities.push(r.id);
+            }
+        }
+
+        if (possibilities.length == 1)
+            return possibilities[0];
+
+        return undefined;
+    }
+
     public static compareUser(guild: Guild,
         user1: string,
         user2: string,
@@ -245,7 +265,7 @@ export class KConf {
                 this.getServerManager().getServerByID(server_id) == undefined) {                    // ... english as the standard language
 
                 console.log("[ ADD : SERVER ]", server_id);
-                this.servers.addServer(new KServer(server_id, server.name, "en"));
+                this.servers.addServer(new KServer(server_id, server.name, "en", this), this);
             }
         }
 
@@ -366,7 +386,7 @@ export class KConf {
     public async logMessageToServer(client: Client, id: string, content: any) {
         let server = this.servers.getServerByID(id);
         console.log("[ SERVER ] [ LOG ] Log for server "+id+":");
-        console.log(content);
+        console.log(content.title);
 
         if (server == undefined) {
             console.log("[ SERVER ] [ LOG ] Server not found, logging message not send.");

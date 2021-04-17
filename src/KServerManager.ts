@@ -1,3 +1,4 @@
+import { KConf } from "./KConfig";
 import { KServer } from "./KServer";
 
 export class KServerManager {
@@ -25,7 +26,11 @@ export class KServerManager {
         }
     }
 
-    public addServer(t: KServer) {
+    public addServer(t: KServer, conf: KConf) {
+        if (t.config == undefined) {
+            t.setConf(conf);
+        }
+
         this.servers.push(t);
     }
 
