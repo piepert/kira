@@ -14,6 +14,7 @@ import { KRole } from "../KRole";
 import { KUser } from "../KUser";
 import { Client } from "@typeit/discord/Client";
 import { KChannelConfig } from "../KChannelConfig";
+import { BranchURLs } from "../crom/BranchURLs";
 
 export class KCommandConfig extends KCommand {
     constructor() {
@@ -92,6 +93,14 @@ export class KCommandConfig extends KCommand {
 
         if (args[0] == "log") {
             return args.length == 2;
+        }
+
+        /**
+         * branch <branch abbr> {2}
+        */
+
+        if (args[0] == "branch") {
+            return args.length == 2 && BranchURLs.meta.includes(args[1]);
         }
 
         return false;
@@ -374,6 +383,22 @@ export class KCommandConfig extends KCommand {
             server.setLogChannel(channel.id);
             msg.channel.send(server.getTranslation("command.config.log_set")
                 .replace("{1}", "<#"+channel.id+">"));
+        }
+
+        /**
+         * branch <branch abbr> {2}
+        */
+
+        if (args[0] == "branch") {
+            if (!BranchURLs.meta.includes(args[1])) {
+                msg.channel.send(server.getTranslation("command.config.branch_not_found")
+                    .replace("{1}", args[1]))
+                return;
+            }
+
+            server.setStandardBranch(args[1]);
+            msg.channel.send(server.getTranslation("command.config.branch_set")
+                .replace("{1}", BranchURLs.abbr[args[1]]));
         }
     }
 }
