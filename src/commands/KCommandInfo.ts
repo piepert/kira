@@ -11,18 +11,7 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
 import { Client } from "@typeit/discord/Client";
-
-function hasVowel(c) {
-    const vowels = "aeyiouàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ";
-
-    for (let v of vowels.split("")) {
-        if (c.split("").includes(v)) {
-            return true;
-        }
-    }
-
-    return false;
-}
+import { readFileSync } from "fs";
 
 export class KCommandInfo extends KCommand {
     constructor() {
@@ -69,6 +58,11 @@ export class KCommandInfo extends KCommand {
                 {
                     name: server.getTranslation("command.info.node"),
                     value: process.version,
+                    inline: true
+                },
+                {
+                    name: server.getTranslation("command.info.discordjs"),
+                    value: JSON.parse(readFileSync("../package.json") as any).dependencies["discord.js"],
                     inline: true
                 },
                 {
