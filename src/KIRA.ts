@@ -30,7 +30,7 @@ console.log = function(... a) {
 
 console.error = console.log;
 console.log("\n===================================================");
-console.log("[ INFO ] Kira started at", (new Date()).toLocaleString());
+console.log("[ INFO ] KIRA started at", (new Date()).toLocaleString());
 
 import { KConf } from "./KConfig";
 import { RSSParser } from "./rss/RSSParser";
@@ -65,7 +65,7 @@ class KIRA {
 
     public async start() {
         // this.client = new Client();
-        this.client = new (require("discord.js")).Client(Intents.ALL);
+        this.client = new (require("discord.js")).Client({ intents: Intents.ALL });
         this.client.login(conf.getConfig().token);
         conf.client = this.client;
         conf.version = JSON.parse(readFileSync("../package.json") as any).version;                  // KIRA is started from static/ directory, ...
