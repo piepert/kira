@@ -22,6 +22,8 @@ import { KRole } from "./KRole";
 import { KChannelConfigManager } from "./KChannelConfigManager";
 import { Rule } from "@typeit/discord";
 import { config } from "process";
+import { Crom } from "./crom/Crom";
+import { BranchURLs } from "./crom/BranchURLs";
 
 export class KServer {
     id: string;
@@ -31,6 +33,7 @@ export class KServer {
     root_path: string;                                                          // path for server directory
     log_channel: string;                                                        // id of log-channel on server
     mute_roll: string;
+    standard_branch: string;                                                    // standard SCP-wiki branch
 
     join_message: boolean;
 
@@ -59,6 +62,7 @@ export class KServer {
         this.root_path = "";
         this.channels = new KChannelConfigManager();
         this.mute_roll = "";
+        this.standard_branch = "";
 
         this.users = new KUserManager();
         this.roles = new KRoleManager();
@@ -84,7 +88,8 @@ export class KServer {
             translations: this.translations,
             log_channel: this.log_channel,
             autoresponds: [...this.autoresponds],
-            mute_roll: this.mute_roll
+            mute_roll: this.mute_roll,
+            standard_branch: this.standard_branch
         }
     }
 
@@ -103,6 +108,7 @@ export class KServer {
         s.log_channel = obj.log_channel;
         s.jokes_cache = new Map<string, string[]>();
         s.mute_roll = obj.mute_roll;
+        s.standard_branch = obj.standard_branch;
 
         if (s.log_channel == undefined) {
             s.log_channel = null;
@@ -142,6 +148,14 @@ export class KServer {
 
         if (s.deactivated_commands == undefined) {
             s.deactivated_commands = [];
+        }
+
+        if (s.mute_roll == undefined) {
+            s.mute_roll = "";
+        }
+
+        if (s.standard_branch == undefined) {
+            s.standard_branch = "";
         }
 
         if (old_load) {
@@ -399,6 +413,16 @@ export class KServer {
         this.frequency_cache = new Map<string, number>();
 
         return s;
+    }
+
+    public getStandardBranch(): String {
+        return this.standard_branch;
+    }
+
+    public setStandardBranch(branch: string) {
+        if (BranchURLs.meta.includes(branch)) {
+            this.standard_branch = branch;
+        }
     }
 
     public getPath(): string {
@@ -801,7 +825,70 @@ export class KServer {
         this.users.getUser(msg.author.id)
             .setLastMessageDate((new Date(msg.createdTimestamp)).toUTCString());
 
-        if (msg.content.startsWith(command_prefix)) {
+        let reg = /(.*)\!(([Ss][Cc][Pp])\-[0-9a-zA-Z]+(\-[A-Za-z0-9]+|)).*/g
+        let result = (new RegExp(reg)).exec(msg.content);
+
+        // handle !SCP-XXX(-XY) references
+        if ((new RegExp(reg)).test(msg.content)) {
+            let res = await Crom.searchPage(result[2],
+                result[1].endsWith("!") ? "" : this.getStandardBranch());       // when !! is used, search all branches
+
+            let found = false;
+            let embed = new MessageEmbed()
+                .setFooter(conf.getTranslationStr(msg, "crom.requested_by").replace("{1}", msg.member.displayName), msg.author.avatarURL())
+                .setColor("#af3333");
+
+            for (let article of res) {
+                if (article.wikidotInfo.title.trim().toLowerCase() == result[2].trim().toLowerCase()
+                    && !found
+                    && article.translationOf == null) {
+
+                    embed.addField(article.wikidotInfo.title +
+                            (article.alternateTitles.length == 0
+                                ? ""
+                                : " - " + article.alternateTitles[0].title) +
+
+                            " (" + (article.wikidotInfo.rating < 0
+                                ? "-"
+                                : "+")
+                                + article.wikidotInfo.rating+")",
+
+                            conf.getTranslationStr(msg, "crom.search_url_subtitle")
+                                .replace("{1}", article.url))
+
+                        .setFooter(conf.getTranslationStr(msg, "crom.search_url_footer")
+                                .replace("{1}", /* article.wikidotInfo.createdBy.authorInfos.length != 0
+                                    ? "["+article.wikidotInfo.createdBy.name+"]("+article.wikidotInfo.createdBy.authorInfos[0].authorPage.url+")"
+                                    : */ article.wikidotInfo.createdBy.name),
+
+                            (article.wikidotInfo.createdBy.wikidotInfo == null
+                                ? "http://d2qhngyckgiutd.cloudfront.net/default_avatar"
+                                : "http://www.wikidot.com/avatar.php?userid="+article.wikidotInfo.createdBy.wikidotInfo.wikidotId+"&timestamp="+Date.now()))
+
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                for (let article of res) {
+                    embed.addField(article.wikidotInfo.title +
+                        (article.alternateTitles.length == 0
+                            ? ""
+                            : " - " + article.alternateTitles[0].title) +
+
+                        " (" + (article.wikidotInfo.rating < 0
+                            ? "-"
+                            : "+")
+                            + article.wikidotInfo.rating+")",
+
+                        conf.getTranslationStr(msg, "crom.search_url_subtitle")
+                            .replace("{1}", article.url))
+                }
+            }
+
+            msg.channel.send(embed);
+
+        } else if (msg.content.startsWith(command_prefix)) {
             this.handleCommand(conf, msg, command_prefix, client);
 
         } else if (this.hasAutorespond(msg.content)) {

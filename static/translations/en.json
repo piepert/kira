@@ -45,6 +45,15 @@
 
 
 
+        "crom.search_url_subtitle": "[click here]({1}) to see",
+        "crom.search_url_footer": "published by {1}",
+        "crom.requested_by": "requested by {1}",
+        "crom.pages": "Pages, {1}",
+        "crom.users": "Users, {1}",
+        "crom.author_page": "Autor's page [here]({1})",
+
+
+
         "command.user.user": "User",
         "command.user.not_found": "User not found.",
         "command.user.syntax_error": "Error: You didn't use the right syntax. See `{1}help user` for help.",
@@ -170,6 +179,7 @@
         "command.info.bugs_features": "Bug-Reports and Feature-Requests",
         "command.info.title": "General KIRA information",
         "command.info.node": "NodeJS version",
+        "command.info.discordjs": "Discord.js Version",
 
         "command.help.list.title": "List of KIRA commands",
         "command.help.list.footer": "For further help, see `{1}help <command>` (without < and >).",
@@ -675,6 +685,28 @@
                 {
                     "syntax": "{p}{c}",
                     "help": "Lists general information about the currently running KIRA instance."
+                }
+            ]
+        },
+
+        "command.help.command.search": {
+            "std": "Uses the Crom-API to search for different entries and authors on all branches.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} [branch1,branch2,...] <query>",
+                    "help": "Searches for authors and pages similar to <query>."
+                },
+                {
+                    "syntax": "(Example) {p}{c} SCP-001",
+                    "help": "Searches on all branches for articles with titles about SCP-001."
+                },
+                {
+                    "syntax": "(Example) {p}{c} de SCP-017",
+                    "help": "Searches on the german branch for articles with titles about SCP-001."
+                },
+                {
+                    "syntax": "(Example) {p}{c} de,en,pt SCP-017",
+                    "help": "Searches on the german, the original english and on the portugese branch for articles with titles about SCP-017."
                 }
             ]
         },

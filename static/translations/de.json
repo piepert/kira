@@ -45,6 +45,14 @@
 
 
 
+        "crom.search_url_subtitle": "[klick hier]({1}) um den Artikel zu sehen",
+        "crom.search_url_footer": "veröffentlicht von {1}",
+        "crom.requested_by": "angefragt von {1}",
+        "crom.pages": "Seiten, {1}",
+        "crom.users": "Benutzer, {1}",
+        "crom.author_page": "Autorenseite [hier]({1})",
+
+
         "command.user.user": "Benutzer",
         "command.user.not_found": "Benutzer nicht gefunden.",
         "command.user.syntax_error": "Fehler: Du hast den Befehl nicht richtig verwendet. Siehe `{1}hilfe user` für Hilfe.",
@@ -137,6 +145,8 @@
         "command.config.mute_role_set": "Rolle {1} wird nun bei !mute verwendet.",
         "command.config.mute_role_show": "Für !mute wird {1} verwendet.",
         "command.config.mute_role_not_found": "Rolle {1} nicht gefunden!",
+        "command.config.branch_set": "Standardmäßig wird nun auf {1} gesucht.",
+        "command.config.branch_not_found": "Der Zweig {1} existiert entweder nicht, oder KIRA unterstützt ihn noch nicht.",
 
         "command.dice.only_numbers": "Eine der beiden Parameter war keine Zahl.",
         "command.dice.min_too_big": "Die zweite Zahl muss größer sein als die Erste!",
@@ -170,6 +180,7 @@
         "command.info.bugs_features": "Bug-Reports und Feature-Requests",
         "command.info.title": "Allgemeine KIRA-Informationen",
         "command.info.node": "NodeJS Version",
+        "command.info.discordjs": "Discord.js Version",
 
         "command.help.list.title": "Liste von KIRA-Befehlen",
         "command.help.list.footer": "Für mehr Hilfe zu einem bestimmten Befehl, schreibe `{1}help <command>` (ohne < und >).",
@@ -675,6 +686,28 @@
                 {
                     "syntax": "{p}{c}",
                     "help": "Gibt allgemeine Informatioenn über die laufende KIRA-Instanz."
+                }
+            ]
+        },
+
+        "command.help.command.search": {
+            "std": "Sucht über die Crom-API auf allen Wikidot-Seite nach Einträgen und Autoren.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} [branch1,branch2,...] <query>",
+                    "help": "Sucht Autoren und Einträge, die <query> ähnlich sind."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} SCP-001",
+                    "help": "Sucht auf allen Zweigen nach Artikeln über SCP-001."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} de SCP-017",
+                    "help": "Sucht auf dem deutschen Zweig nach Artikeln zu SCP-017."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} de,en,pt SCP-017",
+                    "help": "Sucht auf dem deutschen, dem englischen und auf dem portugisischem Zweig nach Artikeln zu SCP-017."
                 }
             ]
         },

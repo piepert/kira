@@ -45,6 +45,15 @@
 
 
 
+        "crom.search_url_subtitle": "[klick hier]({1}) um den Artikel zu sehen",
+        "crom.search_url_footer": "veröffentlicht von {1}",
+        "crom.requested_by": "angefragt von {1}",
+        "crom.pages": "Seiten, {1}",
+        "crom.users": "Benutzer, {1}",
+        "crom.author_page": "Autorenseite [hier]({1})",
+
+
+
         "command.user.user": "Matrose",
         "command.user.not_found": "Wen? Dieser Matrose ist wohl im Sturm von Bord gegangen.",
         "command.user.syntax_error": ". Siehe `{1}hilfe user` für Hilfe.",
@@ -170,6 +179,7 @@
         "command.info.bugs_features": "Bug-Reports und Feature-Requests",
         "command.info.title": "Allgemeine KIRA-Informationen",
         "command.info.node": "NodeJS Version",
+        "command.info.discordjs": "Discord.js Version",
 
         "command.help.list.title": "Das Piratenwörterbuch",
         "command.help.list.footer": "Immernoch nichts verstanden? `{1}help <command>` (ohne < und >).",
@@ -675,6 +685,28 @@
                 {
                     "syntax": "{p}{c}",
                     "help": "Gibt allgemeine Informatioenn über die laufende KIRA-Instanz."
+                }
+            ]
+        },
+
+        "command.help.command.search": {
+            "std": "Sucht über die Crom-API auf allen Wikidot-Seite nach Einträgen und Autoren.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} [branch1,branch2,...] <query>",
+                    "help": "Sucht Autoren und Einträge, die <query> ähnlich sind."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} SCP-001",
+                    "help": "Sucht auf allen Zweigen nach Artikeln über SCP-001."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} de SCP-017",
+                    "help": "Sucht auf dem deutschen Zweig nach Artikeln zu SCP-017."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} de,en,pt SCP-017",
+                    "help": "Sucht auf dem deutschen, dem englischen und auf dem portugisischem Zweig nach Artikeln zu SCP-017."
                 }
             ]
         },
