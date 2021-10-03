@@ -1,6 +1,13 @@
 Date format: YYYY-MM-DD
 
-# v3.0.9 (17.4.2021)
+# v3.1.0 (2021-10-03)
+
+* added command `!search` (`src/commands/KCommandSearch.ts`)
+* added command `!list` (`src/commands/KCommandList.ts`)
+* added command `!quote` (`src/commands/KCommandQuote.ts`)
+* added SCP reference support and its `!config` option
+
+# v3.0.9 (2021-04-17)
 
 * added optional RPG-syntax for !dice
 * added command `!mute` (`src/commands/KCommandMute.ts`)
@@ -11,11 +18,11 @@ Date format: YYYY-MM-DD
 * added list of all permissions with `!perm list`
 * changed from `conf.getTranslationStr` in commands to `server.getTranslation`
 
-# v3.0.8 (2.3.2021)
+# v3.0.8 (2021-03-02)
 
 * hotfix for crashes on new servers
 
-# v3.0.7 (28.2.2021)
+# v3.0.7 (2021-28-02)
 
 * ignore empty command names (just `!` or `! abc`)
 * added command `!get_log` (`src/commands/KCommandGetLog.ts`)
