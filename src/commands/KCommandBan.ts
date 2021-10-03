@@ -57,7 +57,7 @@ export class KCommandBan extends KCommand {
         }
 
         server.getUser(user)
-            .ban(("[ KIRA-BAN "+(new Date()).toUTCString()+" ] "+message_string.trim()).trim(),
+            .addEntry(("[ KIRA-BAN "+(new Date()).toUTCString()+" ] "+message_string.trim()).trim(),
                 msg,
                 conf);
 

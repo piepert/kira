@@ -30,9 +30,9 @@ export class KUser {
     entries: KEntryManager;
     message_count: number;
     operator: boolean;
-    banned: boolean;
+    // banned: boolean;
 
-    lastly_banned: string;
+    // lastly_banned: string;
     last_message: string;
     joined_server: string;
 
@@ -47,8 +47,8 @@ export class KUser {
         this.disabled_permissions = [];
 
         this.operator = false;
-        this.banned = false;
-        this.lastly_banned = "never";
+        // this.banned = false;
+        // this.lastly_banned = "never";
         this.last_message = "never";
         this.joined_server = "never";
     }
@@ -278,6 +278,7 @@ export class KUser {
         return this.joined_server;
     }
 
+    /*
     public setBanState(state: boolean) {
         this.banned = state;
     }
@@ -296,6 +297,7 @@ export class KUser {
         this.addEntry(reason, msg, conf);
         this.banned = false;
     }
+    */
 
     public toJSONObject(): object {
         return {
@@ -308,9 +310,9 @@ export class KUser {
             entries: this.entries.toJSONObject(),
             message_count: this.message_count,
             operator: this.operator,
-            banned: this.banned,
+            // banned: this.banned,
 
-            lastly_banned: this.lastly_banned,
+            // lastly_banned: this.lastly_banned,
             last_message: this.last_message,
             joined_server: this.joined_server
         }
@@ -322,10 +324,10 @@ export class KUser {
         user.setEntries(KEntryManager.fromJSONObject(obj.entries));
         user.setDisabledPermissions(obj.disabled_permissions);
         user.setEnabledPermissions(obj.enabled_permissions);
-        user.setBanState(obj.banned)
+        // user.setBanState(obj.banned)
         user.setLastMessageDate(obj.last_message);
         user.setJoinDate(obj.joined_server);
-        user.lastly_banned = obj.lastly_banned;
+        // user.lastly_banned = obj.lastly_banned;
         user.operator = obj.operator;
 
         return user;
