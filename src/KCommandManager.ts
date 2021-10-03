@@ -34,6 +34,7 @@ import { KCommandUnmute } from "./commands/KCommandUnmute";
 import { KCommandInfo } from "./commands/KCommandInfo";
 import { KCommandSearch } from "./commands/KCommandSearch";
 import { KCommandList } from "./commands/KCommandList";
+import { KCommandQuote } from "./commands/KCommandQuote";
 
 export class KCommandManager {
     static commands: KCommand[] = [];
@@ -75,6 +76,7 @@ export class KCommandManager {
         this.commands.push(new KCommandInfo());
         this.commands.push(new KCommandSearch());
         this.commands.push(new KCommandList());
+        this.commands.push(new KCommandQuote());
     }
 
     public static getCommand(name: string): KCommand {

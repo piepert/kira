@@ -185,6 +185,16 @@
         "command.info.node": "NodeJS version",
         "command.info.discordjs": "Discord.js Version",
 
+        "command.quote.add.missing_reference": "Please reference a message to add them to the quote list.",
+        "command.quote.added": "The quote (`{1}`) has been saved.",
+        "command.quote.already_exists": "The quote was already saved.",
+        "command.quote.message_not_found": "The message couldn't be found.",
+        "command.quote.quote_not_found": "The quote couldn't be found.",
+        "command.quote.quote_removed": "The quote was removed.",
+        "command.quote.no_quotes": "There are no quotes on this server yet.",
+        "command.quote.quote": "Quote",
+        "command.quote.quotes": "Quotes",
+
         "command.help.list.title": "List of KIRA commands",
         "command.help.list.footer": "For further help, see `{1}help <command>` (without < and >).",
         "command.help.no_help_found": "No help page found for this command.",
@@ -733,6 +743,32 @@
                 {
                     "syntax": "(Beispiel) {p}{c} channel",
                     "help": "Lists all channels."
+                }
+            ]
+        },
+
+        "command.help.command.quote": {
+            "std": "Shows quotes on the server.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Shows a random quote."
+                },
+                {
+                    "syntax": "{p}{c} add [messageID]",
+                    "help": "When [messageID] is not given, the referenced message (right click on message → reply) will be added to the quote list."
+                },
+                {
+                    "syntax": "{p}{c} list",
+                    "help": "Lists all quotes."
+                },
+                {
+                    "syntax": "{p}{c} show <quoteHash>",
+                    "help": "Shows the quote with the identifier <quoteHash>."
+                },
+                {
+                    "syntax": "{p}{c} remove <quoteHash>",
+                    "help": "The quote identified by <quoteHash> will be removed."
                 }
             ]
         },

@@ -186,6 +186,16 @@
         "command.info.node": "NodeJS Version",
         "command.info.discordjs": "Discord.js Version",
 
+        "command.quote.add.missing_reference": "Bitte antworte auf eine Nachricht, um sie zu den Zitaten hinzuzufügen.",
+        "command.quote.added": "Das Zitat (`{1}`) wurde gespeichert.",
+        "command.quote.already_exists": "Das Zitat wurde bereits gespeichert.",
+        "command.quote.message_not_found": "Die Nachricht wurde nicht gefunden.",
+        "command.quote.quote_not_found": "Das Zitat wurde nicht gefunden.",
+        "command.quote.quote_removed": "Das Zitat wurde entfernt.",
+        "command.quote.no_quotes": "Es gibt noch keine Zitate auf dem Server.",
+        "command.quote.quote": "Zitat",
+        "command.quote.quotes": "Zitate",
+
         "command.help.list.title": "Liste von KIRA-Befehlen",
         "command.help.list.footer": "Für mehr Hilfe zu einem bestimmten Befehl, schreibe `{1}help <command>` (ohne < und >).",
         "command.help.no_help_found": "Keine Hilfe für diesen Befehl gefunden.",
@@ -734,6 +744,32 @@
                 {
                     "syntax": "(Beispiel) {p}{c} channel",
                     "help": "Listet alle Channel auf."
+                }
+            ]
+        },
+
+        "command.help.command.quote": {
+            "std": "Zeigt Zitate auf dem Server an.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c}",
+                    "help": "Zeigt ein zufälliges Zitat an."
+                },
+                {
+                    "syntax": "{p}{c} add [messageID]",
+                    "help": "Ist [messageID] nicht gegeben, wird die referenzierte Nachricht (Rechtsklick auf Nachricht → Antworten) den Zitaten hinzugefügt."
+                },
+                {
+                    "syntax": "{p}{c} list",
+                    "help": "Listet alle Zitate auf."
+                },
+                {
+                    "syntax": "{p}{c} show <quoteHash>",
+                    "help": "Zeigt das Zitat mit der Kennzeichnung <quoteHash> an."
+                },
+                {
+                    "syntax": "{p}{c} remove <quoteHash>",
+                    "help": "Entfernt das Zitat mit der Kennzeichnung <quoteHash>."
                 }
             ]
         },

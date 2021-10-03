@@ -24,6 +24,7 @@ import { Rule } from "@typeit/discord";
 import { config } from "process";
 import { Crom } from "./crom/Crom";
 import { BranchURLs } from "./crom/BranchURLs";
+import { KServerQuote } from "./KServerQuote";
 
 export class KServer {
     id: string;
@@ -45,6 +46,7 @@ export class KServer {
     autoresponds: Map<string, string>;
     deactivated_commands: string[];
     jokes_cache: Map<string, string[]>;                                         // randomized list of all jokes for the server-language
+    quotes: KServerQuote[];                                                     // list of quotes on the server
 
     channels: KChannelConfigManager;                                            // wiki-feed list on server
     users: KUserManager;
@@ -94,7 +96,8 @@ export class KServer {
             autoresponds: [...this.autoresponds],
             mute_roll: this.mute_roll,
             standard_branch: this.standard_branch,
-            allow_references: this.allow_references
+            allow_references: this.allow_references,
+            quotes: this.quotes.map(e => e.toJSONObject())
         }
     }
 
@@ -129,6 +132,12 @@ export class KServer {
                 s.translations.set(e, obj.translations[e]);
             }
         }
+
+        if (obj.quotes == undefined) {
+            obj.quotes = [];
+        }
+
+        s.quotes = obj.quotes.map(e => KServerQuote.fromJSONObject(e));
 
         if (obj.autoresponds != undefined) {
             s.autoresponds = new Map<string, string>(obj.autoresponds);
@@ -248,6 +257,73 @@ export class KServer {
         }
 
         return server;
+    }
+
+    public getQuotes(): KServerQuote[] {
+        return this.quotes;
+    }
+
+    public getQuote(hash: string): KServerQuote {
+        let quotes = [];
+
+        for (let q of this.quotes) {
+            if (q.getHash().startsWith(hash)) {
+                quotes.push(q);
+            }
+        }
+
+        if (quotes.length > 1) {
+            return undefined;
+        }
+
+        return quotes[0];
+    }
+
+    public addQuote(quote: KServerQuote) {
+        this.quotes.push(quote);
+    }
+
+    public getQuotesFromUser(id: string): KServerQuote[] {
+        let quotes = [];
+
+        for (let q of this.quotes) {
+            if (q.getAuthorID() == id) {
+                quotes.push(q);
+            }
+        }
+
+        return quotes;
+    }
+
+    public removeQuote(hash: string) {
+        this.quotes = this.quotes.filter(e => {
+            return e.getHash() != this.getFullQuoteHash(hash);
+        });
+    }
+
+    public getFullQuoteHash(hash_part: string): string {
+        return this.getQuote(hash_part).getHash();
+    }
+
+    public getShortestQuoteHash(hash: string) {
+        let len = 8;
+        let quotes: KServerQuote[] = [ 1, 2 ] as any;
+
+        while (quotes.length > 1) {
+            quotes = [];
+
+            for (let q of this.quotes) {
+                if (q.getHash().startsWith(hash.substr(0, len))) {
+                    quotes.push(q);
+                }
+            }
+
+            if (quotes.length > 1) {
+                len += 1;
+            }
+        }
+
+        return hash.substr(0, len);
     }
 
     public incMuteCount(muteID: string, senderID): boolean {
