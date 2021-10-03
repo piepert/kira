@@ -6,6 +6,7 @@ Date format: YYYY-MM-DD
 * added command `!list` (`src/commands/KCommandList.ts`)
 * added command `!quote` (`src/commands/KCommandQuote.ts`)
 * added SCP reference support and its `!config` option
+* added simple wrapper for [Crom API](https://crom.avn.sh/)
 
 # v3.0.9 (2021-04-17)
 
