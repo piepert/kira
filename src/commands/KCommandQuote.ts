@@ -50,6 +50,11 @@ export class KCommandQuote extends KCommand {
         const guild = (await client.guilds.fetch(server.getID()));
 
         if (command.getArguments().length == 0) {
+            if (!sender.canPermission("command.quote.get_one")) {
+                msg.channel.send(conf.getTranslationStr(msg, "command.no_permission"))
+                return;
+            }
+
             const quote = server.getQuotes()[Math.floor(Math.random() * server.getQuotes().length)];
             const user = (await guild.members.fetch(quote.getAuthorID())).user;
 
@@ -64,6 +69,11 @@ export class KCommandQuote extends KCommand {
 
         } else if (command.getArguments().length == 1) {
             if (command.getArguments()[0] == "add") {
+                if (!sender.canPermission("command.quote.add")) {
+                    msg.channel.send(conf.getTranslationStr(msg, "command.no_permission"))
+                    return;
+                }
+
                 if (msg.reference == null) {
                     msg.channel.send(conf.getTranslationStr(msg, "command.quote.add.missing_reference"))
                     return;
@@ -91,6 +101,11 @@ export class KCommandQuote extends KCommand {
                 }
 
             } else if (command.getArguments()[0] == "list") {
+                if (!sender.canPermission("command.quote.list")) {
+                    msg.channel.send(conf.getTranslationStr(msg, "command.no_permission"))
+                    return;
+                }
+
                 if (server.getQuotes().length == 0) {
                     msg.channel.send(conf.getTranslationStr(msg, "command.quote.no_quotes"));
                     return;
@@ -126,6 +141,11 @@ export class KCommandQuote extends KCommand {
                 }
             }
         } else if (command.getArguments().length == 2) {
+            if (!sender.canPermission("command.quote.add")) {
+                msg.channel.send(conf.getTranslationStr(msg, "command.no_permission"))
+                return;
+            }
+
             if (command.getArguments()[0] == "add") {
                 let message = await msg.channel.messages.fetch(command.getArguments()[1]);
 
@@ -149,6 +169,11 @@ export class KCommandQuote extends KCommand {
                 }
 
             } else if (command.getArguments()[0] == "remove") {
+                if (!sender.canPermission("command.quote.remove")) {
+                    msg.channel.send(conf.getTranslationStr(msg, "command.no_permission"))
+                    return;
+                }
+
                 if (server.getQuote(command.getArguments()[1]) == undefined) {
                     msg.channel.send(conf.getTranslationStr(msg, "command.quote.quote_not_found"))
                     return;
@@ -158,6 +183,11 @@ export class KCommandQuote extends KCommand {
                 msg.channel.send(conf.getTranslationStr(msg, "command.quote.quote_removed"))
 
             } else if (command.getArguments()[0] == "show") {
+                if (!sender.canPermission("command.quote.show")) {
+                    msg.channel.send(conf.getTranslationStr(msg, "command.no_permission"))
+                    return;
+                }
+
                 if (server.getQuote(command.getArguments()[1]) == undefined) {
                     msg.channel.send(conf.getTranslationStr(msg, "command.quote.quote_not_found"))
                     return;
