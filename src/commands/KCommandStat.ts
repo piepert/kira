@@ -34,7 +34,9 @@ export class KCommandStat extends KCommand {
             "last_message",
             "has_permission",
             "has_role",
-            "member_since"
+            "member_since",
+            "banned",
+            "entry_count"
         ].indexOf(name) >= 0;
     }
 
@@ -101,6 +103,7 @@ export class KCommandStat extends KCommand {
         }
 
         let inverted: boolean = query.name.startsWith("!");
+        let bans = await guild.fetchBans();
 
         if (inverted) {
             query.name = query.name.substring(1, query.name.length);
@@ -141,7 +144,7 @@ export class KCommandStat extends KCommand {
         // messages_count      Number                  Message count <,>,: Number
         else if (query.name == "has_no_role") {
             users = users.map(user => {
-                if (guild.members.cache.get(user.id).roles.cache.size > 0) {
+                if (guild.members.cache.get(user.id).roles.cache.size > 1) {
 
                     if (inverted) return user;
                     user = undefined;
@@ -205,6 +208,32 @@ export class KCommandStat extends KCommand {
                     (user.getLastMessageDate() == "never" &&
                         query.value != "never")) {
 
+                    if (inverted) return user;
+                    user = undefined;
+                }
+
+                return (inverted ? undefined : user);
+            });
+        }
+
+        // banned
+        else if (query.name == "banned") {
+            users = (users.map(user => {
+                if (bans.has(user.getID())) {
+                    return (inverted ? undefined : user);
+                }
+
+                return (!inverted ? undefined : user);
+            }));
+        }
+
+        // entry_count        Number                  Message count <,>,: Number
+        else if (query.name == "entry_count") {
+            users = users.map(user => {
+                let a = user.getEntries().getEntries().length;
+                let b = parseInt(query.value);
+
+                if (this.compareObjectsToNum(a, b) != this.operandToComparationNum(query.operand)) {
                     if (inverted) return user;
                     user = undefined;
                 }
