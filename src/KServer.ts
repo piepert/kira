@@ -36,6 +36,7 @@ export class KServer {
     standard_branch: string;                                                    // standard SCP-wiki branch
 
     join_message: boolean;
+    allow_references: boolean;
 
     frequency_cache: Map<string, number>;                                       // all frequencies, key is command_name
     mute_user_cache: Map<string, string[]>;                                       // all frequencies, key is command_name
@@ -74,6 +75,9 @@ export class KServer {
         this.autoresponds = new Map<string, string>();
         this.log_channel = null;
         this.config = conf;
+
+        this.join_message = false;
+        this.allow_references = false;
     }
 
     public setConf(conf: KConf) { this.config = conf; }
@@ -89,7 +93,8 @@ export class KServer {
             log_channel: this.log_channel,
             autoresponds: [...this.autoresponds],
             mute_roll: this.mute_roll,
-            standard_branch: this.standard_branch
+            standard_branch: this.standard_branch,
+            allow_references: this.allow_references
         }
     }
 
@@ -109,6 +114,7 @@ export class KServer {
         s.jokes_cache = new Map<string, string[]>();
         s.mute_roll = obj.mute_roll;
         s.standard_branch = obj.standard_branch;
+        s.allow_references = obj.allow_references;
 
         if (s.log_channel == undefined) {
             s.log_channel = null;
@@ -156,6 +162,14 @@ export class KServer {
 
         if (s.standard_branch == undefined) {
             s.standard_branch = "";
+        }
+
+        if (s.join_message == undefined) {
+            s.join_message = false;
+        }
+
+        if (s.allow_references == undefined) {
+            s.allow_references = false;
         }
 
         if (old_load) {
@@ -505,6 +519,9 @@ export class KServer {
     public getLanguage(): string { return this.language; }
     public setLanguage(language: string) { this.language = language; }
 
+    public allowsReferences() { return this.allow_references; }
+    public allowReferences(allow: boolean) { this.allow_references = allow; }
+
     public static getServerIDFromMessage(message: Message): string {
         return message.guild.id;
     }
@@ -829,21 +846,49 @@ export class KServer {
         let result = (new RegExp(reg)).exec(msg.content);
 
         // handle !SCP-XXX(-XY) references
-        if ((new RegExp(reg)).test(msg.content)) {
+        if (this.allowsReferences() && (new RegExp(reg)).test(msg.content)) {
             let res = await Crom.searchPage(result[2],
                 result[1].endsWith("!") ? "" : this.getStandardBranch());       // when !! is used, search all branches
 
-            let found = false;
-            let embed = new MessageEmbed()
-                .setFooter(conf.getTranslationStr(msg, "crom.requested_by").replace("{1}", msg.member.displayName), msg.author.avatarURL())
-                .setColor("#af3333");
+            if (res.length > 0) {
+                let found = false;
+                let embed = new MessageEmbed()
+                    .setFooter(conf.getTranslationStr(msg, "crom.requested_by").replace("{1}", msg.member.displayName), msg.author.avatarURL())
+                    .setColor("#af3333");
 
-            for (let article of res) {
-                if (article.wikidotInfo.title.trim().toLowerCase() == result[2].trim().toLowerCase()
-                    && !found
-                    && article.translationOf == null) {
+                for (let article of res) {
+                    if (article.wikidotInfo.title.trim().toLowerCase() == result[2].trim().toLowerCase()
+                        && (!found || article.translationOf == null)) {
 
-                    embed.addField(article.wikidotInfo.title +
+                        embed.addField(article.wikidotInfo.title +
+                                (article.alternateTitles.length == 0
+                                    ? ""
+                                    : " - " + article.alternateTitles[0].title) +
+
+                                " (" + (article.wikidotInfo.rating < 0
+                                    ? "-"
+                                    : "+")
+                                    + article.wikidotInfo.rating+")",
+
+                                conf.getTranslationStr(msg, "crom.search_url_subtitle")
+                                    .replace("{1}", article.url))
+
+                            .setFooter(conf.getTranslationStr(msg, "crom.search_url_footer")
+                                    .replace("{1}", /* article.wikidotInfo.createdBy.authorInfos.length != 0
+                                        ? "["+article.wikidotInfo.createdBy.name+"]("+article.wikidotInfo.createdBy.authorInfos[0].authorPage.url+")"
+                                        : */ article.wikidotInfo.createdBy.name),
+
+                                (article.wikidotInfo.createdBy.wikidotInfo == null
+                                    ? "http://d2qhngyckgiutd.cloudfront.net/default_avatar"
+                                    : "http://www.wikidot.com/avatar.php?userid="+article.wikidotInfo.createdBy.wikidotInfo.wikidotId+"&timestamp="+Date.now()))
+
+                        found = true;
+                    }
+                }
+
+                if (!found) {
+                    for (let article of res) {
+                        embed.addField(article.wikidotInfo.title +
                             (article.alternateTitles.length == 0
                                 ? ""
                                 : " - " + article.alternateTitles[0].title) +
@@ -855,40 +900,15 @@ export class KServer {
 
                             conf.getTranslationStr(msg, "crom.search_url_subtitle")
                                 .replace("{1}", article.url))
-
-                        .setFooter(conf.getTranslationStr(msg, "crom.search_url_footer")
-                                .replace("{1}", /* article.wikidotInfo.createdBy.authorInfos.length != 0
-                                    ? "["+article.wikidotInfo.createdBy.name+"]("+article.wikidotInfo.createdBy.authorInfos[0].authorPage.url+")"
-                                    : */ article.wikidotInfo.createdBy.name),
-
-                            (article.wikidotInfo.createdBy.wikidotInfo == null
-                                ? "http://d2qhngyckgiutd.cloudfront.net/default_avatar"
-                                : "http://www.wikidot.com/avatar.php?userid="+article.wikidotInfo.createdBy.wikidotInfo.wikidotId+"&timestamp="+Date.now()))
-
-                    found = true;
+                    }
                 }
+
+                msg.channel.send(embed);
+                return;
             }
+        }
 
-            if (!found) {
-                for (let article of res) {
-                    embed.addField(article.wikidotInfo.title +
-                        (article.alternateTitles.length == 0
-                            ? ""
-                            : " - " + article.alternateTitles[0].title) +
-
-                        " (" + (article.wikidotInfo.rating < 0
-                            ? "-"
-                            : "+")
-                            + article.wikidotInfo.rating+")",
-
-                        conf.getTranslationStr(msg, "crom.search_url_subtitle")
-                            .replace("{1}", article.url))
-                }
-            }
-
-            msg.channel.send(embed);
-
-        } else if (msg.content.startsWith(command_prefix)) {
+        if (msg.content.startsWith(command_prefix)) {
             this.handleCommand(conf, msg, command_prefix, client);
 
         } else if (this.hasAutorespond(msg.content)) {

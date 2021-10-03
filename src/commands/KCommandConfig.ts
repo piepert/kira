@@ -103,6 +103,14 @@ export class KCommandConfig extends KCommand {
             return args.length == 2 && BranchURLs.meta.includes(args[1]);
         }
 
+        /**
+         * references enabled|disabled {2}
+        */
+
+        if (args[0] == "references") {
+            return args.length == 2 && [ "enabled", "disabled" ].includes(args[1]);
+        }
+
         return false;
     }
 
@@ -117,6 +125,8 @@ export class KCommandConfig extends KCommand {
      * config translation <key> delete|<value> {3}
      * config delu <user> {2}
      * config log <channel> {2}
+     * config branch <branch> {2}
+     * config references enabled|disabled
      */
 
     // d
@@ -399,6 +409,20 @@ export class KCommandConfig extends KCommand {
             server.setStandardBranch(args[1]);
             msg.channel.send(server.getTranslation("command.config.branch_set")
                 .replace("{1}", BranchURLs.abbr[args[1]]));
+        }
+
+        /**
+         * references enabled|disabled {2}
+        */
+
+        if (args[0] == "references") {
+            server.allowReferences(args[1] == "enabled");
+
+            if (server.allowsReferences()) {
+                msg.channel.send(server.getTranslation("command.config.crom_references_enabled"));
+            } else {
+                msg.channel.send(server.getTranslation("command.config.crom_references_disabled"));
+            }
         }
     }
 }

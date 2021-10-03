@@ -51,6 +51,8 @@
         "crom.pages": "Seiten, {1}",
         "crom.users": "Benutzer, {1}",
         "crom.author_page": "Autorenseite [hier]({1})",
+        "crom.page_created": "{1} Seite erstellt",
+        "crom.pages_created": "{1} Seiten erstellt",
 
 
 
@@ -146,6 +148,8 @@
         "command.config.mute_role_set": "Rolle {1} wird nun bei !mute verwendet.",
         "command.config.mute_role_show": "Für !mute wird {1} verwendet.",
         "command.config.mute_role_not_found": "Rolle {1} nicht gefunden!",
+        "command.config.crom_references_enabled": "SCP-Referenzen sind nun aktiviert.",
+        "command.config.crom_references_disabled": "SCP-Referenzen sind nun deaktiviert.",
 
         "command.dice.only_numbers": "Mit solchen Zahlen zählt dein Captain nicht!",
         "command.dice.min_too_big": "Du Trunkenbold! Deine Faselei ergibt doch gar keinen Sinn!",

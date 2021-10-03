@@ -51,6 +51,8 @@
         "crom.pages": "Pages, {1}",
         "crom.users": "Users, {1}",
         "crom.author_page": "Autor's page [here]({1})",
+        "crom.page_created": "{1} page created",
+        "crom.pages_created": "{1} pages created",
 
 
 
@@ -146,6 +148,8 @@
         "command.config.mute_role_set": "Role {1} will now be used for !mute.",
         "command.config.mute_role_show": "For !mute the role {1} is used.",
         "command.config.mute_role_not_found": "Role {1} not found!",
+        "command.config.crom_references_enabled": "SCP-References are now enabled.",
+        "command.config.crom_references_disabled": "SCP-References are now disabled.",
 
         "command.dice.only_numbers": "One of the parameters wasn't a number.",
         "command.dice.min_too_big": "The second number has to be bigger than the first!",

@@ -125,13 +125,17 @@ export class KCommandSearch extends KCommand {
                             ? "" // ("+BranchURLs.pages["http://"+(new URL(article.url)).hostname][0].toUpperCase() + ") "
                             : "")
                         + user.name,
-                        user.statistics.pageCount+" Seiten erstellt" +
+
+                        conf.getTranslationStr(msg,
+                                user.statistics.pageCount == 1
+                                    ? "crom.page_created"
+                                    : "crom.pages_created")
+                            .replace("{1}", user.statistics.pageCount) +
 
                         (user.authorInfos.length == 0
                             ? ""
                             : ", "+conf.getTranslationStr(msg, "crom.author_page")
-                                .replace("{1}", user.authorInfos[0].authorPage.url))
-                    )
+                                .replace("{1}", user.authorInfos[0].authorPage.url)))
                 }
 
                 if (embed.fields.length > 0) {
