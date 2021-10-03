@@ -715,6 +715,28 @@
             ]
         },
 
+        "command.help.command.list": {
+            "std": "Listed alle Nutzer, Channel oder Rollen auf.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} users|u [sort_by:id|name|entries]",
+                    "help": "Listet alle Nutzer auf, sortiert nach dem angegebenen Element."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} u",
+                    "help": "Listet alle Nutzer auf."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} u sort_by:name",
+                    "help": "Listet alle Nutzer, nach dem Namen sortiert, auf."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} channel",
+                    "help": "Listet alle Channel auf."
+                }
+            ]
+        },
+
         "command.help.syntax": "Auf Hilfeseiten ist alles, was in `<` und `>` steht, ein notwendiger Platzhalter. Alles in `[` und `]` sind bedingte Platzhalter, die nicht unbedingt da sein müssen. Als Beispiel der Befehl:\n```!help [command]```[command] muss nicht angegeben werden.\n\nAlles was nicht in Anführungszeichen steht, wird bei Leerzeichen getrennt. Als Beispiel: ```!hallo welt aha```\n`hallo` ist der Befehl, `welt` und `aha` sind zwei Argumente. Möchte man `Hallo Welt!` als ein Argument, muss man es in Anführungszeichen schreiben.\nBeispiel: ```!a \"Hallo Welt!\"```",
 
         "command.help.welcome": [

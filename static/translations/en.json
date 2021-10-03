@@ -715,6 +715,28 @@
             ]
         },
 
+        "command.help.command.list": {
+            "std": "Lists all users, channels or roles.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} users|u [sort_by:id|name|entries]",
+                    "help": "Lists all users sorted by the given option."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} u",
+                    "help": "Listst all users."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} u sort_by:name",
+                    "help": "Lists all users sorted by their name."
+                },
+                {
+                    "syntax": "(Beispiel) {p}{c} channel",
+                    "help": "Lists all channels."
+                }
+            ]
+        },
+
         "command.help.syntax": "In help pages, everything in `<` and `>` is a necessary variable. Everything in `[` and `]` are optional. For example:\n```!help [command]```\n[command] doesn't have to be given.\n\nEvery not quoted string will be splitted at whitespaces. For example:\n```!hello world wow```\n`hello` is the command, `world` and `wow` are arguments. If you want to have `Hello World!` as one argument, you have to add quotation marks. For example: ```!a \"Hello World!\"```",
 
         "command.help.welcome": [

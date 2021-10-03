@@ -63,6 +63,11 @@ export class KCommandList extends KCommand {
         let sort = "id";
         let list = [];
 
+        let header = [
+            "ID",
+            conf.getTranslationStr(msg, "command.user.name")
+        ];
+
         if (command.getArguments().length == 2) {
             sort = command.getArguments()[1].replace("sort_by:", "");
         }
@@ -82,6 +87,8 @@ export class KCommandList extends KCommand {
             }
 
         } else if ([ "u", "users" ].includes(command.getArguments()[0])) {
+            header.push(conf.getTranslationStr(msg, "command.user.entries"));
+
             for (let user of server.getUsers().getUsers()) {
                 list.push([
                     user.getID(),
@@ -132,6 +139,6 @@ export class KCommandList extends KCommand {
             });
         }
 
-        msg.channel.send("```"+table(list)+"```")
+        msg.channel.send("```"+table([header].concat(list))+"```")
     }
 }
