@@ -333,14 +333,14 @@ export class KCommandConfig extends KCommand {
             if (args.length == 2 && args[1] == "show") {
                 msg.channel.send(
                     server.getTranslation("command.config.mute_role_show")
-                    .replace("{1}", server.getMuteRoll()));
+                    .replace("{1}", server.getMuteRole()));
 
             } else if (args[1] == "set") {
                 let role = await KConf.roleToID(msg.guild, args[2]);
                 console.log(role);
 
                 if (role != undefined && msg.guild.roles.cache.has(role)) {
-                    server.setMuteRoll(role);
+                    server.setMuteRole(role);
 
                     msg.channel.send(
                         server.getTranslation("command.config.mute_role_set")

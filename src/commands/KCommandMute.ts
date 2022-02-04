@@ -43,9 +43,12 @@ export class KCommandMute extends KCommand {
             msg.channel.send("(•ิ_•ิ)?");
         }
 
-        let role_id = server.getMuteRoll();
+        let role_id = server.getMuteRole();
 
-        console.log("Mute:", server.getMuteCount(user.id), "/", MAX_MUTE_COUNT);
+        console.log("[ SERVER ] "+server.getID()+": "+
+            "Mute "+msg.author.username+"#"+msg.author.discriminator+":",
+            server.getMuteCount(user.id), "/", MAX_MUTE_COUNT);
+
         server.incMuteCount(user.id, sender.id);
 
         if (user.roles.cache.has(role_id)) {
@@ -58,9 +61,7 @@ export class KCommandMute extends KCommand {
             || (sender.canPermission("command.mute.now") && !sender.operator)) {
 
             user.roles.add(role_id);
-            console.log("B", server.getMuteCount(user.id));
             server.resetMuteCount(user.id);
-            console.log("B", server.getMuteCount(user.id));
 
             msg.channel.send(server.getTranslation("command.mute.muted")
                 .replace("{1}", command.getArguments()[0]));

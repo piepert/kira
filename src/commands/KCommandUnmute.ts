@@ -38,7 +38,7 @@ export class KCommandUnmute extends KCommand {
                 command.getArguments()[0],
                 server));
 
-        let role_id = server.getMuteRoll();
+        let role_id = server.getMuteRole();
 
         if (user.roles.cache.has(role_id)) {
             user.roles.remove(role_id);
