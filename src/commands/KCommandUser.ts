@@ -132,6 +132,11 @@ export class KCommandUser extends KCommand {
                     inline: true
                 },
                 {
+                    name: server.getTranslation("command.user.blacklist"),
+                    value: kuser.getBlacklistCount(),
+                    inline: true
+                },
+                {
                     name: "AvatarURL",
                     value: m_user.avatarURL() == null
                         ? server.getTranslation("command.user.avatar_not_found")
