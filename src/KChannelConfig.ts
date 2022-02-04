@@ -1,5 +1,4 @@
-import { Client } from "@typeit/discord";
-import { MessageEmbed, TextChannel } from "discord.js";
+import { Client, ColorResolvable, MessageEmbed } from "discord.js";
 import { existsSync, readFileSync, statSync, writeFileSync } from "fs";
 import { KConf } from "./KConfig";
 import { KServer } from "./KServer";
@@ -154,16 +153,17 @@ export class KChannelConfig {
                     return;
                 }
 
+                console.log("FOOTER1")
                 let embed = new MessageEmbed()
                     .setTitle(this.getTitle())
                     .setDescription("["+entry.title+"]("+entry.url+")")
-                    .setFooter(entry.author_displayname,
+                    .setFooter(entry.author_displayname[0],
                         "http://www.wikidot.com/avatar.php?userid="+entry.author_userid+"&timestamp="+Date.now());
 
                 if (this.color == undefined) {
                     embed.setColor('#e6d9ad')
                 } else {
-                    embed.setColor(this.color)
+                    embed.setColor(this.color as ColorResolvable)
                 }
 
                 if (embed.length == 0
@@ -175,7 +175,7 @@ export class KChannelConfig {
                     return;
                 }
 
-                (channel as any).send({embed: embed});
+                (channel as any).send({embeds: [embed]});
                 this.rss_channel.addHash(entry.getHash());
             } else {
                 const channel = client.channels.cache.find(channel => channel.id == this.channel_id);
@@ -189,15 +189,15 @@ export class KChannelConfig {
                     .setDescription("["+entry.title+"]("+entry.url+")"+
                         (entry.subtext != "unknown" && entry.subtext.trim() != "" ? "  –  "+entry.subtext : ""))
 
-                    .setFooter(entry.author_displayname,
+                    .setFooter(entry.author_displayname[0],
                         "http://www.wikidot.com/avatar.php?userid="+entry.author_userid+"&timestamp="+Date.now());
 
-                // console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", {embed: embed});
+                // console.log("[ RSS : FIRE_CHANNEL ] [ MESSAGE AS JSON ]: ", {embeds: [embed]});
 
                 if (this.color == undefined) {
                     embed.setColor('#e6d9ad')
                 } else {
-                    embed.setColor(this.color)
+                    embed.setColor(this.color as ColorResolvable)
                 }
 
                 if (embed.length == 0
@@ -209,8 +209,9 @@ export class KChannelConfig {
                     return;
                 }
 
-                (channel as any).send({embed: embed});
+                (channel as any).send({embeds: [embed]});
                 this.rss_channel.addHash(entry.getHash());
+                console.log("Hi");
             }
 
             console.log("[ RSS : FIRE_CHANNEL ] In channel "+this.channel_id+" new entry with hash "+entry.getHash()+" from "+this.feed_url);

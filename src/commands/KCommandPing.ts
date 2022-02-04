@@ -2,7 +2,9 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User, TextChannel
+    User,
+    TextChannel,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -10,7 +12,6 @@ import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 
 export class KCommandPing extends KCommand {
     constructor() {

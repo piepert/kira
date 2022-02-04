@@ -3,7 +3,8 @@ import {
     MessageEmbed,
     GuildMember,
     User,
-    Role
+    Role,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -14,7 +15,6 @@ import { KServer } from "../KServer";
 import { KRole } from "../KRole";
 import { KUser } from "../KUser";
 import { KCommandManager } from "../KCommandManager";
-import { Client } from "@typeit/discord/Client";
 
 export class KCommandAlias extends KCommand {
     constructor() {

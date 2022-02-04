@@ -2,7 +2,8 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User
+    User,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -11,7 +12,6 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 
 export class KCommandHelp extends KCommand {
     constructor() {
@@ -84,7 +84,7 @@ export class KCommandHelp extends KCommand {
                 }
             }
 
-            msg.channel.send(embed);
+            msg.channel.send({ embeds: [ embed ] });
             msg.channel.send(server.getTranslation("command.help.list.footer")
                     .replace("{1}", prefix))
 
@@ -128,7 +128,7 @@ export class KCommandHelp extends KCommand {
                             .replace("{c}", command.getArguments()[0]));
                 }
 
-                msg.channel.send(embed);
+                msg.channel.send({ embeds: [ embed ] });
             }
         }
     }

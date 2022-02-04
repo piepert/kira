@@ -10,10 +10,10 @@ import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { BranchURLs } from "../crom/BranchURLs";
 import { Crom } from "../crom/Crom";
 import { URL } from "url";
+import { Client } from "discord.js";
 
 export class KCommandSearch extends KCommand {
     constructor() {

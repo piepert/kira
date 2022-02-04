@@ -2,7 +2,10 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User, TextChannel, Guild
+    User,
+    TextChannel,
+    Guild,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -10,7 +13,6 @@ import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { table } from "table";
 
 export class KCommandStat extends KCommand {
@@ -103,7 +105,7 @@ export class KCommandStat extends KCommand {
         }
 
         let inverted: boolean = query.name.startsWith("!");
-        let bans = await guild.fetchBans();
+        let bans = await guild.bans.fetch();
 
         if (inverted) {
             query.name = query.name.substring(1, query.name.length);

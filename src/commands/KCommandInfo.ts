@@ -2,7 +2,9 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User, TextChannel
+    User,
+    TextChannel,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -10,7 +12,6 @@ import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { readFileSync } from "fs";
 
 export class KCommandInfo extends KCommand {
@@ -42,7 +43,7 @@ export class KCommandInfo extends KCommand {
 
         let time = days+"d "+hours+"h "+minutes+"min "+seconds+"s";
 
-        msg.channel.send(new MessageEmbed()
+        msg.channel.send({ embeds: [ new MessageEmbed()
             .setTitle(server.getTranslation("command.info.title"))
             .addFields([
                 {
@@ -74,6 +75,6 @@ export class KCommandInfo extends KCommand {
                     value: "http://scp-int.wikidot.com/forum/c-2968533/tech-help"
                 }
             ])
-        );
+        ]});
     }
 }

@@ -2,7 +2,8 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User
+    User,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -10,7 +11,6 @@ import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { readdirSync } from "fs";
 
 export class KCommandGetLog extends KCommand {
@@ -41,10 +41,13 @@ export class KCommandGetLog extends KCommand {
                 "." + ("0" + (d.getMonth()+1).toString()).slice(-2) +
                 "." + d.getFullYear() + ".log";
 
-            msg.author.createDM().then(c => c.send("Current log.", { files: [
-                "logs/"+file_name,
-                "error_log.txt"
-            ] }));
+            msg.author.createDM().then(c => c.send({
+                content: "Current log.",
+                files: [
+                    "logs/"+file_name,
+                    "error_log.txt"
+                ]
+            }));
 
             return;
         }
@@ -93,7 +96,7 @@ export class KCommandGetLog extends KCommand {
                     return;
                 }
 
-                channel.send("Last 3 logs.", { files: attachments_objects })
+                channel.send({ content: "Last 3 logs.", files: attachments_objects })
             });
 
             return;
@@ -116,7 +119,10 @@ export class KCommandGetLog extends KCommand {
                 return;
             }
 
-            channel.send("Logs from "+command.getArguments()[0]+".", { files: attachments })
+            channel.send({
+                content: "Logs from "+command.getArguments()[0]+".",
+                files: attachments
+            });
         })
     }
 }

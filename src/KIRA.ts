@@ -38,14 +38,15 @@ let conf = new KConf();
 conf.load("config.json", "translations/", "servers/");
 
 import {
-    Client,
-    Discord,
-    On
-} from "@typeit/discord";
-
-import {
     Message,
-    GuildMember, User, MessageEmbed, Intents, Guild, TextChannel
+    GuildMember,
+    User,
+    MessageEmbed,
+    Intents,
+    Guild,
+    TextChannel,
+    Client,
+    GuildBan
 } from "discord.js";
 
 import { existsSync, lstatSync, readFileSync } from "fs";
@@ -65,7 +66,16 @@ class KIRA {
 
     public async start() {
         // this.client = new Client();
-        this.client = new (require("discord.js")).Client({ intents: Intents.ALL });
+        this.client = new (require("discord.js")).Client({ intents: [
+            Intents.FLAGS.GUILDS,
+            Intents.FLAGS.GUILD_MESSAGES,
+            Intents.FLAGS.GUILD_BANS,
+            Intents.FLAGS.GUILD_MEMBERS,
+            Intents.FLAGS.GUILD_PRESENCES,
+            Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+            Intents.FLAGS.DIRECT_MESSAGES
+        ] });
+
         this.client.login(conf.getConfig().token);
         conf.client = this.client;
         conf.version = JSON.parse(readFileSync("../package.json") as any).version;                  // KIRA is started from static/ directory, ...
@@ -74,7 +84,7 @@ class KIRA {
         Object(this.client).onMessage = this.onMessage;
 
         this.client.on("ready", this.ready);
-        this.client.on("message", this.onMessage);
+        this.client.on("messageCreate", this.onMessage);
         this.client.on("guildMemberAdd", this.onGuildMemberAdd);
         this.client.on("guildMemberRemove", this.onGuildMemberRemove);
         this.client.on("guildMemberUpdate", this.onGuildMemberUpdate);
@@ -82,7 +92,7 @@ class KIRA {
         this.client.on("guildBanRemove", this.onGuildBanRemove);
         this.client.on("guildCreate", this.onGuildCreate);
 
-        setInterval(this.minuteScheduler, 1000*60, this.client);
+        setInterval(this.minuteScheduler, 1000*5, this.client);
 
         setInterval((bot) => {                                                                      // auto save every 60 minutes
             conf.save(bot, true);
@@ -116,7 +126,7 @@ class KIRA {
 
                 RSSParser.fireFeed(channel.feed_url,
                     channel,
-                    client,
+                    client as Client,
                     server,
                     conf);
             }
@@ -230,37 +240,37 @@ class KIRA {
         }
     }
 
-    private onGuildBanAdd(guild: Guild, user: User) {
+    private onGuildBanAdd(ban: GuildBan) {// guild: Guild, user: User) {
         let embed = new MessageEmbed()
                 .setColor("#fcc66f")
                 .setTitle(conf.getTranslationForServer(
-                    guild.id,
+                    ban.guild.id,
                     "log.user_banned.title")
                         .replace("{1}", (new Date().toLocaleString())))
                 .setDescription(conf.getTranslationForServer(
-                    guild.id,
+                    ban.guild.id,
                     "log.user_banned.body")
-                        .replace("{1}", user.username+"#"+user.discriminator));
+                        .replace("{1}", ban.user.username+"#"+ban.user.discriminator));
 
         conf.logMessageToServer(conf.client,
-            guild.id,
+            ban.guild.id,
             embed);
     }
 
-    private onGuildBanRemove(guild: Guild, user: User) {
+    private onGuildBanRemove(ban: GuildBan) {// guild: Guild, user: User) {
         let embed = new MessageEmbed()
                 .setColor("#fcc66f")
                 .setTitle(conf.getTranslationForServer(
-                    guild.id,
+                    ban.guild.id,
                     "log.user_unbanned.title")
                         .replace("{1}", (new Date().toLocaleString())))
                 .setDescription(conf.getTranslationForServer(
-                    guild.id,
+                    ban.guild.id,
                     "log.user_unbanned.body")
-                        .replace("{1}", user.username+"#"+user.discriminator));
+                        .replace("{1}", ban.user.username+"#"+ban.user.discriminator));
 
         conf.logMessageToServer(conf.client,
-            guild.id,
+            ban.guild.id,
             embed);
     }
 

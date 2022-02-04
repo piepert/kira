@@ -3,7 +3,7 @@ import {
     Client,
     Guild,
     Collection,
-    User, GuildChannel, TextChannel, MessageEmbed
+    User, GuildChannel, TextChannel, MessageEmbed, ColorResolvable
 } from "discord.js";
 
 import {
@@ -145,8 +145,8 @@ export class KConf {
                 user = user.replace("\@", "").trim();
             }
 
-            let u1 = guild.members.cache
-                .array()
+            let u1 = guild.members
+                .cache
                 .find(u =>
                     u.user.username.trimStart()+"#"+u.user.discriminator == user)
 
@@ -158,7 +158,7 @@ export class KConf {
                 }
             }*/
 
-            let ret_u = (await guild.fetchBans()).find(u =>                                         // iterate through all banned
+            let ret_u = (await guild.bans.fetch()).find(u =>                                         // iterate through all banned
                 u.user.username.trimStart()+"#"+u.user.discriminator == user
             );
 
@@ -190,7 +190,7 @@ export class KConf {
                 }
             }
 
-            let ret_u = (await guild.fetchBans())/*.find(u =>                                         // iterate through all banned
+            let ret_u = (await guild.bans.fetch())/*.find(u =>                                         // iterate through all banned
                 true // u.user.username.trim().startsWith(user.trim()) == true
             );*/
 
@@ -408,7 +408,7 @@ export class KConf {
                 return;
             }
 
-            (channel as TextChannel).send(content);
+            (channel as TextChannel).send({ embeds: [content] } as any);
 
         } catch(exception) {
             console.log("[ SERVER ] [ LOG ] An error occured, logging message not send.", exception);
@@ -478,8 +478,9 @@ export class KConf {
         return c_channel;
     }
 
-    public static genColor(seed) {
+    public static genColor(seed): ColorResolvable {
         let sn = [...seed].map(e => e.charCodeAt(0)).reduce((accumulator, currentValue) => accumulator * currentValue);
+        /*
         let ncolor = Math.floor((Math.abs(Math.sin(sn) * 16777215)) % 16777215);
         let color = ncolor.toString(16);
 
@@ -491,7 +492,41 @@ export class KConf {
         let new_color = (parseInt(color.substr(0, 2), 16) % 120 + 100).toString(16)
             + (parseInt(color.substr(2, 2), 16) % 120 + 100).toString(16)
             + (parseInt(color.substr(4, 2), 16) % 120 + 100).toString(16);
+        */
 
-        return new_color;
+        const colors = [
+            'DEFAULT',
+            'WHITE',
+            'AQUA',
+            'GREEN',
+            'BLUE',
+            'YELLOW',
+            'PURPLE',
+            'LUMINOUS_VIVID_PINK',
+            'FUCHSIA',
+            'GOLD',
+            'ORANGE',
+            'RED',
+            'GREY',
+            'DARKER_GREY',
+            'NAVY',
+            'DARK_AQUA',
+            'DARK_GREEN',
+            'DARK_BLUE',
+            'DARK_PURPLE',
+            'DARK_VIVID_PINK',
+            'DARK_GOLD',
+            'DARK_ORANGE',
+            'DARK_RED',
+            'DARK_GREY',
+            'LIGHT_GREY',
+            'DARK_NAVY',
+            'BLURPLE',
+            'GREYPLE',
+            'DARK_BUT_NOT_BLACK',
+            'NOT_QUITE_BLACK'
+        ];
+
+        return colors[Math.floor((Math.abs(Math.sin(sn) * colors.length)) % colors.length)] as ColorResolvable;
     }
 }

@@ -2,7 +2,8 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User
+    User,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -11,7 +12,6 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { table } from "table";
 
 export class KCommandList extends KCommand {
@@ -78,7 +78,7 @@ export class KCommandList extends KCommand {
             }
 
             for (let channel of (await client.guilds.cache.get(server.getID()).channels.cache.values())) {
-                if (channel.type == "text") {
+                if (channel.type == "GUILD_TEXT") {
                     list.push([
                         channel.id,
                         channel.name

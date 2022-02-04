@@ -1,4 +1,4 @@
-import { Client } from "@typeit/discord/Client";
+import { Client } from "discord.js";
 import { IncomingMessage } from "http";
 import { KChannelConfig } from "../KChannelConfig";
 import { KConf } from "../KConfig";

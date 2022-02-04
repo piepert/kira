@@ -20,8 +20,6 @@ import { KCommand } from "./commands/KCommand";
 import { KUser } from "./KUser";
 import { KRole } from "./KRole";
 import { KChannelConfigManager } from "./KChannelConfigManager";
-import { Rule } from "@typeit/discord";
-import { config } from "process";
 import { Crom } from "./crom/Crom";
 import { BranchURLs } from "./crom/BranchURLs";
 import { KServerQuote } from "./KServerQuote";
@@ -700,7 +698,7 @@ export class KServer {
             console.log("[ ERROR : KServer|305 ]", reason);
         });
 
-        guild.fetchBans().then((bans) => {
+        guild.bans.fetch().then((bans) => {
             for (let i of bans) {
                 this.refreshUser(i[1].user as any, guild);
             }
@@ -1037,7 +1035,7 @@ export class KServer {
                     }
                 }
 
-                msg.channel.send(embed);
+                msg.channel.send({ embeds: [embed] });
                 return;
             }
         }

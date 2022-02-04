@@ -3,7 +3,8 @@ import {
     MessageEmbed,
     GuildMember,
     User,
-    SnowflakeUtil
+    SnowflakeUtil,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -12,7 +13,6 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { KServerQuote } from "../KServerQuote";
 
 export class KCommandQuote extends KCommand {
@@ -58,14 +58,14 @@ export class KCommandQuote extends KCommand {
             const quote = server.getQuotes()[Math.floor(Math.random() * server.getQuotes().length)];
             const user = (await guild.members.fetch(quote.getAuthorID())).user;
 
-            msg.channel.send((new MessageEmbed())
+            msg.channel.send({ embeds: [ (new MessageEmbed())
                 .setThumbnail(user.avatarURL())
                 .addField(user.username+" — " +
                         (new Date(SnowflakeUtil.deconstruct(quote.getTimestamp()).timestamp))
                         .toLocaleString(),
                     quote.getMessageContent())
                 .setFooter("#" + guild.channels.resolve(quote.getChannelID()).name +
-                    ", ("+server.getShortestQuoteHash(quote.getHash())+")"))
+                    ", ("+server.getShortestQuoteHash(quote.getHash())+")") ]})
 
         } else if (command.getArguments().length == 1) {
             if (command.getArguments()[0] == "add") {
@@ -78,7 +78,7 @@ export class KCommandQuote extends KCommand {
                     msg.channel.send(conf.getTranslationStr(msg, "command.quote.add.missing_reference"))
                     return;
                 } else {
-                    let message = await msg.channel.messages.fetch(msg.reference.messageID);
+                    let message = await msg.channel.messages.fetch(msg.reference.messageId);
 
                     if (message == undefined || message == null) {
                         message.channel.send(conf.getTranslationStr(msg, "command.quote.message_not_found"))
@@ -137,7 +137,7 @@ export class KCommandQuote extends KCommand {
                         embed.addField(server.getShortestQuoteHash(hash), server.getQuote(hash).getMessageContent());
                     }
 
-                    msg.channel.send(embed);
+                    msg.channel.send({embeds: [embed]});
                 }
             }
         } else if (command.getArguments().length == 2) {
@@ -196,13 +196,14 @@ export class KCommandQuote extends KCommand {
                 const quote = server.getQuote(command.getArguments()[1]);
                 const user = (await guild.members.fetch(quote.getAuthorID())).user;
 
-                msg.channel.send((new MessageEmbed())
+                msg.channel.send({ embeds: [(new MessageEmbed())
                     .setThumbnail(user.avatarURL())
                     .addField(user.username+" — " +
                             (new Date(SnowflakeUtil.deconstruct(quote.getTimestamp()).timestamp))
                             .toLocaleString(),
                         quote.getMessageContent())
-                    .setFooter("#"+guild.channels.resolve(quote.getChannelID()).name+", ("+server.getShortestQuoteHash(quote.getHash())+")"))
+                    .setFooter("#"+guild.channels.resolve(quote.getChannelID()).name+", ("+server.getShortestQuoteHash(quote.getHash())+")")
+                ]})
             }
         }
     }

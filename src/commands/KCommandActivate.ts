@@ -1,17 +1,10 @@
-import {
-    Message,
-    MessageEmbed,
-    GuildMember,
-    User
-} from "discord.js";
-
+import { Client, Message, MessageEmbed } from "discord.js";
 import { KCommand } from "./KCommand";
 import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 
 export class KCommandActivate extends KCommand {
     constructor() {

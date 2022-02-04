@@ -3,7 +3,10 @@ import {
     MessageEmbed,
     GuildMember,
     User,
-    Role, TextChannel, GuildChannel
+    Role,
+    TextChannel,
+    GuildChannel,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -12,7 +15,6 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KRole } from "../KRole";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { KChannelConfig } from "../KChannelConfig";
 import { BranchURLs } from "../crom/BranchURLs";
 

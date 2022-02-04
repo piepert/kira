@@ -1,17 +1,10 @@
-import {
-    Message,
-    MessageEmbed,
-    GuildMember,
-    User
-} from "discord.js";
-
 import { KCommand } from "./KCommand";
 import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
 import { KEntry } from "../KEntry";
-import { Client } from "@typeit/discord/Client";
+import { Client, Message } from "discord.js";
 
 export class KCommandUnreport extends KCommand {
     constructor() {

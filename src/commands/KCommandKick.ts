@@ -2,7 +2,8 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User
+    User,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -11,7 +12,6 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 
 export class KCommandKick extends KCommand {
     constructor() {

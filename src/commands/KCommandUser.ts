@@ -1,17 +1,10 @@
-import {
-    Message,
-    MessageEmbed,
-    GuildMember,
-    User
-} from "discord.js";
-
 import { KCommand } from "./KCommand";
 import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
 import { config } from "process";
 import { KServer } from "../KServer";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
+import { Client, Message, MessageEmbed } from "discord.js";
 
 export class KCommandUser extends KCommand {
     constructor() {
@@ -107,6 +100,7 @@ export class KCommandUser extends KCommand {
             .setColor('#add8e6')
             .addFields(
                 {
+                    //@ts-expect-error
                     name: server.getTranslation("command.user.name"),
                     value: m_user.username+"#"+m_user.discriminator,
                     inline: true
@@ -139,14 +133,14 @@ export class KCommandUser extends KCommand {
                 },
                 {
                     name: "Banned?",
-                    value: (await msg.guild.fetchBans())
+                    value: (await msg.guild.bans.fetch())
                         .find(user => user.user.id == UID) != undefined
                             ? server.getTranslation("general.yes")
                             : server.getTranslation("general.no")
                 }
             );
 
-            msg.channel.send({ embed: embed });
+            msg.channel.send({ embeds: [embed] });
         } else if (command.getArguments().length == 2) { // <user> show
             if (kuser.getEntries().getEntries().length == 0) {
                 msg.channel.send(server.getTranslation("command.user.no_entries"));
@@ -207,7 +201,7 @@ export class KCommandUser extends KCommand {
                     }
                 );
 
-            msg.channel.send(embed);
+            msg.channel.send({ embeds: [embed] });
         }
     }
 }

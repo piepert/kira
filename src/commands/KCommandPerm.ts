@@ -3,7 +3,8 @@ import {
     MessageEmbed,
     GuildMember,
     User,
-    Role
+    Role,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -13,7 +14,6 @@ import { config } from "process";
 import { KServer } from "../KServer";
 import { KRole } from "../KRole";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 import { KCommandManager } from "../KCommandManager";
 
 export class KCommandPerm extends KCommand {
@@ -96,16 +96,16 @@ export class KCommandPerm extends KCommand {
         }
 
         if (command.getArguments()[0] == "list") {
-            let e = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setTitle(server.getTranslation("command.perm.list"));
 
             for (let command of KCommandManager.commands) {
-                e.addField(conf.getConfig().command_prefix+command.getName(),
+                embed.addField(conf.getConfig().command_prefix+command.getName(),
                     command.getPermissions().join("\n"),
                     true);
             }
 
-            msg.channel.send(e)
+            msg.channel.send({embeds: [embed]})
 
         } else if (command.getArguments()[0] == "role"
             || command.getArguments()[0] == "r") {
@@ -150,22 +150,22 @@ export class KCommandPerm extends KCommand {
                     disabled_permissions = [ no_perms ];
                 }
 
-                msg.channel.send(new MessageEmbed()
+                msg.channel.send({ embeds: [ new MessageEmbed()
                     .setTitle(server.getTranslation("command.perm.show_role_permissions")
-                        +": "+role.name)
+                        +": "+role.name )
 
                     .setColor(role.hexColor)
                     .addFields(
                         {
                             name: server.getTranslation("command.perm.show_enabled"),
-                            value: enabled_permissions
+                            value: enabled_permissions.join("\n")
                         },
                         {
                             name: server.getTranslation("command.perm.show_disabled"),
-                            value: disabled_permissions
+                            value: disabled_permissions.join("\n")
                         }
                     )
-                );
+                ]});
             } else if (enable) {
                 if (!sender.canPermission("admin.perm.role.enable")) {
                     msg.channel.send(server.getTranslation("command.no_permission"));
@@ -237,7 +237,7 @@ export class KCommandPerm extends KCommand {
             let m_user;
 
             if (guild_user == undefined) {
-                m_user = (await msg.guild.fetchBans())
+                m_user = (await msg.guild.bans.fetch())
                     .find(user => user.user.id == UID);
 
                 if (m_user == undefined) {
@@ -276,21 +276,21 @@ export class KCommandPerm extends KCommand {
                     disabled_permissions = [ no_perms ];
                 }
 
-                msg.channel.send(new MessageEmbed()
+                msg.channel.send({ embeds: [ new MessageEmbed()
                     .setTitle(server.getTranslation("command.perm.show_user_permissions")
                         +": "+kuser.getDisplayName())
 
                     .addFields(
                         {
                             name: server.getTranslation("command.perm.show_enabled"),
-                            value: enabled_permissions
+                            value: enabled_permissions.join("\n")
                         },
                         {
                             name: server.getTranslation("command.perm.show_disabled"),
-                            value: disabled_permissions
+                            value: disabled_permissions.join("\n")
                         }
                     )
-                );
+                ]});
             } else if (enable) {
                 if (!sender.canPermission("admin.perm.user.enable")) {
                     msg.channel.send(server.getTranslation("command.no_permission"));

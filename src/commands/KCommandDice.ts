@@ -2,7 +2,8 @@ import {
     Message,
     MessageEmbed,
     GuildMember,
-    User
+    User,
+    Client
 } from "discord.js";
 
 import { KCommand } from "./KCommand";
@@ -11,7 +12,6 @@ import { KParsedCommand } from "../KParsedCommand";
 import { KServer } from "../KServer";
 import { KCommandManager } from "../KCommandManager";
 import { KUser } from "../KUser";
-import { Client } from "@typeit/discord/Client";
 
 class DiceCollection {
     faces: number;
@@ -247,9 +247,9 @@ export class KCommandDice extends KCommand {
         }
 
         if ((min.toString()+"_"+max.toString()).indexOf('.') == -1) {                               // check if one of them is an integer
-            msg.channel.send(getRandomInt(min, max));                                               // ... if yes, generate random int
+            msg.channel.send(getRandomInt(min, max).toString());                                    // ... if yes, generate random int
         } else {
-            msg.channel.send(Math.floor(getRandomFloat(min, max)*100) / 100);                       // ... if no, generate random float
+            msg.channel.send((Math.floor(getRandomFloat(min, max)*100) / 100).toString());          // ... if no, generate random float
         }
     }
 }
