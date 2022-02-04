@@ -1,4 +1,4 @@
-import { CachedManager, Client, Message, MessageEmbed } from "discord.js";
+import { Client, Message, MessageEmbed } from "discord.js";
 import { KCommand } from "./KCommand";
 import { KConf } from "../KConfig";
 import { KParsedCommand } from "../KParsedCommand";
@@ -50,7 +50,19 @@ export class KCommandBlacklist extends KCommand {
             server.addRegexToBlacklist(str);
 
         } else if (command.getArguments()[0] == "remove") {
-            server.removeBlacklist(parseInt(command.getArguments()[1]));
+            let num = parseInt(command.getArguments()[1]);
+
+            if (num < 0 || num >= server.getBlacklist().length) {
+                msg.channel.send(conf.getTranslationStr(msg, "command.blacklist.not_found")
+                    .replace("{1}", num));
+
+                return;
+            }
+
+            msg.channel.send(conf.getTranslationStr(msg, "command.blacklist.removed")
+                .replace("{1}", server.getBlacklist()[num]));
+
+            server.removeBlacklist(num);
 
         } else if (command.getArguments()[0] == "list") {
             if (server.getBlacklist().length == 0) {
