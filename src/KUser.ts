@@ -1,7 +1,7 @@
 import { KEntryManager } from "./KEntryManager";
 import { KEntry } from "./KEntry";
 import { Message, MessageEmbed } from "discord.js";
-import { KConf } from "./KConfig";
+import { defaultValue, KConf } from "./KConfig";
 
 function uniq_fast(a) {
     var seen = {};
@@ -29,6 +29,7 @@ export class KUser {
 
     entries: KEntryManager;
     message_count: number;
+    blacklist_message_count: number;
     operator: boolean;
     // banned: boolean;
 
@@ -42,6 +43,7 @@ export class KUser {
 
         this.entries = new KEntryManager();
         this.message_count = 0;
+        this.blacklist_message_count = 0;
 
         this.enabled_permissions = [];
         this.disabled_permissions = [];
@@ -71,6 +73,16 @@ export class KUser {
 
     public getDisabledPermissions(): string[] {
         return this.disabled_permissions;
+    }
+
+    public getBlacklistCount(): number {
+        return this.blacklist_message_count;
+    }
+    public incBlacklistCount() {
+        this.blacklist_message_count++;
+    }
+    public setBlacklistCount(count: number) {
+        this.blacklist_message_count = count;
     }
 
     public getMessageCount(): number {
@@ -221,7 +233,7 @@ export class KUser {
         this.entries = entries;
     }
 
-    public addEntry(entry: string, msg: Message, conf: KConf) {
+    public addEntry(entry: string, msg: Message, conf: KConf, dont_log: boolean = false) {
         let e: KEntry = new KEntry();
 
         e.setContent(entry);
@@ -236,6 +248,7 @@ export class KUser {
 
         this.entries.addEntry(e);
 
+        if (dont_log) return;
         (async (entry, msg, conf, entry_id) => {
             let author = msg.author;
             let owner = msg.guild.members.cache.get(this.id);
@@ -309,6 +322,7 @@ export class KUser {
 
             entries: this.entries.toJSONObject(),
             message_count: this.message_count,
+            blacklist_message_count: this.blacklist_message_count,
             operator: this.operator,
             // banned: this.banned,
 
@@ -320,15 +334,17 @@ export class KUser {
 
     public static fromJSONObject(obj: any): KUser {
         let user: KUser = new KUser(obj.id, obj.username);
-        user.setMessageCount(obj.message_count);
+
+        user.setMessageCount(defaultValue(obj.message_count, 0));
         user.setEntries(KEntryManager.fromJSONObject(obj.entries));
-        user.setDisabledPermissions(obj.disabled_permissions);
-        user.setEnabledPermissions(obj.enabled_permissions);
+        user.setDisabledPermissions(defaultValue(obj.disabled_permissions, []));
+        user.setEnabledPermissions(defaultValue(obj.enabled_permissions, []));
+        user.setBlacklistCount(defaultValue(obj.blacklist_message_count, 0));
         // user.setBanState(obj.banned)
-        user.setLastMessageDate(obj.last_message);
-        user.setJoinDate(obj.joined_server);
+        user.setLastMessageDate(defaultValue(obj.last_message, "never"));
+        user.setJoinDate(defaultValue(obj.joined_server, "never"));
         // user.lastly_banned = obj.lastly_banned;
-        user.operator = obj.operator;
+        user.operator = defaultValue(obj.operator, false);
 
         return user;
     }

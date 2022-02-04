@@ -24,6 +24,14 @@ import { KCommandManager } from "./KCommandManager";
 import { getServers } from "dns";
 import { kStringMaxLength } from "buffer";
 
+export function defaultValue(obj, standard_value) {
+    if (obj == undefined) {
+        return standard_value;
+    } else {
+        return obj;
+    }
+}
+
 export class KConf {
     translations: KTranslationManager;
     config: any;
