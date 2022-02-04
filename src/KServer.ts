@@ -33,7 +33,7 @@ export class KServer {
     cfg_path: string;                                                           // path for server config/json
     root_path: string;                                                          // path for server directory
     log_channel: string;                                                        // id of log-channel on server
-    mute_roll: string;
+    mute_role: string;
     standard_branch: string;                                                    // standard SCP-wiki branch
 
     join_message: boolean;
@@ -65,7 +65,7 @@ export class KServer {
         this.cfg_path = "";
         this.root_path = "";
         this.channels = new KChannelConfigManager();
-        this.mute_roll = "";
+        this.mute_role = "";
         this.standard_branch = "";
 
         this.users = new KUserManager();
@@ -96,7 +96,7 @@ export class KServer {
             translations: this.translations,
             log_channel: this.log_channel,
             autoresponds: [...this.autoresponds],
-            mute_roll: this.mute_roll,
+            mute_role: this.mute_role,
             standard_branch: this.standard_branch,
             allow_references: this.allow_references,
             quotes: this.quotes.map(e => e.toJSONObject()),
@@ -118,7 +118,7 @@ export class KServer {
         s.mute_user_cache = new Map<string, string[]>();
         s.log_channel = obj.log_channel;
         s.jokes_cache = new Map<string, string[]>();
-        s.mute_roll = obj.mute_roll;
+        s.mute_role = obj.mute_role;
         s.standard_branch = obj.standard_branch;
         s.allow_references = obj.allow_references;
 
@@ -174,8 +174,8 @@ export class KServer {
             s.deactivated_commands = [];
         }
 
-        if (s.mute_roll == undefined) {
-            s.mute_roll = "";
+        if (s.mute_role == undefined) {
+            s.mute_role = "";
         }
 
         if (s.standard_branch == undefined) {
@@ -361,12 +361,12 @@ export class KServer {
         }
     }
 
-    public setMuteRoll(id: string) {
-        this.mute_roll = id;
+    public setMuteRole(id: string) {
+        this.mute_role = id;
     }
 
-    public getMuteRoll(): string {
-        return this.mute_roll;
+    public getMuteRole(): string {
+        return this.mute_role;
     }
 
     public getJokeCache(): string[] {
@@ -448,7 +448,9 @@ export class KServer {
                     return true;
                 }
             } else {
-                return str.toLocaleLowerCase().includes(regex.toLocaleLowerCase().trim());
+                if (str.toLocaleLowerCase().trim().includes(regex.toLocaleLowerCase().trim())) {
+                    return true;
+                }
             }
         }
 
@@ -967,12 +969,26 @@ export class KServer {
 
         if (!msg.author.bot){// && !conf.userIsOperator(msg.author.id)) {           // check blacklist
             if (this.isOnBlacklist(msg.content)) {
-                console.log("Blacklist: "+msg.content);
                 conf.logMessageToServer(client, this.getID(), new MessageEmbed()
                     .setFooter(msg.author.username+"#"+msg.author.discriminator+" ("+msg.author.id+")", msg.author.avatarURL())
                     .setTitle(conf.getTranslationStr(msg, "command.blacklist.removed_msg")
-                        .replace("{1}", (new Date().toLocaleDateString())))
+                        .replace("{1}", (new Date().toLocaleDateString())+", "+(new Date().toLocaleTimeString())))
                     .setDescription("`"+msg.content+"`"));
+
+                this.getUser(msg.author.id)
+                    .addEntry("[ KIRA-BLACKLIST "+(new Date()).toUTCString()+" ] "+
+                        "Blacklist-Message: "+msg.content.substring(0, 1000),
+                        msg,
+                        conf,
+                        true);
+
+                this.getUser(msg.author.id).incBlacklistCount();
+
+                if (this.getUser(msg.author.id).getBlacklistCount() % 3 == 0
+                    && this.getUser(msg.author.id).getBlacklistCount() > 0
+                    && this.getMuteRole().trim() != "") {
+                    await msg.member.roles.add(this.getMuteRole());
+                }
 
                 await msg.delete();
                 return;
