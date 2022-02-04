@@ -1,5 +1,9 @@
 Date format: YYYY-MM-DD
 
+# v3.1.1 (2022-02-04)
+* added command `!blacklist` (`src/commands/KCommandBlacklist.ts`)
+  * mute user every third blacklist violation with mute-role
+
 # v3.1.0 (2021-10-03)
 
 * added command `!search` (`src/commands/KCommandSearch.ts`)
