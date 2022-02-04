@@ -64,6 +64,8 @@
         "command.user.name": "Name",
         "command.user.message_count": "Message Count (Estimation)",
         "command.user.entries": "Entries",
+        "command.user.blacklist": "Blacklist-Violations",
+        "command.blacklist.not_found": "Word `{1}` does not exist.",
 
         "command.user.no_entries": "This user has no entries.",
         "command.user.entry_not_found": "Entry not found.",

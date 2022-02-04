@@ -64,6 +64,7 @@
         "command.user.name": "Name",
         "command.user.message_count": "Schwafel-Zäler (Schätzung)",
         "command.user.entries": "Logbuch-Einträge",
+        "command.user.blacklist": "Blacklist-Verstöße",
 
         "command.user.no_entries": "Dieser Benutzer hat kein Logbuch!",
         "command.user.entry_not_found": "Logbuch-Eintrag nicht gefunden.",

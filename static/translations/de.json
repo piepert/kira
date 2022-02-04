@@ -63,6 +63,7 @@
         "command.user.name": "Name",
         "command.user.message_count": "Nachrichtenanzahl (Schätzung)",
         "command.user.entries": "Einträge",
+        "command.user.blacklist": "Blacklist-Verstöße",
 
         "command.user.no_entries": "Dieser Benutzer hat keine Einträge.",
         "command.user.entry_not_found": "Eintrag nicht gefunden.",
@@ -201,6 +202,7 @@
         "command.blacklist.added": "Wort `{1}` wurde hinzugefügt.",
         "command.blacklist.removed_not_found": "Wort Nr. `{1}` wurde nicht gefunden.",
         "command.blacklist.removed_msg": "Blacklist: Nachricht entfernt `[ {1} ]`",
+        "command.blacklist.not_found": "Wort `{1}` existiert nicht.",
 
         "command.help.list.title": "Liste von KIRA-Befehlen",
         "command.help.list.footer": "Für mehr Hilfe zu einem bestimmten Befehl, schreibe `{1}help <command>` (ohne < und >).",
