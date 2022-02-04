@@ -967,13 +967,13 @@ export class KServer {
         let reg = /(.*)\!(([Ss][Cc][Pp])\-[0-9a-zA-Z]+(\-[A-Za-z0-9]+|)).*/g
         let result = (new RegExp(reg)).exec(msg.content);
 
-        if (!msg.author.bot){// && !conf.userIsOperator(msg.author.id)) {           // check blacklist
+        if (!msg.author.bot && !conf.userIsOperator(msg.author.id)) {           // check blacklist
             if (this.isOnBlacklist(msg.content)) {
                 conf.logMessageToServer(client, this.getID(), new MessageEmbed()
                     .setFooter(msg.author.username+"#"+msg.author.discriminator+" ("+msg.author.id+")", msg.author.avatarURL())
                     .setTitle(conf.getTranslationStr(msg, "command.blacklist.removed_msg")
                         .replace("{1}", (new Date().toLocaleDateString())+", "+(new Date().toLocaleTimeString())))
-                    .setDescription("`"+msg.content+"`"));
+                    .setDescription("`"+msg.content.substring(0, 1000)+"`"));
 
                 this.getUser(msg.author.id)
                     .addEntry("[ KIRA-BLACKLIST "+(new Date()).toUTCString()+" ] "+

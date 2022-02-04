@@ -48,6 +48,8 @@ export class KCommandBlacklist extends KCommand {
                 .join(" ");
 
             server.addRegexToBlacklist(str);
+            msg.channel.send(conf.getTranslationStr(msg, "command.blacklist.added")
+                .replace("{1}", str));
 
         } else if (command.getArguments()[0] == "remove") {
             let num = parseInt(command.getArguments()[1]);
