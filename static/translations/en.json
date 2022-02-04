@@ -195,6 +195,12 @@
         "command.quote.quote": "Quote",
         "command.quote.quotes": "Quotes",
 
+        "command.blacklist.empty_blacklist": "The list is empty.",
+        "command.blacklist.removed": "Removed word `{1}`.",
+        "command.blacklist.added": "Added word `{1}`.",
+        "command.blacklist.removed_not_found": "Word no. `{1}` not found.",
+        "command.blacklist.removed_msg": "Blacklist: Message removed `[ {1} ]`",
+
         "command.help.list.title": "List of KIRA commands",
         "command.help.list.footer": "For further help, see `{1}help <command>` (without < and >).",
         "command.help.no_help_found": "No help page found for this command.",
@@ -769,6 +775,24 @@
                 {
                     "syntax": "{p}{c} remove <quoteHash>",
                     "help": "The quote identified by <quoteHash> will be removed."
+                }
+            ]
+        },
+
+        "command.help.command.blacklist": {
+            "std": "Edits the server's blacklist. Messages that contain a word of the blacklist will be deleted. The command is case-insensitive.",
+            "subcommands": [
+                {
+                    "syntax": "{p}{c} add <regex/word>",
+                    "help": "Adds the word <regex/word> to the blacklist. A word is treated as a regex, if it begins and ends with `/`. For example: `/[0-9]/` removes every message containing a number."
+                },
+                {
+                    "syntax": "{p}{c} list",
+                    "help": "Lists all words and their number."
+                },
+                {
+                    "syntax": "{p}{c} remove <number>",
+                    "help": "Deletes the word <number>. See `{p}{c} list` for the list of words."
                 }
             ]
         },

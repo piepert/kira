@@ -47,6 +47,7 @@ export class KServer {
     deactivated_commands: string[];
     jokes_cache: Map<string, string[]>;                                         // randomized list of all jokes for the server-language
     quotes: KServerQuote[];                                                     // list of quotes on the server
+    blacklist: string[];
 
     channels: KChannelConfigManager;                                            // wiki-feed list on server
     users: KUserManager;
@@ -77,6 +78,7 @@ export class KServer {
         this.autoresponds = new Map<string, string>();
         this.log_channel = null;
         this.config = conf;
+        this.blacklist = [];
 
         this.join_message = false;
         this.allow_references = false;
@@ -97,7 +99,8 @@ export class KServer {
             mute_roll: this.mute_roll,
             standard_branch: this.standard_branch,
             allow_references: this.allow_references,
-            quotes: this.quotes.map(e => e.toJSONObject())
+            quotes: this.quotes.map(e => e.toJSONObject()),
+            blacklist: this.blacklist
         }
     }
 
@@ -131,6 +134,12 @@ export class KServer {
             for (let e of Object.keys(obj.translations)) {
                 s.translations.set(e, obj.translations[e]);
             }
+        }
+
+        if (obj.blacklist == undefined) {
+            s.blacklist = [];
+        } else {
+            s.blacklist = obj.blacklist;
         }
 
         if (obj.quotes == undefined) {
@@ -413,6 +422,41 @@ export class KServer {
                 this.aliases.delete(alias);
             }
         }
+    }
+
+    public removeBlacklist(nr: number): boolean {
+        if (nr < 0 || nr >= this.blacklist.length) {
+            return false;
+        }
+
+        this.blacklist.splice(nr, 1);
+        return true;
+    }
+
+    public addRegexToBlacklist(regex: string) {
+        if (!this.blacklist.includes(regex.trim())) {
+            this.blacklist.push(regex.trim());
+        }
+    }
+
+    public isOnBlacklist(str: string): boolean {
+        for (let regex of this.blacklist) {
+            if (regex.startsWith("/") && regex.endsWith("/")) {
+                regex = regex.substr(1, regex.length-2);
+
+                if ((new RegExp(regex, "i")).test(str)) {
+                    return true;
+                }
+            } else {
+                return str.toLocaleLowerCase().includes(regex.toLocaleLowerCase().trim());
+            }
+        }
+
+        return false;
+    }
+
+    public getBlacklist(): string[] {
+        return this.blacklist;
     }
 
     public isCommandDeactivated(name: string): boolean {
@@ -920,6 +964,20 @@ export class KServer {
 
         let reg = /(.*)\!(([Ss][Cc][Pp])\-[0-9a-zA-Z]+(\-[A-Za-z0-9]+|)).*/g
         let result = (new RegExp(reg)).exec(msg.content);
+
+        if (!msg.author.bot){// && !conf.userIsOperator(msg.author.id)) {           // check blacklist
+            if (this.isOnBlacklist(msg.content)) {
+                console.log("Blacklist: "+msg.content);
+                conf.logMessageToServer(client, this.getID(), new MessageEmbed()
+                    .setFooter(msg.author.username+"#"+msg.author.discriminator+" ("+msg.author.id+")", msg.author.avatarURL())
+                    .setTitle(conf.getTranslationStr(msg, "command.blacklist.removed_msg")
+                        .replace("{1}", (new Date().toLocaleDateString())))
+                    .setDescription("`"+msg.content+"`"));
+
+                await msg.delete();
+                return;
+            }
+        }
 
         // handle !SCP-XXX(-XY) references
         if (this.allowsReferences() && (new RegExp(reg)).test(msg.content)) {
