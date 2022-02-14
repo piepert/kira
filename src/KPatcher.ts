@@ -32,10 +32,6 @@ export class KPatcher {
         conf.logMessageToServer(conf.client,
             channel.guild.id,
             embed);
-
-        // create backup of static directory; delete translations from the
-        // backup to make sure, that the translation files are getting replaced
-        this.createBackup()
         console.log("[ PATCH ] Start download of "+url);
 
         // downloading the patch file
@@ -53,12 +49,19 @@ export class KPatcher {
             .pipe(await unzipper
                 .Extract({ path: "patch" })
                 .on("close", async () => {
+                    // create backup of static directory; delete translations from the
+                    // backup to make sure, that the translation files are getting replaced
+                    this.createBackup()
+
                     if (process.platform != "win32") {
+                        process.chdir("../static_backup")
+
                         // overwriting old files
                         await channel.send("Installing new files...");
                         console.log("[ PATCH ] Overwriting current files.")
                         await this.overwriteCurrentFiles();
 
+                        process.chdir("../static")
                         // restoring old static folder
                         console.log("[ PATCH ] Restoring saved static directory.")
                         await this.restoreStaticBackup();
